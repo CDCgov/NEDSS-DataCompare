@@ -1,0 +1,77 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /data-compare
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+
+spring:
+  application:
+    name: data-compare-processor
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${DC_AUTH_URI}
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+auth:
+  token-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token
+  introspect-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/token/introspect
+
+aws:
+  auth:
+    static:
+      key_id: ${AWS_KEY_ID:NA}
+      access_key: ${AWS_ACCESS_KEY:NA}
+      token: ${AWS_TOKEN:NA}
+    profile:
+      profile_name: ${AWS_PROFILE:NA}
+  s3:
+    bucket-name: ${S3_BUCKET_NAME:NA}
+    region: ${S3_REGION:NA}
+kafka:
+  topic:
+    data-compare-topic: data_comparing
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 10
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${NBS_DBUSER}
+    password: ${NBS_DBPASSWORD}
+    rdbModern:
+      url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=RDB_MODERN;encrypt=true;trustServerCertificate=true;
+    rdb:
+      url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=RDB;encrypt=true;trustServerCertificate=true;
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
+    group-id: data-processor-group
+    consumer:
+      maxPollIntervalMs: 30000
+
+---
+dc-processor-server:
+  host: ${DC_SERVER_HOST:localhost:8082}
