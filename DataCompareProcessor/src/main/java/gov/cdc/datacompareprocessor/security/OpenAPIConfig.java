@@ -18,7 +18,7 @@ import java.util.List;
 
 @Configuration
 public class OpenAPIConfig {
-    @Value("${dcserver.host}")
+    @Value("${dc-processor-server.host}")
     private String serverhost;
 
     @Value("${server.servlet.context-path}")

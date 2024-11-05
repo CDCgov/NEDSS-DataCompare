@@ -8,14 +8,18 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@Table(name = "DataCompare_Config")
+@Table(name = "Data_Compare_Config")
 @Entity
 public class DataCompareConfig {
 
+//    @Id
+//    @Column(name = "config_id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long configId;
+
     @Id
-    @Column(name = "config_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long configId;
+    @Column(name = "table_name", length = 200)
+    private String tableName;
 
     @Column(name = "source_db", length = 100)
     private String sourceDb;
@@ -23,14 +27,19 @@ public class DataCompareConfig {
     @Column(name = "target_db", length = 100)
     private String targetDb;
 
-    @Column(name = "table_name", length = 200)
-    private String tableName;
+
 
     @Column(name = "rdb_sql_query")
     private String rdbSqlQuery;
 
     @Column(name = "rdb_modern_sql_query")
     private String rdbModernSqlQuery;
+
+    @Column(name = "rdb_sql_count_query")
+    private String rdbSqlCountQuery;
+
+    @Column(name = "rdb_modern_sql_count_query")
+    private String rdbModernSqlCountQuery;
 
     @Column(name = "compare")
     private Boolean compare;

@@ -65,7 +65,11 @@ public class S3DataService implements IS3DataService {
     }
 
 
-    public String persistToS3MultiPart(String domain, String records, String fileName, Timestamp persistingTimestamp) {
+    /**
+     * S3 location naming
+     * DOMAIN/TABLE/TIMESTAMP/TABLE_INDEX
+     * */
+    public String persistToS3MultiPart(String domain, String records, String fileName, Timestamp persistingTimestamp, int index) {
         String log = LOG_SUCCESS;
         try {
             if (records.equalsIgnoreCase("[]") || records.isEmpty()) {
@@ -74,7 +78,7 @@ public class S3DataService implements IS3DataService {
             String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(persistingTimestamp);
 
             // Construct the file path: /filename/filename_timestamp.json
-            String s3Key = String.format("%s/%s/%s_%s.json", domain, fileName, fileName, formattedTimestamp);
+            String s3Key = String.format("%s/%s/%s/%s_%s.json", domain, fileName,formattedTimestamp, fileName, index);
             InputStream inputStream = new ByteArrayInputStream(records.getBytes(StandardCharsets.UTF_8));
 
             String uploadId = initiateMultipartUpload(s3Key);
