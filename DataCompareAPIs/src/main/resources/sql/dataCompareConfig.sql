@@ -1,12 +1,13 @@
-CREATE TABLE DataCompare_Config
+CREATE TABLE Data_Compare_Config
 (
-    config_id        BIGINT PRIMARY KEY,
+    table_name       VARCHAR(200) PRIMARY KEY,
     source_db        VARCHAR(100),
     target_db        VARCHAR(100),
-    table_name       VARCHAR(200),
-    sql_query        VARCHAR(5000),
+    rdb_sql_query        VARCHAR(MAX),
+    rdb_sql_count_query        VARCHAR(MAX),
+    rdb_modern_sql_query VARCHAR(MAX),
+    rdb_modern_sql_count_query VARCHAR(MAX),
     compare          BIT,
-    use_query        BIT,
     file_type        VARCHAR(20),
     storage_location VARCHAR(200),
     created_datetime DATETIME DEFAULT GETDATE(),

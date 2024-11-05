@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Entity
-@Table(name = "DataCompare_Log")
+@Table(name = "Data_Compare_Log")
 public class DataCompareLog {
 
     @Id
@@ -17,8 +17,8 @@ public class DataCompareLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dcLogId;
 
-    @Column(name = "config_id", nullable = false)
-    private Long configId;
+    @Column(name = "table_name", nullable = false)
+    private String tableName;
 
     @Column(name = "database", length = 200)
     private String database;
@@ -28,6 +28,8 @@ public class DataCompareLog {
 
     @Column(name = "end_date_time")
     private Timestamp endDateTime;
+    @Column(name = "executed_query")
+    private String executedQuery;
 
     @Column(name = "file_name", length = 100)
     private String fileName;
@@ -40,4 +42,7 @@ public class DataCompareLog {
 
     @Column(name = "status_desc", length = 2000)
     private String statusDesc;
+
+    @Column(name = "stack_trace")
+    private String stackTrace;
 }
