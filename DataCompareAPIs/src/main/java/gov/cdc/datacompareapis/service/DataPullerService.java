@@ -112,6 +112,8 @@ public class DataPullerService implements IDataPullerService {
                 pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
                 pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
                 pullerEventModel.setSecondLayerFolderName(config.getTableName());
+                pullerEventModel.setKeyColumn(config.getKeyColumn());
+                pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
                 String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
                 pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
                 pullerEventModel.setRdbMaxIndex(totalRdbPages);

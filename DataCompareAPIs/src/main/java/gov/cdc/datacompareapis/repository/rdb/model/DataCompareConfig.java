@@ -41,6 +41,12 @@ public class DataCompareConfig {
     @Column(name = "rdb_modern_sql_count_query")
     private String rdbModernSqlCountQuery;
 
+    @Column(name = "key_column")
+    private String keyColumn;
+
+    @Column(name = "ignore_columns")
+    private String ignoreColumns;
+
     @Column(name = "compare")
     private Boolean compare;
 
