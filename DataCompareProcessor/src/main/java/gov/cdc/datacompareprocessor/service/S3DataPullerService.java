@@ -97,9 +97,9 @@ public class S3DataPullerService implements IS3DataPullerService {
         return JsonParser.parseString("TEST");
     }
 
-    public String uploadDataToS3(String folder1, String folder2, String folder3, String fileName, String data) {
+    public String uploadDataToS3(String folder1, String folder2, String folder3, String folder4, String fileName, String data) {
         // Build the S3 key by combining folder1, folder2, and fileName
-        String s3Key = String.format("%s/%s/%s/%s", folder1, folder2, folder3, fileName);
+        String s3Key = String.format("%s/%s/%s/%s/%s", folder1, folder2, folder3, folder4, fileName);
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)

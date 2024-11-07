@@ -65,63 +65,85 @@ public class DataPullerService implements IDataPullerService {
     public void pullingData(int pullLimit)   {
         List<DataCompareConfig>  configs = getDataConfig();
         for(DataCompareConfig config : configs) {
+            var currentTime = getCurrentTimeStamp();
+            DataCompareLog dataCompareLog = new DataCompareLog();
+            dataCompareLog.setTableName(config.getTableName());
+            dataCompareLog.setStartDateTime(currentTime);
+            dataCompareLog.setFileLocation("CORRECT PATH GOES HERE");
+            dataCompareLog.setStatus("IN_PROGRESS");
+            dataCompareLog.setRunByUser("USER");
+
             Integer rdbCount = rdbJdbcTemplate.queryForObject(config.getRdbSqlCountQuery(), Integer.class);
             Integer rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getRdbModernSqlCountQuery(), Integer.class);
+            boolean errorDuringPullingData = false;
+            String stackTrace = null;
             if (rdbModernCount != null && rdbCount != null) {
                 int totalRdbPages = (int) Math.ceil((double) rdbCount / pullLimit);
                 int totalRdbModernPages = (int) Math.ceil((double) rdbModernCount / pullLimit);
 
 
-                var currentTime = getCurrentTimeStamp();
                 for (int i = 0; i < totalRdbPages; i++) {
-                    var transactionStartTime = getCurrentTimeStamp();
                     try {
+                        if (errorDuringPullingData) {
+                            break;
+                        }
                         int startRow = i * pullLimit + 1;
                         int endRow = (i + 1) * pullLimit;
                         String query = preparingPaginationQuery(config.getRdbSqlQuery(), startRow, endRow);
                         List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
-                        var transactionEndTime = getCurrentTimeStamp();
                         String rawJsonData = gson.toJson(returnData);
                         s3DataService.persistToS3MultiPart(config.getSourceDb(),rawJsonData, config.getTableName(), currentTime, i);
                     } catch (Exception e) {
-                        var transactionEndTime = getCurrentTimeStamp();
-                        var stackTrace = getStackTraceAsString(e);
+                        stackTrace = getStackTraceAsString(e);
                         logger.error(e.getMessage());
+                        errorDuringPullingData = true;
                     }
                 }
 
                 for (int i = 0; i < totalRdbModernPages; i++) {
-                    var transactionStartTime = getCurrentTimeStamp();
                     try {
+                        if (errorDuringPullingData) {
+                            break;
+                        }
                         int startRow = i * pullLimit + 1;
                         int endRow = (i + 1) * pullLimit;
                         String query = preparingPaginationQuery(config.getRdbModernSqlQuery(), startRow, endRow);
                         List<Map<String, Object>> returnData = executeQueryForData(query, config.getTargetDb());
-                        var transactionEndTime = getCurrentTimeStamp();
                         String rawJsonData = gson.toJson(returnData);
                         s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, i);
                     } catch (Exception e) {
-                        var transactionEndTime = getCurrentTimeStamp();
-                        var stackTrace = getStackTraceAsString(e);
+                        stackTrace = getStackTraceAsString(e);
                         logger.error(e.getMessage());
+                        errorDuringPullingData = true;
                     }
                 }
 
-                PullerEventModel pullerEventModel = new PullerEventModel();
-                pullerEventModel.setFileName(config.getTableName());
-                pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
-                pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
-                pullerEventModel.setSecondLayerFolderName(config.getTableName());
-                pullerEventModel.setKeyColumn(config.getKeyColumn());
-                pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
-                String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
-                pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
-                pullerEventModel.setRdbMaxIndex(totalRdbPages);
-                pullerEventModel.setRdbModernMaxIndex(totalRdbModernPages);
-                String pullerEventString = gson.toJson(pullerEventModel);
+                // PERSIST LOG HERE
+                // Then Return the Id
+                dataCompareLog.setStackTrace(stackTrace);
+                var log = dataCompareLogRepository.save(dataCompareLog);
 
-                kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
-                logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
+                // No Error then continue, otherwise stop at record the log
+                if (!errorDuringPullingData) {
+                    PullerEventModel pullerEventModel = new PullerEventModel();
+                    pullerEventModel.setFileName(config.getTableName());
+                    pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
+                    pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
+                    pullerEventModel.setSecondLayerFolderName(config.getTableName());
+                    pullerEventModel.setKeyColumn(config.getKeyColumn());
+                    pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
+                    String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
+                    pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
+                    pullerEventModel.setRdbMaxIndex(totalRdbPages);
+                    pullerEventModel.setRdbModernMaxIndex(totalRdbModernPages);
+                    pullerEventModel.setLogId(log.getDcLogId());
+                    String pullerEventString = gson.toJson(pullerEventModel);
+
+                    kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
+                    logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
+                }
+
+
             }
 
 
@@ -130,20 +152,6 @@ public class DataPullerService implements IDataPullerService {
         logger.info("PULLER IS COMPLETED FOR ALL TABLE");
     }
 
-    protected DataCompareLog buildingLog(String tableName,
-                                         String dbName,
-                                         Timestamp startDateTime,
-                                         Timestamp endDateTime,
-                                         String executedQuery
-                                         ) {
-        DataCompareLog dcl = new DataCompareLog();
-        dcl.setTableName(tableName);
-        dcl.setDatabase(dbName);
-        dcl.setStartDateTime(startDateTime);
-        dcl.setEndDateTime(endDateTime);
-        dcl.setExecutedQuery(executedQuery);
-        return  dcl;
-    }
 
 
 
