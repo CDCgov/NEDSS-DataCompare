@@ -13,4 +13,7 @@ public class PullerEventModel {
     public String fileName;
     public Integer rdbMaxIndex;
     public Integer rdbModernMaxIndex;
+    public String keyColumn;
+    public String ignoreColumns;
+    public Long logId;
 }

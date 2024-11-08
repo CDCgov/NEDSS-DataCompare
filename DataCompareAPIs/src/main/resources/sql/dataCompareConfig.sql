@@ -7,6 +7,8 @@ CREATE TABLE Data_Compare_Config
     rdb_sql_count_query        VARCHAR(MAX),
     rdb_modern_sql_query VARCHAR(MAX),
     rdb_modern_sql_count_query VARCHAR(MAX),
+    key_column VARCHAR(200),
+    ignore_columns VARCHAR(MAX),
     compare          BIT,
     file_type        VARCHAR(20),
     storage_location VARCHAR(200),

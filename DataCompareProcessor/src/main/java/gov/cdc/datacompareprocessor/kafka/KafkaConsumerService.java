@@ -34,7 +34,9 @@ public class KafkaConsumerService {
     public void handleMessage(String message){
         try {
             PullerEventModel data = gson.fromJson(message, PullerEventModel.class);
+            logger.info("Compare is started for table {}" , data.getFileName());
             dataCompareService.processingData(data);
+            logger.info("Compare is completed for table {}" , data.getFileName());
         } catch (Exception e) {
             logger.error("KafkaEdxLogConsumer.handleMessage: {}", e.getMessage());
         }
