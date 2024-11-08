@@ -12,12 +12,11 @@ import java.sql.Timestamp;
 @Entity
 public class DataCompareConfig {
 
-//    @Id
-//    @Column(name = "config_id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long configId;
-
     @Id
+    @Column(name = "config_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long configId;
+
     @Column(name = "table_name", length = 200)
     private String tableName;
 
@@ -29,32 +28,25 @@ public class DataCompareConfig {
 
 
 
-    @Column(name = "rdb_sql_query")
-    private String rdbSqlQuery;
+    @Column(name = "query")
+    private String query;
 
-    @Column(name = "rdb_modern_sql_query")
-    private String rdbModernSqlQuery;
+    @Column(name = "query_count")
+    private String queryCount;
 
-    @Column(name = "rdb_sql_count_query")
-    private String rdbSqlCountQuery;
 
-    @Column(name = "rdb_modern_sql_count_query")
-    private String rdbModernSqlCountQuery;
+    @Column(name = "key_column_list")
+    private String keyColumns;
 
-    @Column(name = "key_column")
-    private String keyColumn;
-
-    @Column(name = "ignore_columns")
+    @Column(name = "ignore_column_list")
     private String ignoreColumns;
 
     @Column(name = "compare")
     private Boolean compare;
 
-    @Column(name = "file_type", length = 20)
-    private String fileType;
+    @Column(name = "run_now")
+    private Boolean runNow;
 
-    @Column(name = "storage_location", length = 200)
-    private String storageLocation;
 
     @Column(name = "created_datetime")
     private Timestamp createdDatetime;
