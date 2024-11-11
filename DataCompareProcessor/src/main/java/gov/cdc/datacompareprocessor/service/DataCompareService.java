@@ -120,6 +120,12 @@ public class DataCompareService implements IDataCompareService {
         var currentTime = getCurrentTimeStamp();
         logRdb.setEndDateTime(currentTime);
         logRdbModern.setEndDateTime(currentTime);
+
+        var rdbPath = pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
+        var rdbModernPath = pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
+        logRdb.setFileLocation(rdbPath);
+        logRdb.setFileLocation(rdbModernPath);
+
         dataCompareLogRepository.save(logRdb);
         dataCompareLogRepository.save(logRdbModern);
 
