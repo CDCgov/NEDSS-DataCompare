@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DifferentModel {
-    public String rdbKey;
-    public String rdbModernKey;
+    public String keyColumn;
+    public String key;
     public String table;
     public String differentColumnAndValue;
 }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static gov.cdc.datacompareprocessor.share.StackTraceUtil.getStackTraceAsString;
 import static gov.cdc.datacompareprocessor.share.StringHelper.convertStringToList;
@@ -100,9 +101,16 @@ public class DataCompareService implements IDataCompareService {
                     Type listType = new TypeToken<List<DifferentModel>>() {
                     }.getType();
                     List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
-                    differModels.addAll(modelList);
+                    differModels.addAll(
+                            modelList
+                    );
+//                    differModels.addAll(
+//                            modelList.stream().filter(model -> !"[]".equals(model.differentColumnAndValue)).toList()
+//                    );
                 }
             }
+
+
             var stringValue = gson.toJson(differModels);
             s3DataPullerService.uploadDataToS3(
                     pullerEventModel.getFirstLayerRdbModernFolderName(),
@@ -204,23 +212,23 @@ public class DataCompareService implements IDataCompareService {
                 continue;
             }
 
-            String rdbKey = "";
-            String rdbModernKey = "";
+
+            if (id.equals("10117008")) {
+                logger.info("TEST");
+            }
             for (String key : recordRdb.keySet()) {
                 if (ignoreCols.contains(key)) {
-                    rdbKey = recordRdb.get(key).toString();
-                    rdbModernKey = recordRdbModern.get(key).toString();
                     continue;
                 }
 
-                String valueRdb = recordRdb.get(key).getAsString();
-                String valueRdbModern = recordRdbModern.get(key).getAsString();
+                JsonElement valueRdb = recordRdb.get(key);
+                JsonElement valueRdbModern = recordRdbModern.get(key);
 
-                if (!valueRdb.isEmpty() && !valueRdbModern.isEmpty() && !valueRdb.equals(valueRdbModern)) {
+                if (!valueRdb.equals(valueRdbModern)) {
                     diffBuilder.setLength(0);
                     diffBuilder.append(key).append(": ")
                             .append("[RDB_VALUE: ").append(valueRdb).append("], ")
-                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]");
+                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
                     differList.add(diffBuilder.toString());
                 }
             }
@@ -238,11 +246,13 @@ public class DataCompareService implements IDataCompareService {
             }
             diffBuilder.append("]");
 
-            differentModel.setRdbKey(rdbKey);
-            differentModel.setRdbModernKey(rdbModernKey);
-            differentModel.setDifferentColumnAndValue(diffBuilder.toString());
+            differentModel.setKey(id);
+            differentModel.setKeyColumn(uniqueIdField);
+            differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
 
-            differentModels.add(differentModel);
+            if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                differentModels.add(differentModel);
+            }
         }
 
 
