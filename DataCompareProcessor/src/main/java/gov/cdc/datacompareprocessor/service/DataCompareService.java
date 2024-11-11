@@ -100,7 +100,7 @@ public class DataCompareService implements IDataCompareService {
         {
             logger.error("ERROR: {}", e.getMessage());
             stackTrace = getStackTraceAsString(e);
-            log.setStackTrace(stackTrace);
+            log.setStatusDesc(stackTrace);
         }
 
         var currentTime = getCurrentTimeStamp();

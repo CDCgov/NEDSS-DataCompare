@@ -17,11 +17,12 @@ public class DataCompareLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long dcLogId;
 
-    @Column(name = "table_name", nullable = false)
+    @Column(name = "config_id")
+    private Long configId;
+
+    @Column(name = "database_table", nullable = false)
     private String tableName;
 
-    @Column(name = "database_name", length = 200)
-    private String database;
 
     @Column(name = "start_date_time")
     private Timestamp startDateTime;
@@ -29,14 +30,17 @@ public class DataCompareLog {
     @Column(name = "end_date_time")
     private Timestamp endDateTime;
 
+    @Column(name = "file_name")
+    private String fileName;
+
     @Column(name = "file_location", length = 1000)
     private String fileLocation;
 
     @Column(name = "status", length = 20)
     private String status;
 
-    @Column(name = "stack_trace")
-    private String stackTrace;
+    @Column(name = "status_desc")
+    private String statusDesc;
 
     @Column(name = "run_by_user")
     private String runByUser;
