@@ -73,8 +73,8 @@ public class DataPullerService implements IDataPullerService {
             dataCompareLog.setStatus("IN_PROGRESS");
             dataCompareLog.setRunByUser("USER");
 
-            Integer rdbCount = rdbJdbcTemplate.queryForObject(config.getRdbSqlCountQuery(), Integer.class);
-            Integer rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getRdbModernSqlCountQuery(), Integer.class);
+            Integer rdbCount = rdbJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
+            Integer rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
             boolean errorDuringPullingData = false;
             String stackTrace = null;
             if (rdbModernCount != null && rdbCount != null) {
@@ -89,7 +89,7 @@ public class DataPullerService implements IDataPullerService {
                         }
                         int startRow = i * pullLimit + 1;
                         int endRow = (i + 1) * pullLimit;
-                        String query = preparingPaginationQuery(config.getRdbSqlQuery(), startRow, endRow);
+                        String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
                         List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
                         String rawJsonData = gson.toJson(returnData);
                         s3DataService.persistToS3MultiPart(config.getSourceDb(),rawJsonData, config.getTableName(), currentTime, i);
@@ -107,7 +107,7 @@ public class DataPullerService implements IDataPullerService {
                         }
                         int startRow = i * pullLimit + 1;
                         int endRow = (i + 1) * pullLimit;
-                        String query = preparingPaginationQuery(config.getRdbModernSqlQuery(), startRow, endRow);
+                        String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
                         List<Map<String, Object>> returnData = executeQueryForData(query, config.getTargetDb());
                         String rawJsonData = gson.toJson(returnData);
                         s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, i);
@@ -120,7 +120,7 @@ public class DataPullerService implements IDataPullerService {
 
                 // PERSIST LOG HERE
                 // Then Return the Id
-                dataCompareLog.setStackTrace(stackTrace);
+                dataCompareLog.setStatusDesc(stackTrace);
                 var log = dataCompareLogRepository.save(dataCompareLog);
 
                 // No Error then continue, otherwise stop at record the log
@@ -130,7 +130,7 @@ public class DataPullerService implements IDataPullerService {
                     pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
                     pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
                     pullerEventModel.setSecondLayerFolderName(config.getTableName());
-                    pullerEventModel.setKeyColumn(config.getKeyColumn());
+                    pullerEventModel.setKeyColumn(config.getKeyColumns());
                     pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
                     String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
                     pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
