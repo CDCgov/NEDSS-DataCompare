@@ -3,7 +3,7 @@ package gov.cdc.datacompareprocessor.service;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import gov.cdc.datacompareprocessor.configuration.TimestampAdapter;
-import gov.cdc.datacompareprocessor.exception.DataProcessorException;
+import gov.cdc.datacompareprocessor.kafka.KafkaProducerService;
 import gov.cdc.datacompareprocessor.repository.rdb.DataCompareLogRepository;
 import gov.cdc.datacompareprocessor.repository.rdb.model.DataCompareLog;
 import gov.cdc.datacompareprocessor.service.interfaces.IDataCompareService;
@@ -12,6 +12,7 @@ import gov.cdc.datacompareprocessor.service.model.DifferentModel;
 import gov.cdc.datacompareprocessor.service.model.PullerEventModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -35,10 +36,14 @@ public class DataCompareService implements IDataCompareService {
     private static final Map<String, JsonObject> unmatchedRecordsRdb = new HashMap<>();
     private static final Map<String, JsonObject> unmatchedRecordsRdbModern = new HashMap<>();
 
+    private final KafkaProducerService kafkaProducerService;
+    @Value("${kafka.topic.data-compare-email-topic}")
+    String emailTopicName = "";
 
-    public DataCompareService(IS3DataPullerService s3DataPullerService, DataCompareLogRepository dataCompareLogRepository) {
+    public DataCompareService(IS3DataPullerService s3DataPullerService, DataCompareLogRepository dataCompareLogRepository, KafkaProducerService kafkaProducerService) {
         this.s3DataPullerService = s3DataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
+        this.kafkaProducerService = kafkaProducerService;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
@@ -59,14 +64,14 @@ public class DataCompareService implements IDataCompareService {
 
         Optional<DataCompareLog> logResultRdb = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdb());
         DataCompareLog logRdb = new DataCompareLog();
-        String stackTrace = null;
+        String stackTrace;
         if (logResultRdb.isPresent()) {
             logRdb = logResultRdb.get();
         }
 
         Optional<DataCompareLog> logResultRdbModern = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdbModern());
         DataCompareLog logRdbModern = new DataCompareLog();
-        String stackTraceModern = null;
+        String stackTraceModern;
         if (logResultRdbModern.isPresent()) {
             logRdbModern = logResultRdbModern.get();
         }
@@ -86,8 +91,9 @@ public class DataCompareService implements IDataCompareService {
                 List<String> ignoreCols = convertStringToList(pullerEventModel.getIgnoreColumns());
 
                 List<String> differFileNames = new ArrayList<>();
-                differFileNames.add(compareJsonFiles(rdbFile, rdbModernFile, pullerEventModel, pullerEventModel.getKeyColumn(), i,
-                        ignoreCols, maxIndexSource));
+                differFileNames.add(
+                        compareJsonFiles(rdbFile, rdbModernFile, pullerEventModel, pullerEventModel.getKeyColumn(), i, ignoreCols, maxIndexSource)
+                );
 
                 for (String differFileName : differFileNames) {
                     JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
@@ -105,8 +111,8 @@ public class DataCompareService implements IDataCompareService {
                     "DIFFERENCE",
                     "differences.json", stringValue);
 
-            // Kafka Event
-            // TODO: Implement kafka event to send message to email service
+            // TODO: create object with info to pull from S3 and invoke the event
+            kafkaProducerService.sendEventToProcessor("GSON Object GOES HERE", emailTopicName);
         }
         catch (Exception e)
         {
@@ -207,10 +213,10 @@ public class DataCompareService implements IDataCompareService {
                     continue;
                 }
 
-                JsonElement valueRdb = recordRdb.get(key);
-                JsonElement valueRdbModern = recordRdbModern.get(key);
+                String valueRdb = recordRdb.get(key).getAsString();
+                String valueRdbModern = recordRdbModern.get(key).getAsString();
 
-                if (!valueRdb.equals(valueRdbModern)) {
+                if (!valueRdb.isEmpty() && !valueRdbModern.isEmpty() && !valueRdb.equals(valueRdbModern)) {
                     diffBuilder.setLength(0);
                     diffBuilder.append(key).append(": ")
                             .append("[RDB_VALUE: ").append(valueRdb).append("], ")
