@@ -43,6 +43,7 @@ public class DataCompareService implements IDataCompareService {
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
                 .serializeNulls()
+                .setPrettyPrinting()
                 .create();
     }
 
@@ -56,12 +57,20 @@ public class DataCompareService implements IDataCompareService {
         List<DifferentModel> differModels = new ArrayList<>();
 
 
-        Optional<DataCompareLog> logResult = dataCompareLogRepository.findById(pullerEventModel.getLogId());
-        DataCompareLog log = new DataCompareLog();
+        Optional<DataCompareLog> logResultRdb = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdb());
+        DataCompareLog logRdb = new DataCompareLog();
         String stackTrace = null;
-        if (logResult.isPresent()) {
-            log = logResult.get();
+        if (logResultRdb.isPresent()) {
+            logRdb = logResultRdb.get();
         }
+
+        Optional<DataCompareLog> logResultRdbModern = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdbModern());
+        DataCompareLog logRdbModern = new DataCompareLog();
+        String stackTraceModern = null;
+        if (logResultRdbModern.isPresent()) {
+            logRdbModern = logResultRdbModern.get();
+        }
+
 
         try {
             for (int i = 0; i < maxIndex; i++) {
@@ -95,17 +104,24 @@ public class DataCompareService implements IDataCompareService {
                     pullerEventModel.getThirdLayerFolderName(),
                     "DIFFERENCE",
                     "differences.json", stringValue);
+
+            // Kafka Event
+            // TODO: Implement kafka event to send message to email service
         }
         catch (Exception e)
         {
             logger.error("ERROR: {}", e.getMessage());
             stackTrace = getStackTraceAsString(e);
-            log.setStatusDesc(stackTrace);
+            stackTraceModern = getStackTraceAsString(e);
+            logRdb.setStatusDesc(stackTrace);
+            logRdbModern.setStatusDesc(stackTraceModern);
         }
 
         var currentTime = getCurrentTimeStamp();
-        log.setEndDateTime(currentTime);
-        dataCompareLogRepository.save(log);
+        logRdb.setEndDateTime(currentTime);
+        logRdbModern.setEndDateTime(currentTime);
+        dataCompareLogRepository.save(logRdb);
+        dataCompareLogRepository.save(logRdbModern);
 
     }
 
@@ -190,10 +206,6 @@ public class DataCompareService implements IDataCompareService {
 
                 if (!valueRdb.equals(valueRdbModern)) {
                     diffBuilder.setLength(0);
-//                    diffBuilder.append("\"").append(key).append("\" : {\n")
-//                            .append("    \"RDB_VALUE\": ").append(valueRdb.toString()).append(",\n")
-//                            .append("    \"RDB_MODERN_VALUE\": ").append(valueRdbModern.toString()).append("\n")
-//                            .append("}");
                     diffBuilder.append(key).append(": ")
                             .append("[RDB_VALUE: ").append(valueRdb).append("], ")
                             .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]");

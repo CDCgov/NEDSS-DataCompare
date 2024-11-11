@@ -1,6 +1,5 @@
 insert into Data_Compare_Config
-(table_name, source_db, target_db, query, query_count,
- , key_column_list, ignore_column_list, compare)
+(table_name, source_db, target_db, query, query_count, key_column_list, ignore_column_list, compare)
 values ('D_PATIENT', 'RDB', 'RDB_MODERN',
         'WITH PaginatedResults AS (
             SELECT D_PATIENT.*,

@@ -62,98 +62,139 @@ public class DataPullerService implements IDataPullerService {
     }
 
     @Async("defaultAsyncExecutor")
-    public void pullingData(int pullLimit)   {
+    public void pullingData(int pullLimit, boolean runNowMode)   {
         List<DataCompareConfig>  configs = getDataConfig();
-        for(DataCompareConfig config : configs) {
-            var currentTime = getCurrentTimeStamp();
-            DataCompareLog dataCompareLog = new DataCompareLog();
-            dataCompareLog.setTableName(config.getTableName());
-            dataCompareLog.setStartDateTime(currentTime);
-            dataCompareLog.setFileLocation("CORRECT PATH GOES HERE");
-            dataCompareLog.setStatus("IN_PROGRESS");
-            dataCompareLog.setRunByUser("USER");
 
-            Integer rdbCount = rdbJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
-            Integer rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
-            boolean errorDuringPullingData = false;
-            String stackTrace = null;
-            if (rdbModernCount != null && rdbCount != null) {
-                int totalRdbPages = (int) Math.ceil((double) rdbCount / pullLimit);
-                int totalRdbModernPages = (int) Math.ceil((double) rdbModernCount / pullLimit);
-
-
-                for (int i = 0; i < totalRdbPages; i++) {
-                    try {
-                        if (errorDuringPullingData) {
-                            break;
-                        }
-                        int startRow = i * pullLimit + 1;
-                        int endRow = (i + 1) * pullLimit;
-                        String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
-                        List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
-                        String rawJsonData = gson.toJson(returnData);
-                        s3DataService.persistToS3MultiPart(config.getSourceDb(),rawJsonData, config.getTableName(), currentTime, i);
-                    } catch (Exception e) {
-                        stackTrace = getStackTraceAsString(e);
-                        logger.error(e.getMessage());
-                        errorDuringPullingData = true;
-                    }
-                }
-
-                for (int i = 0; i < totalRdbModernPages; i++) {
-                    try {
-                        if (errorDuringPullingData) {
-                            break;
-                        }
-                        int startRow = i * pullLimit + 1;
-                        int endRow = (i + 1) * pullLimit;
-                        String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
-                        List<Map<String, Object>> returnData = executeQueryForData(query, config.getTargetDb());
-                        String rawJsonData = gson.toJson(returnData);
-                        s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, i);
-                    } catch (Exception e) {
-                        stackTrace = getStackTraceAsString(e);
-                        logger.error(e.getMessage());
-                        errorDuringPullingData = true;
-                    }
-                }
-
-                // PERSIST LOG HERE
-                // Then Return the Id
-                dataCompareLog.setStatusDesc(stackTrace);
-                var log = dataCompareLogRepository.save(dataCompareLog);
-
-                // No Error then continue, otherwise stop at record the log
-                if (!errorDuringPullingData) {
-                    PullerEventModel pullerEventModel = new PullerEventModel();
-                    pullerEventModel.setFileName(config.getTableName());
-                    pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
-                    pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
-                    pullerEventModel.setSecondLayerFolderName(config.getTableName());
-                    pullerEventModel.setKeyColumn(config.getKeyColumns());
-                    pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
-                    String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
-                    pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
-                    pullerEventModel.setRdbMaxIndex(totalRdbPages);
-                    pullerEventModel.setRdbModernMaxIndex(totalRdbModernPages);
-                    pullerEventModel.setLogId(log.getDcLogId());
-                    String pullerEventString = gson.toJson(pullerEventModel);
-
-                    kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
-                    logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
-                }
-
-
-            }
-
-
+        if (runNowMode) {
+            pullDataRunNow(pullLimit, configs);
+        }
+        else {
+            pullDataAllTable(pullLimit, configs);
         }
 
         logger.info("PULLER IS COMPLETED FOR ALL TABLE");
     }
 
+    protected void pullDataAllTable(int pullLimit, List<DataCompareConfig>  configs) {
+        for(DataCompareConfig config : configs) {
+            if (config.getCompare()) {
+                pullDataLogic(pullLimit, config);
+            }
+        }
+    }
+
+    protected void pullDataRunNow(int pullLimit, List<DataCompareConfig>  configs) {
+        for(DataCompareConfig config : configs) {
+            if (config.getCompare() && config.getRunNow()) {
+                pullDataLogic(pullLimit, config);
+            }
+        }
+    }
+
+    protected DataCompareLog dataCompareDefaultLogBuilder(DataCompareConfig config, Timestamp currentTime, String status,
+                                                          String dbSource) {
+        DataCompareLog dataCompareLog = new DataCompareLog();
+        dataCompareLog.setConfigId(config.getConfigId());
+        dataCompareLog.setTableName(dbSource + "." + config.getTableName());
+        dataCompareLog.setStartDateTime(currentTime);
+        dataCompareLog.setFileLocation("S3");
+        dataCompareLog.setStatus(status);
+        dataCompareLog.setRunByUser("0");
+        return dataCompareLog;
+
+    }
+
+    protected void pullDataLogic(int pullLimit, DataCompareConfig config ) {
+        var currentTime = getCurrentTimeStamp();
+        DataCompareLog dataCompareLogRdb =dataCompareDefaultLogBuilder(config, currentTime, "Inprogress", "RDB");
+        DataCompareLog dataCompareLogRdbModern =dataCompareDefaultLogBuilder(config, currentTime, "Inprogress", "RDB_MODERN");
+
+        Integer rdbCount = rdbJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
+        Integer rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
+        boolean errorDuringPullingDataRdb = false;
+        String stackTraceRdb = null;
+        boolean errorDuringPullingDataRdbModern = false;
+        String stackTraceRdbModern = null;
+        if (rdbModernCount != null && rdbCount != null) {
+            int totalRdbPages = (int) Math.ceil((double) rdbCount / pullLimit);
+            int totalRdbModernPages = (int) Math.ceil((double) rdbModernCount / pullLimit);
 
 
+            for (int i = 0; i < totalRdbPages; i++) {
+                try {
+                    if (errorDuringPullingDataRdb) {
+                        break;
+                    }
+                    int startRow = i * pullLimit + 1;
+                    int endRow = (i + 1) * pullLimit;
+                    String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
+                    List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
+                    String rawJsonData = gson.toJson(returnData);
+                    s3DataService.persistToS3MultiPart(config.getSourceDb(),rawJsonData, config.getTableName(), currentTime, i);
+                } catch (Exception e) {
+                    stackTraceRdb = getStackTraceAsString(e);
+                    logger.error(e.getMessage());
+                    errorDuringPullingDataRdb = true;
+                }
+            }
+
+            for (int i = 0; i < totalRdbModernPages; i++) {
+                try {
+                    if (errorDuringPullingDataRdbModern) {
+                        break;
+                    }
+                    int startRow = i * pullLimit + 1;
+                    int endRow = (i + 1) * pullLimit;
+                    String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
+                    List<Map<String, Object>> returnData = executeQueryForData(query, config.getTargetDb());
+                    String rawJsonData = gson.toJson(returnData);
+                    s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, i);
+                } catch (Exception e) {
+                    stackTraceRdbModern = getStackTraceAsString(e);
+                    logger.error(e.getMessage());
+                    errorDuringPullingDataRdbModern = true;
+                }
+            }
+
+            // PERSIST LOG HERE
+            // Then Return the Id
+            dataCompareLogRdb.setStatusDesc(stackTraceRdb);
+            var logRdb = dataCompareLogRepository.save(dataCompareLogRdb);
+
+            dataCompareLogRdbModern.setStatusDesc(stackTraceRdbModern);
+            var logRdbModern = dataCompareLogRepository.save(dataCompareLogRdbModern);
+
+
+            // No Error then continue, otherwise stop at record the log
+            if (!errorDuringPullingDataRdb || !errorDuringPullingDataRdbModern) {
+                PullerEventModel pullerEventModel = new PullerEventModel();
+                pullerEventModel.setFileName(config.getTableName());
+                pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
+                pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
+                pullerEventModel.setSecondLayerFolderName(config.getTableName());
+                pullerEventModel.setKeyColumn(config.getKeyColumns());
+                pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
+                String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
+                pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
+                pullerEventModel.setRdbMaxIndex(totalRdbPages);
+                pullerEventModel.setRdbModernMaxIndex(totalRdbModernPages);
+                pullerEventModel.setLogIdRdb(logRdb.getDcLogId());
+                pullerEventModel.setLogIdRdbModern(logRdbModern.getDcLogId());
+                String pullerEventString = gson.toJson(pullerEventModel);
+
+                kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
+                logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
+            }
+            else {
+                logRdb.setStatus("Error");
+                logRdbModern.setStatus("Error");
+                dataCompareLogRepository.save(logRdb);
+                dataCompareLogRepository.save(logRdbModern);
+            }
+
+
+        }
+    }
 
     protected String preparingPaginationQuery(String query, Integer startRow, Integer endRow) {
         return query.replaceAll(":startRow", startRow.toString()).replaceAll(":endRow", endRow.toString());

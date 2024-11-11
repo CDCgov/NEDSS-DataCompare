@@ -8,7 +8,7 @@ CREATE TABLE Data_Compare_Log
     file_name VARCHAR(500),
     file_location VARCHAR(1000),
     status VARCHAR(20) CHECK (status IN ('Inprogress', 'Complete', 'Error')),
-    stack_trace VARCHAR(MAX),
+    status_desc VARCHAR(MAX),
     run_by_user VARCHAR(100),
     FOREIGN KEY (config_id) REFERENCES Data_Compare_Config(config_id)
 );

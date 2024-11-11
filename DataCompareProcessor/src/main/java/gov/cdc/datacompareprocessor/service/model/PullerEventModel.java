@@ -15,5 +15,6 @@ public class PullerEventModel {
     public Integer rdbModernMaxIndex;
     public String keyColumn;
     public String ignoreColumns;
-    public Long logId;
+    public Long logIdRdb;
+    public Long logIdRdbModern;
 }
