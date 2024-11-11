@@ -15,7 +15,6 @@
 #    paths:
 #      - "DataCompareAPIs/**"
 #      - "DataCompareProcessor/**"
-#      - "DataCompareCron/**"
 #      - "DataCompareESender/**"
 #      - ".github/workflows/sonar.yaml"
 #env:

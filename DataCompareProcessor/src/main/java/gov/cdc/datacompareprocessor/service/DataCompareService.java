@@ -1,6 +1,9 @@
 package gov.cdc.datacompareprocessor.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import gov.cdc.datacompareprocessor.configuration.TimestampAdapter;
 import gov.cdc.datacompareprocessor.kafka.KafkaProducerService;
@@ -18,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static gov.cdc.datacompareprocessor.share.StackTraceUtil.getStackTraceAsString;
 import static gov.cdc.datacompareprocessor.share.StringHelper.convertStringToList;
