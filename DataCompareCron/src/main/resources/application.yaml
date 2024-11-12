@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: DataCompareCron
+
+data_exchange:
+  clientId: ${CLIENT_ID}
+  secret: ${CLIENT_SECRET}
+  url: ${DATA_EXCHANGE_URL}
+  endpoint_token: ${data_exchange.url}${DATA_EXCHANGE_TOKEN:/api/auth/token}
+  endpoint_compare: ${data_exchange.url}${DATA_EXCHANGE_COMPARE:/api/data-compare}
+
+scheduler:
+  cron: "0 */5 * * * *"
+  zone: "America/New_York"
+
+logging:
+  level:
+    gov:
+      cdc: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
