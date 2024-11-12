@@ -1,4 +1,4 @@
-name: Build and push data-compare services data-ingestion-service and data-processing-service images to ECR
+name: Build and push data-compare services images to ECR
 on:
   push:
     branches:
