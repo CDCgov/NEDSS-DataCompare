@@ -44,6 +44,7 @@ aws:
 kafka:
   topic:
     data-compare-topic: data_comparing
+    data-compare-email-topic: data_comparing_email
 
 
 ---

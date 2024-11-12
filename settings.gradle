@@ -1,0 +1,4 @@
+rootProject.name = 'NEDSS-DataCompare'
+include 'DataCompareAPIs'
+include 'DataCompareProcessor'
+include 'DataCompareESender'

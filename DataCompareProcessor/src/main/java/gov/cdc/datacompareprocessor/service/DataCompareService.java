@@ -1,9 +1,12 @@
 package gov.cdc.datacompareprocessor.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import gov.cdc.datacompareprocessor.configuration.TimestampAdapter;
-import gov.cdc.datacompareprocessor.exception.DataProcessorException;
+import gov.cdc.datacompareprocessor.kafka.KafkaProducerService;
 import gov.cdc.datacompareprocessor.repository.rdb.DataCompareLogRepository;
 import gov.cdc.datacompareprocessor.repository.rdb.model.DataCompareLog;
 import gov.cdc.datacompareprocessor.service.interfaces.IDataCompareService;
@@ -12,6 +15,7 @@ import gov.cdc.datacompareprocessor.service.model.DifferentModel;
 import gov.cdc.datacompareprocessor.service.model.PullerEventModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -35,14 +39,19 @@ public class DataCompareService implements IDataCompareService {
     private static final Map<String, JsonObject> unmatchedRecordsRdb = new HashMap<>();
     private static final Map<String, JsonObject> unmatchedRecordsRdbModern = new HashMap<>();
 
+    private final KafkaProducerService kafkaProducerService;
+    @Value("${kafka.topic.data-compare-email-topic}")
+    String emailTopicName = "";
 
-    public DataCompareService(IS3DataPullerService s3DataPullerService, DataCompareLogRepository dataCompareLogRepository) {
+    public DataCompareService(IS3DataPullerService s3DataPullerService, DataCompareLogRepository dataCompareLogRepository, KafkaProducerService kafkaProducerService) {
         this.s3DataPullerService = s3DataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
+        this.kafkaProducerService = kafkaProducerService;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
                 .serializeNulls()
+                .setPrettyPrinting()
                 .create();
     }
 
@@ -56,12 +65,20 @@ public class DataCompareService implements IDataCompareService {
         List<DifferentModel> differModels = new ArrayList<>();
 
 
-        Optional<DataCompareLog> logResult = dataCompareLogRepository.findById(pullerEventModel.getLogId());
-        DataCompareLog log = new DataCompareLog();
-        String stackTrace = null;
-        if (logResult.isPresent()) {
-            log = logResult.get();
+        Optional<DataCompareLog> logResultRdb = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdb());
+        DataCompareLog logRdb = new DataCompareLog();
+        String stackTrace;
+        if (logResultRdb.isPresent()) {
+            logRdb = logResultRdb.get();
         }
+
+        Optional<DataCompareLog> logResultRdbModern = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdbModern());
+        DataCompareLog logRdbModern = new DataCompareLog();
+        String stackTraceModern;
+        if (logResultRdbModern.isPresent()) {
+            logRdbModern = logResultRdbModern.get();
+        }
+
 
         try {
             for (int i = 0; i < maxIndex; i++) {
@@ -77,17 +94,25 @@ public class DataCompareService implements IDataCompareService {
                 List<String> ignoreCols = convertStringToList(pullerEventModel.getIgnoreColumns());
 
                 List<String> differFileNames = new ArrayList<>();
-                differFileNames.add(compareJsonFiles(rdbFile, rdbModernFile, pullerEventModel, pullerEventModel.getKeyColumn(), i,
-                        ignoreCols, maxIndexSource));
+                differFileNames.add(
+                        compareJsonFiles(rdbFile, rdbModernFile, pullerEventModel, pullerEventModel.getKeyColumn(), i, ignoreCols, maxIndexSource)
+                );
 
                 for (String differFileName : differFileNames) {
                     JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
                     Type listType = new TypeToken<List<DifferentModel>>() {
                     }.getType();
                     List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
-                    differModels.addAll(modelList);
+                    differModels.addAll(
+                            modelList
+                    );
+//                    differModels.addAll(
+//                            modelList.stream().filter(model -> !"[]".equals(model.differentColumnAndValue)).toList()
+//                    );
                 }
             }
+
+
             var stringValue = gson.toJson(differModels);
             s3DataPullerService.uploadDataToS3(
                     pullerEventModel.getFirstLayerRdbModernFolderName(),
@@ -95,17 +120,30 @@ public class DataCompareService implements IDataCompareService {
                     pullerEventModel.getThirdLayerFolderName(),
                     "DIFFERENCE",
                     "differences.json", stringValue);
+
+            // TODO: create object with info to pull from S3 and invoke the event
+            kafkaProducerService.sendEventToProcessor("GSON Object GOES HERE", emailTopicName);
         }
         catch (Exception e)
         {
             logger.error("ERROR: {}", e.getMessage());
             stackTrace = getStackTraceAsString(e);
-            log.setStatusDesc(stackTrace);
+            stackTraceModern = getStackTraceAsString(e);
+            logRdb.setStatusDesc(stackTrace);
+            logRdbModern.setStatusDesc(stackTraceModern);
         }
 
         var currentTime = getCurrentTimeStamp();
-        log.setEndDateTime(currentTime);
-        dataCompareLogRepository.save(log);
+        logRdb.setEndDateTime(currentTime);
+        logRdbModern.setEndDateTime(currentTime);
+
+        var rdbPath = pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
+        var rdbModernPath = pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
+        logRdb.setFileLocation(rdbPath);
+        logRdb.setFileLocation(rdbModernPath);
+
+        dataCompareLogRepository.save(logRdb);
+        dataCompareLogRepository.save(logRdbModern);
 
     }
 
@@ -176,12 +214,12 @@ public class DataCompareService implements IDataCompareService {
                 continue;
             }
 
-            String rdbKey = "";
-            String rdbModernKey = "";
+
+            if (id.equals("10117008")) {
+                logger.info("TEST");
+            }
             for (String key : recordRdb.keySet()) {
                 if (ignoreCols.contains(key)) {
-                    rdbKey = recordRdb.get(key).toString();
-                    rdbModernKey = recordRdbModern.get(key).toString();
                     continue;
                 }
 
@@ -190,13 +228,9 @@ public class DataCompareService implements IDataCompareService {
 
                 if (!valueRdb.equals(valueRdbModern)) {
                     diffBuilder.setLength(0);
-//                    diffBuilder.append("\"").append(key).append("\" : {\n")
-//                            .append("    \"RDB_VALUE\": ").append(valueRdb.toString()).append(",\n")
-//                            .append("    \"RDB_MODERN_VALUE\": ").append(valueRdbModern.toString()).append("\n")
-//                            .append("}");
                     diffBuilder.append(key).append(": ")
                             .append("[RDB_VALUE: ").append(valueRdb).append("], ")
-                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]");
+                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
                     differList.add(diffBuilder.toString());
                 }
             }
@@ -214,11 +248,13 @@ public class DataCompareService implements IDataCompareService {
             }
             diffBuilder.append("]");
 
-            differentModel.setRdbKey(rdbKey);
-            differentModel.setRdbModernKey(rdbModernKey);
-            differentModel.setDifferentColumnAndValue(diffBuilder.toString());
+            differentModel.setKey(id);
+            differentModel.setKeyColumn(uniqueIdField);
+            differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
 
-            differentModels.add(differentModel);
+            if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                differentModels.add(differentModel);
+            }
         }
 
 

@@ -1,0 +1,34 @@
+services:
+  data-compare-api-service:
+    build:
+      context: ./
+      dockerfile: ./DataCompareAPIs/Dockerfile
+    ports:
+      - "8085:8085"  # Port mapping for the API service
+    container_name: data-compare-api-service
+    environment:
+      NBS_DBPASSWORD: fake.fake.fake.1234
+      NBS_DBSERVER: localhost
+      NBS_DBUSER: sa
+      NND_AUTH_URI: http://localhost:8080/realms/NBS
+    networks:
+      - datacompare
+
+  data-compare-processor-service:
+    build:
+      context: ./
+      dockerfile: ./DataCompareProcessor/Dockerfile
+    ports:
+      - "8086:8086"
+    container_name: data-compare-processor-service
+    environment:
+      NBS_DBPASSWORD: fake.fake.fake.1234
+      NBS_DBSERVER: localhost
+      NBS_DBUSER: sa
+      NND_AUTH_URI: http://localhost:8080/realms/NBS
+    networks:
+      - datacompare
+
+networks:
+  datacompare:
+    name: datacompare

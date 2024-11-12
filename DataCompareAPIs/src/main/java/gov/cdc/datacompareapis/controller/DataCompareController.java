@@ -28,24 +28,32 @@ public class DataCompareController {
     }
 
     @Operation(
-            summary = "Initiating the data comparing proces",
-            description = "Fetches data from relevant tables then out data into json and kick off lower stream process for data comparison.",
+            summary = "Initiating the data comparing process",
+            description = "Fetches data from relevant tables then outputs data into JSON and kicks off lower stream process for data comparison.",
             parameters = {
                     @Parameter(in = ParameterIn.HEADER,
                             name = "batchLimit",
-                            description = "Flag indicating max record per pulling process",
+                            description = "Flag indicating max records per pulling process",
                             schema = @Schema(type = "Integer", defaultValue = "1000"),
-                            required = true)
+                            required = true),
+                    @Parameter(in = ParameterIn.QUERY,
+                            name = "runNowMode",
+                            description = "Boolean flag to initiate the run immediately",
+                            schema = @Schema(type = "Boolean", defaultValue = "false"))
             }
     )
     @GetMapping(path = "/api/data-compare")
-    public ResponseEntity<String> dataSyncTotalRecords(@RequestHeader(name = "batchLimit", defaultValue = "1000") String batchLimit) throws DataCompareException {
+    public ResponseEntity<String> dataSyncTotalRecords(
+            @RequestHeader(name = "batchLimit", defaultValue = "1000") String batchLimit,
+            @RequestParam(name = "runNowMode", defaultValue = "false") boolean runNowMode) throws DataCompareException {
+
         if (isInteger(batchLimit)) {
-            dataPullerService.pullingData(Integer.parseInt(batchLimit));
+            dataPullerService.pullingData(Integer.parseInt(batchLimit), runNowMode);
             return new ResponseEntity<>("OK", HttpStatus.OK);
         }
         throw new DataCompareException("Invalid Header");
     }
+
 
     @Hidden
     @PostMapping(path = "/api/data-compare/health-check")
