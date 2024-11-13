@@ -123,6 +123,8 @@ public class DataCompareService implements IDataCompareService {
 
             // TODO: create object with info to pull from S3 and invoke the event
             kafkaProducerService.sendEventToProcessor("GSON Object GOES HERE", emailTopicName);
+            logRdb.setStatus("Complete");
+            logRdbModern.setStatus("Complete");
         }
         catch (Exception e)
         {
@@ -131,6 +133,8 @@ public class DataCompareService implements IDataCompareService {
             stackTraceModern = getStackTraceAsString(e);
             logRdb.setStatusDesc(stackTrace);
             logRdbModern.setStatusDesc(stackTraceModern);
+            logRdb.setStatus("Error");
+            logRdbModern.setStatus("Error");
         }
 
         var currentTime = getCurrentTimeStamp();
@@ -140,7 +144,7 @@ public class DataCompareService implements IDataCompareService {
         var rdbPath = pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
         var rdbModernPath = pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
         logRdb.setFileLocation(rdbPath);
-        logRdb.setFileLocation(rdbModernPath);
+        logRdbModern.setFileLocation(rdbModernPath);
 
         dataCompareLogRepository.save(logRdb);
         dataCompareLogRepository.save(logRdbModern);
