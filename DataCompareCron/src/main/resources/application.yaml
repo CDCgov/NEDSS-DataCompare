@@ -1,6 +1,11 @@
 spring:
   application:
     name: DataCompareCron
+  main:
+    web-application-type: none  # Disables embedded web server
+  config:
+    activate:
+      on-profile: default
 
 data_exchange:
   clientId: ${CLIENT_ID}
