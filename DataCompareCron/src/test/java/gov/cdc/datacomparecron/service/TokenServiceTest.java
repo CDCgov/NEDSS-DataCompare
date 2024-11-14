@@ -59,7 +59,7 @@ class TokenServiceTest {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         when(restTemplate.postForEntity("http://example.com/token", entity, String.class))
-                .thenThrow(new RuntimeException("API Error"));
+                .thenThrow(new RuntimeException("Failed to obtain authentication token"));
 
         Exception exception = assertThrows(RuntimeException.class, () -> tokenService.getToken());
         assertEquals("Failed to obtain authentication token", exception.getMessage());
