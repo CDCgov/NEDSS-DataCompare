@@ -3,10 +3,10 @@ package gov.cdc.datacomparecron.service.interfaces;
 /**
  * Interface for data comparison operations
  */
-public interface IDataCompareService {
+public interface IDataCompareCronService {
     /**
      * Triggers data comparison with optional immediate execution
      * @param runNow If true, executes comparison immediately
      */
-    void compareData(boolean runNow);
+    void scheduleDataCompare(boolean runNow);
 }

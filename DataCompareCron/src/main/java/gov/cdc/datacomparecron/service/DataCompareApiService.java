@@ -1,38 +1,28 @@
 package gov.cdc.datacomparecron.service;
 
-import gov.cdc.datacomparecron.service.interfaces.IDataCompareService;
-import gov.cdc.datacomparecron.service.interfaces.ITokenService;
+import gov.cdc.datacomparecron.service.interfaces.IDataCompareApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class DataCompareService implements IDataCompareService {
-    private static final Logger logger = LoggerFactory.getLogger(DataCompareService.class);
+public class DataCompareApiService implements IDataCompareApiService {
+    private static final Logger logger = LoggerFactory.getLogger(DataCompareApiService.class);
 
-    @Value("${data_exchange.endpoint_compare}")
+    @Value("${data_compare.endpoint_compare}")
     private String compareEndpoint;
 
     private final RestTemplate restTemplate;
-    private final ITokenService tokenService;
+    private final TokenService tokenService;
 
-    public DataCompareService(RestTemplate restTemplate, ITokenService tokenService) {
+    public DataCompareApiService(RestTemplate restTemplate, TokenService tokenService) {
         this.restTemplate = restTemplate;
         this.tokenService = tokenService;
     }
-
-    @Scheduled(cron = "${scheduler.cron}")
-    public void scheduleDataCompare() {
-        logger.info("Starting scheduled data comparison");
-        compareData(false);
-    }
-
+    @Override
     public void compareData(boolean runNow) {
         try {
             String token = tokenService.getToken();

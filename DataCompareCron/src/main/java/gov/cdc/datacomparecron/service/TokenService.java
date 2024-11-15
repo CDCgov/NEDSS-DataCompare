@@ -10,13 +10,14 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class TokenService implements ITokenService {
-    @Value("${data_exchange.endpoint_token}")
+
+    @Value("${data_compare.endpoint_token}")
     private String tokenEndpoint;
 
-    @Value("${data_exchange.clientId}")
+    @Value("${data_compare.clientId}")
     private String clientId;
 
-    @Value("${data_exchange.secret}")
+    @Value("${data_compare.secret}")
     private String clientSecret;
 
     private final RestTemplate restTemplate;
@@ -40,3 +41,4 @@ public class TokenService implements ITokenService {
         return response.getBody();
     }
 }
+
