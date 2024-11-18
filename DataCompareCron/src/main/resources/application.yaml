@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: DataCompareCron
+  main:
+    web-application-type: none
+  config:
+    activate:
+      on-profile: default
+
+data_compare:
+  clientId: ${CLIENT_ID:default-client}
+  secret: ${CLIENT_SECRET:default-secret}
+  url: ${DATA_COMPARE_URL}
+  endpoint_token: ${data_compare.url}${DATA_COMPARE_TOKEN:/api/auth/token}
+  endpoint_compare: ${data_compare.url}${DATA_COMPARE_COMPARE:/api/data-compare}
+  run_now: ${RUN_NOW:false}
+
+scheduler:
+  cron: ${SCHEDULER_CRON:0 */1 * * * *}
+  zone: ${SCHEDULER_TIMEZONE:UTC}
+
+logging:
+  level:
+    gov:
+      cdc: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
