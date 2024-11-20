@@ -91,23 +91,29 @@ public class S3DataPullerService implements IS3DataPullerService {
             // Parse JSON string to JsonElement
             return JsonParser.parseString(jsonData);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.info("S3 Read Error: {}, {}",fileName, e.getMessage());
         }
-        return JsonParser.parseString("TEST");
+        return JsonParser.parseString("");
     }
 
     public String uploadDataToS3(String folder1, String folder2, String folder3, String folder4, String fileName, String data) {
-        // Build the S3 key by combining folder1, folder2, and fileName
         String s3Key = String.format("%s/%s/%s/%s/%s", folder1, folder2, folder3, folder4, fileName);
 
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(s3Key)
-                .build();
+        try {
+            // Build the S3 key by combining folder1, folder2, and fileName
 
-        // Upload the data as a String
-        s3Client.putObject(putObjectRequest, RequestBody.fromString(data));
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(s3Key)
+                    .build();
 
+            // Upload the data as a String
+            s3Client.putObject(putObjectRequest, RequestBody.fromString(data));
+
+        } catch (Exception e) {
+            logger.info("S3 Write Error: {}, {}", s3Key,e.getMessage());
+        }
         return s3Key;
+
     }
 }
