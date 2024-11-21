@@ -63,6 +63,8 @@ spring:
       url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=RDB_MODERN;encrypt=true;trustServerCertificate=true;
     rdb:
       url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=RDB;encrypt=true;trustServerCertificate=true;
+    dataCompare:
+      url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=DATA_INTERNAL;encrypt=true;trustServerCertificate=true;
   jpa:
     show-sql: true
     hibernate:
