@@ -83,6 +83,7 @@ public class DataCompareService implements IDataCompareService {
 
 
         boolean error = false;
+        int index = 0;
         try {
             for (int i = 0; i < maxIndex; i++) {
                 String rdbFile = pullerEventModel.getFirstLayerRdbFolderName()
@@ -110,8 +111,16 @@ public class DataCompareService implements IDataCompareService {
                             modelList
                     );
                 }
+
+                index = i;
             }
-            var remainList = processingRemainingData( convertStringToList(pullerEventModel.getIgnoreColumns()),  pullerEventModel.getKeyColumn());
+
+            var ignoreColList =  convertStringToList(pullerEventModel.getIgnoreColumns());
+            var modelList = compareJsonFilesOnRemaining( pullerEventModel.getKeyColumn(), ignoreColList);
+            differModels.addAll(modelList);
+
+
+            var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getFileName());
             differModels.addAll(remainList);
 
             var stringValue = gson.toJson(differModels);
@@ -188,7 +197,7 @@ public class DataCompareService implements IDataCompareService {
         return result;
     }
 
-    protected List<DifferentModel> processingRemainingData(List<String> ignoreCols, String uniqueIdField) {
+    protected List<DifferentModel> processingRemainingData(List<String> ignoreCols, String uniqueIdField, String tableName) {
         StringBuilder diffBuilder = new StringBuilder();
         List<DifferentModel> differentModels = new ArrayList<>();
 
@@ -211,6 +220,7 @@ public class DataCompareService implements IDataCompareService {
             diffBuilder.setLength(0);
             diffBuilder.append("NO RECORD FOUND IN RDB_MODERN");
 
+            differentModel.setTable(tableName);
             differentModel.setKey(id);
             differentModel.setKeyColumn(uniqueIdField);
             differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
@@ -222,8 +232,8 @@ public class DataCompareService implements IDataCompareService {
         {
             DifferentModel differentModel = new DifferentModel();
             diffBuilder.setLength(0);
-            diffBuilder.append("NO RECORD FOUND IN RDB").append(": ");
-
+            diffBuilder.append("NO RECORD FOUND IN RDB");
+            differentModel.setTable(tableName);
             differentModel.setKey(id);
             differentModel.setKeyColumn(uniqueIdField);
             differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
@@ -231,6 +241,172 @@ public class DataCompareService implements IDataCompareService {
 
         }
 
+        return differentModels;
+    }
+
+    protected List<DifferentModel> compareJsonFilesOnRemaining(String uniqueIdField, List<String> ignoreCols)
+    {
+        Map<String, JsonObject> mapRdb = new HashMap<>();
+        Map<String, JsonObject> mapRdbModern = new HashMap<>();
+
+        if (!unmatchedRecordsRdb.isEmpty()) {
+            mapRdb.putAll(unmatchedRecordsRdb);
+        }
+
+
+        if (!unmatchedRecordsRdbModern.isEmpty()) {
+            mapRdbModern.putAll(unmatchedRecordsRdbModern);
+        }
+
+        unmatchedRecordsRdb.clear();;
+        unmatchedRecordsRdbModern.clear();
+
+
+        StringBuilder diffBuilder = new StringBuilder();
+        List<DifferentModel> differentModels = new ArrayList<>();
+
+        if (mapRdb.size() < mapRdbModern.size()) {
+            for (String id : mapRdb.keySet()) {
+                if (mapRdbModern.containsKey(id)) {
+                    DifferentModel differentModel = new DifferentModel();
+                    JsonObject recordRdb = mapRdb.get(id);
+                    JsonObject recordRdbModern = mapRdbModern.get(id);
+                    mapRdb.remove(id);
+                    mapRdbModern.remove(id);
+                    List<String> differList = new ArrayList<>();
+
+                    for (String key : recordRdb.keySet()) {
+                        if (ignoreCols.contains(key)) {
+                            continue;
+                        }
+
+                        // Get value from specific column
+                        JsonElement valueRdb = recordRdb.get(key);
+                        JsonElement valueRdbModern = recordRdbModern.get(key);
+                        recordRdb.remove(key);
+                        recordRdbModern.remove(key);
+
+                        if (!valueRdb.equals(valueRdbModern)) {
+
+
+                            if (valueRdbModern != null) {
+                                diffBuilder.setLength(0);
+                                diffBuilder.append(key).append(": ")
+                                        .append("[RDB_VALUE: ").append(valueRdb).append("], ")
+                                        .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
+                                differList.add(diffBuilder.toString());
+
+                            }
+                            else {
+                                diffBuilder.setLength(0);
+                                diffBuilder.append(key).append(": ")
+                                        .append("[RDB_VALUE: ").append(valueRdb).append("], ")
+                                        .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
+                                differList.add(diffBuilder.toString());
+                            }
+
+                        }
+                    }
+
+                    diffBuilder.setLength(0);
+                    diffBuilder.append("[");
+                    for (int i = 0; i < differList.size(); i++) {
+
+                        diffBuilder.append(differList.get(i));
+                        // Add a comma if it's not the last element
+                        if (i < differList.size() - 1) {
+                            diffBuilder.append(",");
+                        }
+                    }
+                    diffBuilder.append("]");
+
+                    differentModel.setKey(id);
+                    differentModel.setKeyColumn(uniqueIdField);
+                    differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
+
+                    if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                        differentModels.add(differentModel);
+                    }
+
+                }
+
+            }
+        }
+        else {
+            for (String id : mapRdbModern.keySet()) {
+                if (mapRdb.containsKey(id)) {
+                    DifferentModel differentModel = new DifferentModel();
+                    JsonObject recordRdb = mapRdb.get(id);
+                    JsonObject recordRdbModern = mapRdbModern.get(id);
+                    mapRdb.remove(id);
+                    mapRdbModern.remove(id);
+                    List<String> differList = new ArrayList<>();
+
+                    for (String key : mapRdbModern.keySet()) {
+                        if (ignoreCols.contains(key)) {
+                            continue;
+                        }
+
+                        // Get value from specific column
+                        JsonElement valueRdb = recordRdb.get(key);
+                        JsonElement valueRdbModern = recordRdbModern.get(key);
+                        recordRdb.remove(key);
+                        recordRdbModern.remove(key);
+
+                        if (!valueRdbModern.equals(valueRdb)) {
+
+
+                            if (valueRdb != null) {
+                                diffBuilder.setLength(0);
+                                diffBuilder.append(key).append(": ")
+                                        .append("[RDB_VALUE: ").append(valueRdb).append("], ")
+                                        .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
+                                differList.add(diffBuilder.toString());
+
+                            }
+                            else {
+                                diffBuilder.setLength(0);
+                                diffBuilder.append(key).append(": ")
+                                        .append("[RDB_VALUE: COLUMN NOT EXIST")
+                                        .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
+                                differList.add(diffBuilder.toString());
+                            }
+
+                        }
+                    }
+
+                    diffBuilder.setLength(0);
+                    diffBuilder.append("[");
+                    for (int i = 0; i < differList.size(); i++) {
+
+                        diffBuilder.append(differList.get(i));
+                        // Add a comma if it's not the last element
+                        if (i < differList.size() - 1) {
+                            diffBuilder.append(",");
+                        }
+                    }
+                    diffBuilder.append("]");
+
+                    differentModel.setKey(id);
+                    differentModel.setKeyColumn(uniqueIdField);
+                    differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
+
+                    if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                        differentModels.add(differentModel);
+                    }
+
+                }
+
+            }
+        }
+
+        if (!mapRdb.isEmpty()) {
+            unmatchedRecordsRdb.putAll(mapRdb);
+        }
+
+        if(!mapRdbModern.isEmpty()) {
+            unmatchedRecordsRdbModern.putAll(mapRdbModern);
+        }
         return differentModels;
     }
 
