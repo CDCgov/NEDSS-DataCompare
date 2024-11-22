@@ -65,7 +65,7 @@ public class RdbDataSourceConfig {
             @Qualifier("rdbDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
-                .packages("gov.cdc.datacompareapis.repository.rdb.model")
+                .packages("gov.cdc.datacompareapis.repository.dataCompare.model")
                 .persistenceUnit("rdb")
                 .build();
     }

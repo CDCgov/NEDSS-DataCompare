@@ -1,6 +1,6 @@
-package gov.cdc.datacompareapis.repository.rdb;
+package gov.cdc.datacompareapis.repository.dataCompare;
 
-import gov.cdc.datacompareapis.repository.rdb.model.DataCompareConfig;
+import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

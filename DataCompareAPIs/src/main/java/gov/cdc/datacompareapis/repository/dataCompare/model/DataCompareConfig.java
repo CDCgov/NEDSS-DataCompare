@@ -1,4 +1,4 @@
-package gov.cdc.datacompareapis.repository.rdb.model;
+package gov.cdc.datacompareapis.repository.dataCompare.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
