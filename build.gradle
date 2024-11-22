@@ -1,9 +1,23 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("com.dipien:semantic-version-gradle-plugin:2.0.0")
+    }
+}
+
+
 plugins {
     id 'org.sonarqube' version '4.2.1.3168'
 }
 
 version = '1.0.1-SNAPSHOT'  // The plugin will assign the root project version to all its subprojects.
-
+apply plugin: "com.dipien.semantic-version"
 subprojects {
     repositories {
         mavenCentral()
