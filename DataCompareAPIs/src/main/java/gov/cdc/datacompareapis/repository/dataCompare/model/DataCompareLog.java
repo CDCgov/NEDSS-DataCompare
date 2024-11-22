@@ -1,10 +1,11 @@
-package gov.cdc.datacompareprocessor.repository.rdb.model;
+package gov.cdc.datacompareapis.repository.dataCompare.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+
 @Getter
 @Setter
 @Entity
