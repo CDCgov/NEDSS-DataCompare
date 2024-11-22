@@ -17,7 +17,7 @@ jobs:
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
   call-build-microservice-container-workflow:
     name: Build Container
-    needs: sonar_scan
+#    needs: sonar_scan
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
       microservice_name: data-compare-api-service
@@ -46,7 +46,7 @@ jobs:
 
   call-build-data-compare-processor-microservice-container-workflow:
     name: Build Container
-    needs: sonar_scan
+#    needs: sonar_scan
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
       microservice_name: data-compare-processor-service
@@ -73,21 +73,23 @@ jobs:
 #      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
 #      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
-  call-build-data-compare-email-microservice-container-workflow:
-    name: Build Container
-    needs: sonar_scan
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
-    with:
-      microservice_name: data-compare-email-service
-      dockerfile_relative_path: -f ./DataCompareESender/Dockerfile .
-      environment_classifier: SNAPSHOT
-      java_version: "21"
-    secrets:
-      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
-      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+
+# NO READY
+#  call-build-data-compare-email-microservice-container-workflow:
+#    name: Build Container
+#    needs: sonar_scan
+#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
+#    with:
+#      microservice_name: data-compare-email-service
+#      dockerfile_relative_path: -f ./DataCompareESender/Dockerfile .
+#      environment_classifier: SNAPSHOT
+#      java_version: "21"
+#    secrets:
+#      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
+#      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
+#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
 #  call-update-helm-data-compare-email:
 #    name: Request DEV deployment
