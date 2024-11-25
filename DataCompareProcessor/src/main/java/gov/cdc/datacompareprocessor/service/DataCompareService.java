@@ -543,10 +543,11 @@ public class DataCompareService implements IDataCompareService {
         Map<String, JsonObject> recordMap = new HashMap<>();
 
         try {
-            // Convert JsonArray into a map using the unique identifier field
             for (JsonElement element : jsonElement.getAsJsonArray()) {
                 JsonObject jsonObject = element.getAsJsonObject();
-                String id = jsonObject.get(uniqueIdField).getAsString();
+                String id = jsonObject.has(uniqueIdField) && !jsonObject.get(uniqueIdField).isJsonNull()
+                        ? jsonObject.get(uniqueIdField).getAsString()
+                        : "NULL";
                 recordMap.put(id, jsonObject);
             }
         } catch (Exception e) {
