@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -39,10 +40,17 @@ public class S3DataService implements IS3DataService {
             @Value("${aws.auth.static.access_key}") String accessKey,
             @Value("${aws.auth.static.token}") String token,
             @Value("${aws.s3.region}") String region,
-            @Value("${aws.auth.profile.profile_name}") String profile
+            @Value("${aws.auth.profile.profile_name}") String profile,
+            @Value("${aws.auth.iam.enabled}") boolean iamEnable
     ) throws DataCompareException
     {
-        if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
+        if (iamEnable) {
+            this.s3Client = S3Client.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
+                    .build();
+        }
+        else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Client = S3Client.builder()
                     .region(Region.of(region))
                     .credentialsProvider(StaticCredentialsProvider.create(
