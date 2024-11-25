@@ -45,7 +45,7 @@ public class DataCompareController {
     @GetMapping(path = "/api/data-compare")
     public ResponseEntity<String> dataSyncTotalRecords(
             @RequestHeader(name = "batchLimit", defaultValue = "1000") String batchLimit,
-            @RequestParam(name = "runNowMode", defaultValue = "false") boolean runNowMode) throws DataCompareException {
+            @RequestHeader(name = "runNowMode", defaultValue = "false") boolean runNowMode) throws DataCompareException {
 
         if (isInteger(batchLimit)) {
             dataPullerService.pullingData(Integer.parseInt(batchLimit), runNowMode);
