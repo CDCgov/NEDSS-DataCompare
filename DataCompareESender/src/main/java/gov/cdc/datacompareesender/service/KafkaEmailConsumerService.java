@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class KafkaEmailConsumerService {
-    private final AwsEmailService emailService;
+    private final EmailService emailService;
     private final ObjectMapper objectMapper;
 
-    public KafkaEmailConsumerService(AwsEmailService emailService, ObjectMapper objectMapper) {
+    public KafkaEmailConsumerService(EmailService emailService, ObjectMapper objectMapper) {
         this.emailService = emailService;
         this.objectMapper = objectMapper;
     }

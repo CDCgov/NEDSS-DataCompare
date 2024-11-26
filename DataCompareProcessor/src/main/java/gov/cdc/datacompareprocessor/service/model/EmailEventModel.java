@@ -1,4 +1,4 @@
-package gov.cdc.datacompareesender.model;
+package gov.cdc.datacompareprocessor.service.model;
 
 import lombok.Getter;
 import lombok.Setter;

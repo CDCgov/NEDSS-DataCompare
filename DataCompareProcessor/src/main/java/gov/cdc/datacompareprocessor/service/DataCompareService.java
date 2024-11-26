@@ -12,6 +12,7 @@ import gov.cdc.datacompareprocessor.repository.dataCompare.model.DataCompareLog;
 import gov.cdc.datacompareprocessor.service.interfaces.IDataCompareService;
 import gov.cdc.datacompareprocessor.service.interfaces.IS3DataPullerService;
 import gov.cdc.datacompareprocessor.service.model.DifferentModel;
+import gov.cdc.datacompareprocessor.service.model.EmailEventModel;
 import gov.cdc.datacompareprocessor.service.model.PullerEventModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,8 @@ import static gov.cdc.datacompareprocessor.share.TimestampHandler.getCurrentTime
 @Service
 public class DataCompareService implements IDataCompareService {
     private static final Logger logger = LoggerFactory.getLogger(DataCompareService.class); //NOSONAR
-
+    @Value("${aws.s3.bucket-name}")
+    private String bucketName;
     private final IS3DataPullerService s3DataPullerService;
     private final Gson gson;
 
@@ -132,7 +134,15 @@ public class DataCompareService implements IDataCompareService {
                     "differences.json", stringValue);
 
             // TODO: create object with info to pull from S3 and invoke the event
-            kafkaProducerService.sendEventToProcessor("GSON Object GOES HERE", emailTopicName);
+
+            EmailEventModel emailEventModel = new EmailEventModel();
+            emailEventModel.setBucketName(bucketName);
+            emailEventModel.setRdbPath(pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName());
+            emailEventModel.setRdbModernPath(pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName());
+            emailEventModel.setDifferentFile(pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName() + "/DIFFERENCE/differences.json");
+            emailEventModel.setFileName(pullerEventModel.getSecondLayerFolderName());
+            var stringEmailModel = gson.toJson(emailEventModel);
+            kafkaProducerService.sendEventToProcessor(stringEmailModel, emailTopicName);
         }
         catch (Exception e)
         {
