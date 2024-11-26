@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
@@ -42,10 +44,17 @@ public class S3DataPullerService implements IS3DataPullerService {
             @Value("${aws.auth.static.access_key}") String accessKey,
             @Value("${aws.auth.static.token}") String token,
             @Value("${aws.s3.region}") String region,
-            @Value("${aws.auth.profile.profile_name}") String profile
+            @Value("${aws.auth.profile.profile_name}") String profile,
+            @Value("${aws.auth.iam.enabled}") boolean iamEnable
     ) throws DataProcessorException
     {
-        if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
+        if (iamEnable) {
+            this.s3Client = S3Client.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
+                    .build();
+        }
+        else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Client = S3Client.builder()
                     .region(Region.of(region))
                     .credentialsProvider(StaticCredentialsProvider.create(
@@ -57,7 +66,8 @@ public class S3DataPullerService implements IS3DataPullerService {
                     .region(Region.of(region))
                     .credentialsProvider(ProfileCredentialsProvider.create(profile))
                     .build();
-        } else {
+        }
+        else {
             throw new DataProcessorException("No Valid AWS Profile or Credentials found");
         }
         this.gson = new GsonBuilder()
@@ -91,23 +101,29 @@ public class S3DataPullerService implements IS3DataPullerService {
             // Parse JSON string to JsonElement
             return JsonParser.parseString(jsonData);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.info("S3 Read Error: {}, {}",fileName, e.getMessage());
         }
-        return JsonParser.parseString("TEST");
+        return JsonParser.parseString("");
     }
 
     public String uploadDataToS3(String folder1, String folder2, String folder3, String folder4, String fileName, String data) {
-        // Build the S3 key by combining folder1, folder2, and fileName
         String s3Key = String.format("%s/%s/%s/%s/%s", folder1, folder2, folder3, folder4, fileName);
 
-        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(s3Key)
-                .build();
+        try {
+            // Build the S3 key by combining folder1, folder2, and fileName
 
-        // Upload the data as a String
-        s3Client.putObject(putObjectRequest, RequestBody.fromString(data));
+            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(s3Key)
+                    .build();
 
+            // Upload the data as a String
+            s3Client.putObject(putObjectRequest, RequestBody.fromString(data));
+
+        } catch (Exception e) {
+            logger.info("S3 Write Error: {}, {}", s3Key,e.getMessage());
+        }
         return s3Key;
+
     }
 }

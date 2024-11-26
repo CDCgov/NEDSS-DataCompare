@@ -37,6 +37,8 @@ aws:
       token: ${AWS_TOKEN:NA}
     profile:
       profile_name: ${AWS_PROFILE:NA}
+    iam:
+      enabled: ${AWS_IAM:false}
   s3:
     bucket-name: ${S3_BUCKET_NAME:NA}
     region: ${S3_REGION:NA}
@@ -59,6 +61,8 @@ spring:
       url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=RDB_MODERN;encrypt=true;trustServerCertificate=true;
     rdb:
       url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=RDB;encrypt=true;trustServerCertificate=true;
+    dataCompare:
+      url: jdbc:sqlserver://${NBS_DBSERVER};databaseName=NBS_DATA_INTERNAL;encrypt=true;trustServerCertificate=true;
   jpa:
     show-sql: true
     hibernate:

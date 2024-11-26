@@ -23,17 +23,17 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "rdbEntityManagerFactory",
-        transactionManagerRef = "rdbTransactionManager",
+        entityManagerFactoryRef = "dataCompareEntityManagerFactory",
+        transactionManagerRef = "dataCompareTransactionManager",
         basePackages = {
-                "gov.cdc.datacompareprocessor.repository.rdb"
+                "gov.cdc.datacompareprocessor.repository.dataCompare"
         }
 )
-public class RdbDataSourceConfig {
+public class DataInternalDataSourceConfig {
     @Value("${spring.datasource.driverClassName}")
     private String driverClassName;
 
-    @Value("${spring.datasource.rdb.url}")
+    @Value("${spring.datasource.dataCompare.url}")
     private String dbUrl;
 
     @Value("${spring.datasource.username}")
@@ -42,8 +42,8 @@ public class RdbDataSourceConfig {
     @Value("${spring.datasource.password}")
     private String dbUserPassword;
 
-    @Bean(name = "rdbDataSource")
-    public DataSource rdbDataSource() {
+    @Bean(name = "dataCompareDataSource")
+    public DataSource dataCompareDataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
 
         dataSourceBuilder.driverClassName(driverClassName);
@@ -54,33 +54,33 @@ public class RdbDataSourceConfig {
         return dataSourceBuilder.build();
     }
 
-    @Bean(name = "rdbEntityManagerFactoryBuilder")
-    public EntityManagerFactoryBuilder rdbEntityManagerFactoryBuilder() {
+    @Bean(name = "dataCompareEntityManagerFactoryBuilder")
+    public EntityManagerFactoryBuilder dataCompareEntityManagerFactoryBuilder() {
         return new EntityManagerFactoryBuilder(new HibernateJpaVendorAdapter(), new HashMap<>(), null);
     }
 
     @Primary
-    @Bean(name = "rdbEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean rdbEntityManagerFactory(
-            @Qualifier("rdbEntityManagerFactoryBuilder") EntityManagerFactoryBuilder builder,
-            @Qualifier("rdbDataSource") DataSource dataSource) {
+    @Bean(name = "dataCompareEntityManagerFactory")
+    public LocalContainerEntityManagerFactoryBean dataCompareEntityManagerFactory(
+            @Qualifier("dataCompareEntityManagerFactoryBuilder") EntityManagerFactoryBuilder builder,
+            @Qualifier("dataCompareDataSource") DataSource dataSource) {
         return builder
                 .dataSource(dataSource)
                 .packages("gov.cdc.datacompareprocessor.repository.dataCompare.model")
-                .persistenceUnit("rdb")
+                .persistenceUnit("dataCompare")
                 .build();
     }
 
     @Primary
-    @Bean(name = "rdbTransactionManager")
-    public PlatformTransactionManager rdbTransactionManager(
-            @Qualifier("rdbEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "dataCompareTransactionManager")
+    public PlatformTransactionManager dataCompareTransactionManager(
+            @Qualifier("dataCompareEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
 
-    @Bean(name = "rdbJdbcTemplate")
-    public JdbcTemplate rdbJdbcTemplate(@Qualifier("rdbDataSource") DataSource dataSource) {
+    @Bean(name = "dataCompareJdbcTemplate")
+    public JdbcTemplate dataCompareJdbcTemplate(@Qualifier("dataCompareDataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
     }
 }

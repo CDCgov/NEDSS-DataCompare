@@ -38,7 +38,7 @@ public class KafkaConsumerService {
             dataCompareService.processingData(data);
             logger.info("Compare is completed for table {}" , data.getFileName());
         } catch (Exception e) {
-            logger.error("KafkaEdxLogConsumer.handleMessage: {}", e.getMessage());
+            logger.info("KafkaEdxLogConsumer.handleMessage: {}", e.getMessage());
         }
 
     }
