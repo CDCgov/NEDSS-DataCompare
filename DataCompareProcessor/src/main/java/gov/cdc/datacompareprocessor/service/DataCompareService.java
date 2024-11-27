@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static gov.cdc.datacompareprocessor.share.StackTraceUtil.getStackTraceAsString;
 import static gov.cdc.datacompareprocessor.share.StringHelper.convertStringToList;
@@ -125,6 +127,13 @@ public class DataCompareService implements IDataCompareService {
             var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getFileName());
             differModels.addAll(remainList);
 
+            Predicate<DifferentModel> rdbPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in RDB");
+            Predicate<DifferentModel> rdbModernPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in RDB_MODERN");
+            processFirstFound(differModels, rdbPredicate);
+            processFirstFound(differModels, rdbModernPredicate);
+
+            differModels.sort(Comparator.comparing(DifferentModel::getKey, Comparator.nullsFirst(Comparator.naturalOrder())));
+
             var stringValue = gson.toJson(differModels);
             s3DataPullerService.uploadDataToS3(
                     pullerEventModel.getFirstLayerRdbModernFolderName(),
@@ -173,6 +182,21 @@ public class DataCompareService implements IDataCompareService {
         dataCompareLogRepository.save(logRdb);
         dataCompareLogRepository.save(logRdbModern);
 
+    }
+
+    private void processFirstFound(List<DifferentModel> records, Predicate<DifferentModel> predicate) {
+        Optional<DifferentModel> firstFound = records.stream()
+                .filter(predicate)
+                .peek(r -> r.setKey(null))
+                .findFirst();
+
+        if (firstFound.isPresent()) {
+            // Remove all that match the predicate
+            records.removeIf(predicate);
+
+            // Add the first found back to the list
+            records.add(firstFound.get());
+        }
     }
 
     protected Map<String, Integer> getMaxIndexWithSource(PullerEventModel pullerEventModel) {
@@ -273,6 +297,7 @@ public class DataCompareService implements IDataCompareService {
 
 
         StringBuilder diffBuilder = new StringBuilder();
+        StringBuilder missingColBuilder = new StringBuilder();
         List<DifferentModel> differentModels = new ArrayList<>();
 
         if (mapRdb.size() < mapRdbModern.size()) {
@@ -284,6 +309,7 @@ public class DataCompareService implements IDataCompareService {
                     mapRdb.remove(id);
                     mapRdbModern.remove(id);
                     List<String> differList = new ArrayList<>();
+                    List<String> missingColList = new ArrayList<>();
 
                     for (String key : recordRdb.keySet()) {
                         if (ignoreCols.contains(key)) {
@@ -308,11 +334,16 @@ public class DataCompareService implements IDataCompareService {
 
                             }
                             else {
-                                diffBuilder.setLength(0);
-                                diffBuilder.append(key).append(": ")
-                                        .append("[RDB_VALUE: ").append(valueRdb).append("], ")
-                                        .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
-                                differList.add(diffBuilder.toString());
+                                missingColBuilder.setLength(0);
+                                missingColBuilder.append(key).append(" is not exist in RDB_MODERN").trimToSize();
+                                missingColList.add(missingColBuilder.toString());
+
+//
+//                                diffBuilder.setLength(0);
+//                                diffBuilder.append(key).append(": ")
+//                                        .append("[RDB_VALUE: ").append(valueRdb).append("], ")
+//                                        .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
+//                                differList.add(diffBuilder.toString());
                             }
 
                         }
@@ -330,13 +361,31 @@ public class DataCompareService implements IDataCompareService {
                     }
                     diffBuilder.append("]");
 
+                    missingColBuilder.setLength(0);
+                    missingColBuilder.append("[");
+                    for (int i = 0; i < missingColList.size(); i++) {
+
+                        missingColBuilder.append(missingColList.get(i));
+                        // Add a comma if it's not the last element
+                        if (i < missingColList.size() - 1) {
+                            missingColBuilder.append(",");
+                        }
+                    }
+                    missingColBuilder.append("]");
+                    differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
+
                     differentModel.setKey(id);
                     differentModel.setKeyColumn(uniqueIdField);
                     differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
-
-                    if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                    if (!differentModel.getDifferentColumnAndValue().equals("[]"))
+                    {
                         differentModels.add(differentModel);
                     }
+                    else if (!differentModel.getMissingColumn().equals("[]"))
+                    {
+                        differentModels.add(differentModel);
+                    }
+
 
                 }
 
@@ -351,6 +400,7 @@ public class DataCompareService implements IDataCompareService {
                     mapRdb.remove(id);
                     mapRdbModern.remove(id);
                     List<String> differList = new ArrayList<>();
+                    List<String> missingColList = new ArrayList<>();
 
                     for (String key : mapRdbModern.keySet()) {
                         if (ignoreCols.contains(key)) {
@@ -375,11 +425,15 @@ public class DataCompareService implements IDataCompareService {
 
                             }
                             else {
-                                diffBuilder.setLength(0);
-                                diffBuilder.append(key).append(": ")
-                                        .append("[RDB_VALUE: COLUMN NOT EXIST")
-                                        .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
-                                differList.add(diffBuilder.toString());
+                                missingColBuilder.setLength(0);
+                                missingColBuilder.append(key).append(" is not exist in RDB").trimToSize();
+                                missingColList.add(missingColBuilder.toString());
+
+//                                diffBuilder.setLength(0);
+//                                diffBuilder.append(key).append(": ")
+//                                        .append("[RDB_VALUE: COLUMN NOT EXIST")
+//                                        .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
+//                                differList.add(diffBuilder.toString());
                             }
 
                         }
@@ -397,11 +451,29 @@ public class DataCompareService implements IDataCompareService {
                     }
                     diffBuilder.append("]");
 
+                    missingColBuilder.setLength(0);
+                    missingColBuilder.append("[");
+                    for (int i = 0; i < missingColList.size(); i++) {
+
+                        missingColBuilder.append(missingColList.get(i));
+                        // Add a comma if it's not the last element
+                        if (i < missingColList.size() - 1) {
+                            missingColBuilder.append(",");
+                        }
+                    }
+                    missingColBuilder.append("]");
+                    differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
+
+
                     differentModel.setKey(id);
                     differentModel.setKeyColumn(uniqueIdField);
                     differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
 
                     if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                        differentModels.add(differentModel);
+                    }
+                    else if (!differentModel.getMissingColumn().equals("[]"))
+                    {
                         differentModels.add(differentModel);
                     }
 
@@ -440,6 +512,7 @@ public class DataCompareService implements IDataCompareService {
         }
 
         StringBuilder diffBuilder = new StringBuilder();
+        StringBuilder missingColBuilder = new StringBuilder();
         List<DifferentModel> differentModels = new ArrayList<>();
 
 
@@ -448,6 +521,7 @@ public class DataCompareService implements IDataCompareService {
             DifferentModel differentModel = new DifferentModel();
             differentModel.setTable(pullerEventModel.getFileName());
             List<String> differList = new ArrayList<>();
+            List<String> missingColList = new ArrayList<>();
 
             JsonObject recordRdb = mapRdb.get(id);
             JsonObject recordRdbModern = mapRdbModern.get(id);
@@ -482,11 +556,15 @@ public class DataCompareService implements IDataCompareService {
 
                     }
                     else {
-                        diffBuilder.setLength(0);
-                        diffBuilder.append(key).append(": ")
-                                .append("[RDB_VALUE: ").append(valueRdb).append("], ")
-                                .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
-                        differList.add(diffBuilder.toString());
+//                        diffBuilder.setLength(0);
+//                        diffBuilder.append(key).append(": ")
+//                                .append("[RDB_VALUE: ").append(valueRdb).append("], ")
+//                                .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
+//                        differList.add(diffBuilder.toString());
+                        missingColBuilder.setLength(0);
+                        missingColBuilder.append(key).append(" is not exist in RDB_MODERN").trimToSize();
+                        missingColList.add(missingColBuilder.toString());
+
                     }
 
                 }
@@ -499,12 +577,17 @@ public class DataCompareService implements IDataCompareService {
                         continue;
                     }
 
-                    JsonElement valueRdbModern = recordRdbModern.get(key);
-                    diffBuilder.setLength(0);
-                    diffBuilder.append(key).append(": ")
-                            .append("[RDB_VALUE: COLUMN NOT EXIST]")
-                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
-                    differList.add(diffBuilder.toString());
+//                    JsonElement valueRdbModern = recordRdbModern.get(key);
+//                    diffBuilder.setLength(0);
+//                    diffBuilder.append(key).append(": ")
+//                            .append("[RDB_VALUE: COLUMN NOT EXIST]")
+//                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
+//                    differList.add(diffBuilder.toString());
+
+                    missingColBuilder.setLength(0);
+                    missingColBuilder.append(key).append(" is not exist in RDB").trimToSize();
+                    missingColList.add(missingColBuilder.toString());
+
 
                 }
             }
@@ -522,11 +605,28 @@ public class DataCompareService implements IDataCompareService {
             }
             diffBuilder.append("]");
 
+            missingColBuilder.setLength(0);
+            missingColBuilder.append("[");
+            for (int i = 0; i < missingColList.size(); i++) {
+
+                missingColBuilder.append(missingColList.get(i));
+                // Add a comma if it's not the last element
+                if (i < missingColList.size() - 1) {
+                    missingColBuilder.append(",");
+                }
+            }
+            missingColBuilder.append("]");
+            differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
+
+
+
             differentModel.setKey(id);
             differentModel.setKeyColumn(uniqueIdField);
             differentModel.setDifferentColumnAndValue(diffBuilder.toString().replaceAll("\"", ""));
 
             if (!differentModel.getDifferentColumnAndValue().equals("[]")) {
+                differentModels.add(differentModel);
+            } else if (!differentModel.getMissingColumn().equals("[]")) {
                 differentModels.add(differentModel);
             }
         }
