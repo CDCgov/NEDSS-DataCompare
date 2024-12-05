@@ -22,4 +22,4 @@ aws:
     region: ${S3_REGION:NA}
     url-expiration-hours: 48
   ses:
-    source-email: user9@eqcdw.testinator.com
+    source-email: support@datateam-cdc-nbs.eqsandbox.com

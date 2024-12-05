@@ -32,7 +32,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.zaxxer:HikariCP:5.0.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'software.amazon.awssdk:s3:2.27.22'
+    implementation 'software.amazon.awssdk:s3:2.29.27'
+
     implementation 'software.amazon.awssdk:ses:2.29.21'
 
     implementation 'org.springframework.kafka:spring-kafka:3.0.12'

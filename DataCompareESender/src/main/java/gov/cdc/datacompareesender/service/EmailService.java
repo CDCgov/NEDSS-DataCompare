@@ -56,7 +56,7 @@ public class EmailService {
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Presigner = S3Presigner.builder()
-                    .region(Region.of(region))
+                    .region(Region.of("us-east-1"))
                     .credentialsProvider(StaticCredentialsProvider.create(
                             AwsSessionCredentials.create(keyId, accessKey, token)))
                     .build();
@@ -89,8 +89,8 @@ public class EmailService {
             SendEmailRequest request = SendEmailRequest.builder()
                     .source(sourceEmail) // Sender's email
                     .destination(Destination.builder()
-                            // POSSIBLY just pull list of recipient email from database
-                            .toAddresses("EMAIL LIST GOES HERE - NO", "EMAIL LIST GOES HERE - NO") // Add recipient emails here
+                            // TODO: REPLACE WITH ENVIRONMENT VARIABLE, something like RECIPIENT_EMAIL: {LIST of email such as "email1, email2, etc..."}
+                            .toAddresses("ndduc1856@gmail.com") // Add recipient emails here
                             .build())
                     .message(Message.builder()
                             .subject(Content.builder()
