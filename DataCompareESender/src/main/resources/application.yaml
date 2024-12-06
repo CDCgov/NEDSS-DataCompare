@@ -23,3 +23,5 @@ aws:
     url-expiration-hours: 48
   ses:
     source-email: support@datateam-cdc-nbs.eqsandbox.com
+    recipient-emails: ${RECIPIENT_EMAILS}
+
