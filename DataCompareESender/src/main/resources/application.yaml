@@ -18,10 +18,10 @@ aws:
     iam:
       enabled: ${AWS_IAM:false}
   s3:
-    bucket-name: eq-data-compare
+    bucket-name: ${S3_BUCKET_NAME:NA}
     region: ${S3_REGION:NA}
-    url-expiration-hours: 48
+    url-expiration-hours: ${URL_EXPIRATION_HOURS:48}
   ses:
-    source-email: support@datateam-cdc-nbs.eqsandbox.com
+    source-email: ${SOURCE_EMAIL:support@datateam-cdc-nbs.eqsandbox.com}
     recipient-emails: ${RECIPIENT_EMAILS}
 

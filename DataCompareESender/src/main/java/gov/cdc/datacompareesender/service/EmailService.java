@@ -60,7 +60,7 @@ public class EmailService {
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Presigner = S3Presigner.builder()
-                    .region(Region.of("us-east-1"))
+                    .region(Region.of(region))
                     .credentialsProvider(StaticCredentialsProvider.create(
                             AwsSessionCredentials.create(keyId, accessKey, token)))
                     .build();
@@ -146,10 +146,10 @@ public class EmailService {
         return content.toString();
     }
 
-        private List<String> getRecipientEmailList() {
+        private List<String> getRecipientEmailList() throws EmailException {
         if (recipientEmails == null || recipientEmails.trim().isEmpty()) {
             log.error("No recipient emails configured");
-            throw new IllegalStateException("No recipient emails configured");
+            throw new EmailException("No recipient emails configured");
         }
 
         List<String> emailList = Arrays.stream(recipientEmails.split(","))
@@ -159,7 +159,7 @@ public class EmailService {
 
         if (emailList.isEmpty()) {
             log.error("No valid recipient emails found after parsing");
-            throw new IllegalStateException("No valid recipient emails found after parsing");
+            throw new EmailException("No valid recipient emails found after parsing");
         }
 
         log.debug("Processed {} recipient email(s)", emailList.size());
