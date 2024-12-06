@@ -1,6 +1,6 @@
 package gov.cdc.datacompareesender.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import gov.cdc.datacompareesender.model.EmailEventModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class KafkaEmailConsumerService {
     private final EmailService emailService;
-    private final ObjectMapper objectMapper;
+    private final Gson objectMapper;
 
-    public KafkaEmailConsumerService(EmailService emailService, ObjectMapper objectMapper) {
+    public KafkaEmailConsumerService(EmailService emailService, Gson objectMapper) {
         this.emailService = emailService;
         this.objectMapper = objectMapper;
     }
@@ -20,7 +20,7 @@ public class KafkaEmailConsumerService {
     @KafkaListener(topics = "${kafka.topic.data-compare-topic}")
     public void handleMessage(String message) {
         try {
-            EmailEventModel emailEvent = objectMapper.readValue(message, EmailEventModel.class);
+            EmailEventModel emailEvent = objectMapper.fromJson(message, EmailEventModel.class);
             log.info("Processing email request for file: {}", emailEvent.getFileName());
             emailService.sendComparisonEmail(emailEvent);
             log.info("Email sent successfully for file: {}", emailEvent.getFileName());

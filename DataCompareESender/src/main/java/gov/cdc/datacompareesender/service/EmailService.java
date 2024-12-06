@@ -10,7 +10,6 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -18,8 +17,9 @@ import software.amazon.awssdk.services.ses.SesClient;
 import software.amazon.awssdk.services.ses.model.*;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,6 +30,9 @@ public class EmailService {
 
     @Value("${aws.ses.source-email}")
     private String sourceEmail;
+
+    @Value("${aws.ses.recipient-emails}")
+    private String recipientEmails;
 
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
@@ -90,8 +93,7 @@ public class EmailService {
             SendEmailRequest request = SendEmailRequest.builder()
                     .source(sourceEmail) // Sender's email
                     .destination(Destination.builder()
-                            // POSSIBLY just pull list of recipient email from database
-                            .toAddresses("EMAIL LIST GOES HERE - NO", "EMAIL LIST GOES HERE - NO") // Add recipient emails here
+                            .toAddresses(getRecipientEmailList())
                             .build())
                     .message(Message.builder()
                             .subject(Content.builder()
@@ -142,5 +144,25 @@ public class EmailService {
         content.append("</body></html>");
 
         return content.toString();
+    }
+
+        private List<String> getRecipientEmailList() throws EmailException {
+        if (recipientEmails == null || recipientEmails.trim().isEmpty()) {
+            log.error("No recipient emails configured");
+            throw new EmailException("No recipient emails configured");
+        }
+
+        List<String> emailList = Arrays.stream(recipientEmails.split(","))
+                .map(String::trim)
+                .filter(email -> !email.isEmpty())
+                .collect(Collectors.toList());
+
+        if (emailList.isEmpty()) {
+            log.error("No valid recipient emails found after parsing");
+            throw new EmailException("No valid recipient emails found after parsing");
+        }
+
+        log.debug("Processed {} recipient email(s)", emailList.size());
+        return emailList;
     }
 }

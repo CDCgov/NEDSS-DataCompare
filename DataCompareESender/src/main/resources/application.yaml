@@ -1,16 +1,27 @@
 spring:
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVER}
     group-id: data-compare-email-group
 
 kafka:
   topic:
-    data-compare-topic: ${KAFKA_TOPIC_NAME}
+    data-compare-topic: data_comparing_email
 
 aws:
-  region: ${AWS_REGION}
-  ses:
-    source-email: ${AWS_SES_SOURCE_EMAIL}
+  auth:
+    static:
+      key_id: ${AWS_KEY_ID:NA}
+      access_key: ${AWS_ACCESS_KEY:NA}
+      token: ${AWS_TOKEN:NA}
+    profile:
+      profile_name: ${AWS_PROFILE:NA}
+    iam:
+      enabled: ${AWS_IAM:false}
   s3:
-    bucket-name: ${AWS_S3_BUCKET_NAME}
-    url-expiration-hours: 48
+    bucket-name: ${S3_BUCKET_NAME:NA}
+    region: ${S3_REGION:NA}
+    url-expiration-hours: ${URL_EXPIRATION_HOURS:48}
+  ses:
+    source-email: ${SOURCE_EMAIL:support@datateam-cdc-nbs.eqsandbox.com}
+    recipient-emails: ${RECIPIENT_EMAILS}
+
