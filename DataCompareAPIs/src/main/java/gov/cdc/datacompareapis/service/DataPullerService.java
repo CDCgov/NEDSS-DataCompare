@@ -159,6 +159,7 @@ public class DataPullerService implements IDataPullerService {
                     s3DataService.persistToS3MultiPart(config.getSourceDb(),rawJsonData, config.getTableName(), currentTime, i);
                 } catch (Exception e) {
                     stackTraceRdb = getStackTraceAsString(e);
+                    e.printStackTrace();
                     logger.error(e.getMessage());
                     errorDuringPullingDataRdb = true;
                 }
@@ -173,15 +174,16 @@ public class DataPullerService implements IDataPullerService {
                     int endRow = (i + 1) * pullLimit;
                     String query = "";
                     if (config.getQueryRtr() != null && !config.getQueryRtr().isEmpty()) {
-                        preparingPaginationQuery(config.getQueryRtr(), startRow, endRow);
+                        query = preparingPaginationQuery(config.getQueryRtr(), startRow, endRow);
                     }
                     else {
-                        preparingPaginationQuery(config.getQuery(), startRow, endRow);
+                        query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
                     }
                     List<Map<String, Object>> returnData = executeQueryForData(query, config.getTargetDb());
                     String rawJsonData = gson.toJson(returnData);
                     s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, i);
                 } catch (Exception e) {
+                    e.printStackTrace();
                     stackTraceRdbModern = getStackTraceAsString(e);
                     logger.error(e.getMessage());
                     errorDuringPullingDataRdbModern = true;
