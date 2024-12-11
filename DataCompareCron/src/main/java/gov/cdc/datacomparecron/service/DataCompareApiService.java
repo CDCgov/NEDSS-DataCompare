@@ -23,13 +23,15 @@ public class DataCompareApiService implements IDataCompareApiService {
         this.tokenService = tokenService;
     }
     @Override
-    public void compareData(boolean runNow) {
+    public void compareData(boolean runNow, boolean autoApply) {
         try {
             String token = tokenService.getToken();
             HttpHeaders headers = new HttpHeaders();
             headers.add("Authorization", "Bearer " + token);
+            headers.add("runNowMode", String.valueOf(runNow));
+            headers.add("autoApply", String.valueOf(autoApply));
 
-            String url = compareEndpoint + "?runNow=" + runNow;
+            String url = compareEndpoint;
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             restTemplate.exchange(url, HttpMethod.GET, entity, String.class);

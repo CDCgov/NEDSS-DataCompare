@@ -36,13 +36,13 @@ class DataCompareCronServiceTest {
     @Test
     void testScheduleDataCompare() {
         cronService.scheduleDataCompare();
-        verify(apiService, times(1)).compareData(false);
+        verify(apiService, times(1)).compareData(false, false);
     }
 
     @Test
     void testScheduleDataCompareWithRunNow() {
-        cronService.scheduleDataCompare(true);
-        verify(apiService, times(1)).compareData(true);
+        cronService.scheduleDataCompare(true, false);
+        verify(apiService, times(1)).compareData(true, false);
     }
 }
 

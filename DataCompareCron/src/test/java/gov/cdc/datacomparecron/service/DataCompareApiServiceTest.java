@@ -36,20 +36,23 @@ class DataCompareApiServiceTest {
 
         HttpHeaders expectedHeaders = new HttpHeaders();
         expectedHeaders.add("Authorization", "Bearer " + token);
+        expectedHeaders.add("runNowMode", "false");
+        expectedHeaders.add("autoApply", "false");
+
         HttpEntity<String> expectedEntity = new HttpEntity<>(expectedHeaders);
 
         when(restTemplate.exchange(
-                eq("http://example.com/compare?runNow=false"),
+                eq("http://example.com/compare"),
                 eq(HttpMethod.GET),
                 eq(expectedEntity),
                 eq(String.class)
         )).thenReturn(ResponseEntity.ok("Success"));
 
-        apiService.compareData(false);
+        apiService.compareData(false, false);
 
         verify(tokenService, times(1)).getToken();
         verify(restTemplate, times(1)).exchange(
-                eq("http://example.com/compare?runNow=false"),
+                eq("http://example.com/compare"),
                 eq(HttpMethod.GET),
                 eq(expectedEntity),
                 eq(String.class)
@@ -61,7 +64,7 @@ class DataCompareApiServiceTest {
         when(tokenService.getToken()).thenThrow(new RuntimeException("Token Error"));
 
         Exception exception = assertThrows(RuntimeException.class, () ->
-                apiService.compareData(false)
+                apiService.compareData(false, false)
         );
         assertEquals("Failed to complete data comparison", exception.getMessage());
         verify(tokenService, times(1)).getToken();
@@ -80,17 +83,20 @@ class DataCompareApiServiceTest {
 
         HttpHeaders expectedHeaders = new HttpHeaders();
         expectedHeaders.add("Authorization", "Bearer " + token);
+        expectedHeaders.add("runNowMode", "false");
+        expectedHeaders.add("autoApply", "false");
+
         HttpEntity<String> expectedEntity = new HttpEntity<>(expectedHeaders);
 
         when(restTemplate.exchange(
-                eq("http://example.com/compare?runNow=false"),
+                eq("http://example.com/compare"),
                 eq(HttpMethod.GET),
                 eq(expectedEntity),
                 eq(String.class)
         )).thenThrow(new RuntimeException("API Error"));
 
         Exception exception = assertThrows(RuntimeException.class, () ->
-                apiService.compareData(false)
+                apiService.compareData(false, false)
         );
         assertEquals("Failed to complete data comparison", exception.getMessage());
     }

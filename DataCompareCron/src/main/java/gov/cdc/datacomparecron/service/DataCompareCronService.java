@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 public class DataCompareCronService implements IDataCompareCronService {
     private static final Logger logger = LoggerFactory.getLogger(DataCompareCronService.class);
 
-    @Value("${scheduler.run_now:false}")
+    @Value("${scheduler.run_now}")
     private boolean defaultRunNow;
+
+    @Value("${scheduler.auto_apply}")
+    private boolean autoApply;
 
     private final IDataCompareApiService apiService;
 
@@ -23,12 +26,12 @@ public class DataCompareCronService implements IDataCompareCronService {
 
     @Scheduled(cron = "${scheduler.cron}", zone = "${scheduler.zone}")
     public void scheduleDataCompare() {
-        scheduleDataCompare(defaultRunNow);
+        scheduleDataCompare(defaultRunNow, autoApply);
     }
 
     @Override
-    public void scheduleDataCompare(boolean runNow) {
+    public void scheduleDataCompare(boolean runNow, boolean autoApply) {
         logger.info("Starting scheduled data comparison with runNow: {}", runNow);
-        apiService.compareData(runNow);
+        apiService.compareData(runNow, autoApply);
     }
 }
