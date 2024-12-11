@@ -129,6 +129,7 @@ public class DataCompareService implements IDataCompareService {
 
             Predicate<DifferentModel> rdbPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in RDB");
             Predicate<DifferentModel> rdbModernPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in RDB_MODERN");
+
             processFirstFound(differModels, rdbPredicate);
             processFirstFound(differModels, rdbModernPredicate);
 
@@ -188,15 +189,36 @@ public class DataCompareService implements IDataCompareService {
         Optional<DifferentModel> firstFound = records.stream()
                 .filter(predicate)
                 .peek(r -> r.setKey(null))
+                .peek(r -> r.setDifferentColumnAndValue("[]"))
                 .findFirst();
 
         if (firstFound.isPresent()) {
-            // Remove all that match the predicate
-            records.removeIf(predicate);
+            // Update or delete records based on the differentColumnAndValue condition
+            records.removeIf(record -> {
+                if (predicate.test(record)) {
+                    if (record.getDifferentColumnAndValue() != null && !record.getDifferentColumnAndValue().equalsIgnoreCase("[]")) {
+                        // Update missingColumn to an empty string
+                        record.setMissingColumn("");
+                        return false; // Do not remove
+                    } else {
+                        // Remove record as differentColumnAndValue is empty
+                        return true; // Remove
+                    }
+                }
+                return false; // Keep if predicate does not match
+            });
 
             // Add the first found back to the list
             records.add(firstFound.get());
         }
+
+//        if (firstFound.isPresent()) {
+//            // Remove all that match the predicate
+//            records.removeIf(predicate);
+//
+//            // Add the first found back to the list
+//            records.add(firstFound.get());
+//        }
     }
 
     protected Map<String, Integer> getMaxIndexWithSource(PullerEventModel pullerEventModel) {
