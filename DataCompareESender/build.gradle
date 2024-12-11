@@ -27,8 +27,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.2.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.zaxxer:HikariCP:5.0.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'software.amazon.awssdk:s3:2.29.27'
+
+    implementation 'software.amazon.awssdk:ses:2.29.21'
+
+    implementation 'org.springframework.kafka:spring-kafka:3.0.12'
+    implementation 'org.apache.kafka:kafka-clients:3.6.0'
 }
 
 tasks.named('test') {
