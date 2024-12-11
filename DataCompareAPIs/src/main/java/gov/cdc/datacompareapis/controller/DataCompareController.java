@@ -36,7 +36,12 @@ public class DataCompareController {
                             description = "Flag indicating max records per pulling process",
                             schema = @Schema(type = "Integer", defaultValue = "1000"),
                             required = true),
-                    @Parameter(in = ParameterIn.QUERY,
+                    @Parameter(in = ParameterIn.HEADER,
+                            name = "autoApply",
+                            description = "Flag whether allow the service to automatically determine when to apply the run now mode",
+                            schema = @Schema(type = "Boolean", defaultValue = "false"),
+                            required = true),
+                    @Parameter(in = ParameterIn.HEADER,
                             name = "runNowMode",
                             description = "Boolean flag to initiate the run immediately",
                             schema = @Schema(type = "Boolean", defaultValue = "false"))
@@ -45,10 +50,11 @@ public class DataCompareController {
     @GetMapping(path = "/api/data-compare")
     public ResponseEntity<String> dataSyncTotalRecords(
             @RequestHeader(name = "batchLimit", defaultValue = "1000") String batchLimit,
-            @RequestHeader(name = "runNowMode", defaultValue = "false") boolean runNowMode) throws DataCompareException {
+            @RequestHeader(name = "runNowMode", defaultValue = "false") boolean runNowMode,
+            @RequestHeader(name = "autoApply", defaultValue = "false") boolean autoApply) throws DataCompareException {
 
         if (isInteger(batchLimit)) {
-            dataPullerService.pullingData(Integer.parseInt(batchLimit), runNowMode);
+            dataPullerService.pullingData(Integer.parseInt(batchLimit), runNowMode, autoApply);
             return new ResponseEntity<>("OK", HttpStatus.OK);
         }
         throw new DataCompareException("Invalid Header");

@@ -62,18 +62,36 @@ public class DataPullerService implements IDataPullerService {
     }
 
     @Async("defaultAsyncExecutor")
-    public void pullingData(int pullLimit, boolean runNowMode)   {
+    public void pullingData(int pullLimit, boolean runNowMode, boolean autoApply)   {
         List<DataCompareConfig>  configs = getDataConfig();
+        if (autoApply) {
+            pullDataAutomaticApplyingCondition(pullLimit, configs);
+        }
+        else {
+            if (runNowMode) {
+                pullDataRunNow(pullLimit, configs);
+            }
+            else {
+                pullDataAllTable(pullLimit, configs);
+            }
 
-        if (runNowMode) {
+        }
+
+        logger.info("PULLER IS COMPLETED FOR ALL TABLE");
+    }
+
+    protected void pullDataAutomaticApplyingCondition (int pullLimit, List<DataCompareConfig>  configs) {
+        boolean runNowOpt = configs.stream().anyMatch(DataCompareConfig::getRunNow);
+        if (runNowOpt) {
             pullDataRunNow(pullLimit, configs);
         }
         else {
             pullDataAllTable(pullLimit, configs);
         }
 
-        logger.info("PULLER IS COMPLETED FOR ALL TABLE");
     }
+
+
 
     protected void pullDataAllTable(int pullLimit, List<DataCompareConfig>  configs) {
         for(DataCompareConfig config : configs) {
@@ -110,7 +128,15 @@ public class DataPullerService implements IDataPullerService {
         DataCompareLog dataCompareLogRdbModern =dataCompareDefaultLogBuilder(config, currentTime, "Inprogress", "RDB_MODERN");
 
         Integer rdbCount = rdbJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
-        Integer rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
+        Integer rdbModernCount = 0;
+        if (config.getQueryRtrCount() != null && !config.getQueryRtrCount().isEmpty())
+        {
+            rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getQueryRtrCount(), Integer.class);
+        }
+        else
+        {
+            rdbModernCount = rdbModernJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
+        }
         boolean errorDuringPullingDataRdb = false;
         String stackTraceRdb = null;
         boolean errorDuringPullingDataRdbModern = false;
@@ -145,7 +171,13 @@ public class DataPullerService implements IDataPullerService {
                     }
                     int startRow = i * pullLimit + 1;
                     int endRow = (i + 1) * pullLimit;
-                    String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
+                    String query = "";
+                    if (config.getQueryRtr() != null && !config.getQueryRtr().isEmpty()) {
+                        preparingPaginationQuery(config.getQueryRtr(), startRow, endRow);
+                    }
+                    else {
+                        preparingPaginationQuery(config.getQuery(), startRow, endRow);
+                    }
                     List<Map<String, Object>> returnData = executeQueryForData(query, config.getTargetDb());
                     String rawJsonData = gson.toJson(returnData);
                     s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, i);
