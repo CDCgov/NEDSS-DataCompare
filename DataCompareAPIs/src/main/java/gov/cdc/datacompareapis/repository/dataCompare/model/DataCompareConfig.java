@@ -34,6 +34,14 @@ public class DataCompareConfig {
     @Column(name = "query_count")
     private String queryCount;
 
+    @Column(name = "query_rtr")
+    private String queryRtr;
+
+    @Column(name = "query_rtr_count")
+    private String queryRtrCount;
+
+
+
 
     @Column(name = "key_column_list")
     private String keyColumns;
