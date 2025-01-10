@@ -45,6 +45,7 @@ public class S3DataService implements IS3DataService {
     ) throws DataCompareException
     {
         if (iamEnable) {
+            logger.info("Creating S3 Data Service with IAM enabled");
             this.s3Client = S3Client.builder()
                     .region(Region.of(region))
                     .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
