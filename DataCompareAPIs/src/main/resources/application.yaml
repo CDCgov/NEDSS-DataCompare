@@ -38,7 +38,7 @@ aws:
     profile:
       profile_name: ${AWS_PROFILE:NA}
     iam:
-      enabled: ${AWS_IAM:false}
+      enabled: ${AWS_IAM:true}
   s3:
     bucket-name: ${S3_BUCKET_NAME:NA}
     region: ${S3_REGION:NA}
