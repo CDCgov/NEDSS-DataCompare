@@ -49,28 +49,28 @@ public class S3DataService implements IS3DataService {
     {
         if (iamEnable) {
             logger.info("Creating S3 Data Service with IAM enabled");
-            StsClient stsClient = StsClient.builder()
-                    .region(Region.of(region))
-                    .build();
-
-            // Configure the STS Assume Role Provider
-            StsAssumeRoleCredentialsProvider assumeRoleCredentialsProvider =
-                    StsAssumeRoleCredentialsProvider.builder()
-                            .stsClient(stsClient)
-                            .refreshRequest(r -> r.roleArn(roleArn)
-                                    .roleSessionName("S3AccessSession"))
-                            .build();
-
-
-//            this.s3Client = S3Client.builder()
-//                    .region(Region.of(region))
-//                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
-//                    .build();
 
             this.s3Client = S3Client.builder()
                     .region(Region.of(region))
-                    .credentialsProvider(assumeRoleCredentialsProvider)
+                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
                     .build();
+
+//            StsClient stsClient = StsClient.builder()
+//                    .region(Region.of(region))
+//                    .build();
+//
+//            // Configure the STS Assume Role Provider
+//            StsAssumeRoleCredentialsProvider assumeRoleCredentialsProvider =
+//                    StsAssumeRoleCredentialsProvider.builder()
+//                            .stsClient(stsClient)
+//                            .refreshRequest(r -> r.roleArn(roleArn)
+//                                    .roleSessionName("S3AccessSession"))
+//                            .build();
+//
+//            this.s3Client = S3Client.builder()
+//                    .region(Region.of(region))
+//                    .credentialsProvider(assumeRoleCredentialsProvider)
+//                    .build();
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Client = S3Client.builder()
