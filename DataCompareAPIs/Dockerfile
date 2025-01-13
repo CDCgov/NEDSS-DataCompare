@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 FROM amazoncorretto:21 as builder
-
+RUN yum install -y aws-cli
 # Set up the project directory
 WORKDIR /usr/src/datacompareapi
 
