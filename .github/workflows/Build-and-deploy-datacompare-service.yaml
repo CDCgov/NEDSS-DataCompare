@@ -68,7 +68,6 @@ jobs:
 
   call-build-data-compare-email-microservice-container-workflow:
     name: Build Container
-    needs: sonar_scan
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
       microservice_name: data-compare-email-service
