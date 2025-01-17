@@ -47,32 +47,15 @@ public class S3DataPullerService implements IS3DataPullerService {
             @Value("${aws.auth.static.token}") String token,
             @Value("${aws.s3.region}") String region,
             @Value("${aws.auth.profile.profile_name}") String profile,
-            @Value("${aws.auth.iam.enabled}") boolean iamEnable,
-            @Value("${aws.auth.iam.arn}") String roleArn
+            @Value("${aws.auth.iam.enabled}") boolean iamEnable
     ) throws DataProcessorException
     {
         if (iamEnable) {
-            StsClient stsClient = StsClient.builder()
-                    .region(Region.of(region))
-                    .build();
+            logger.info("Creating S3 Data Service with IAM enabled");
 
-            // Configure the STS Assume Role Provider
-            StsAssumeRoleCredentialsProvider assumeRoleCredentialsProvider =
-                    StsAssumeRoleCredentialsProvider.builder()
-                            .stsClient(stsClient)
-                            .refreshRequest(r -> r.roleArn(roleArn)
-                                    .roleSessionName("S3AccessSession"))
-                            .build();
-
-
-//            this.s3Client = S3Client.builder()
-//                    .region(Region.of(region))
-//                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
-//                    .build();
-            // Build the S3 client with the assumed role credentials
             this.s3Client = S3Client.builder()
                     .region(Region.of(region))
-                    .credentialsProvider(assumeRoleCredentialsProvider)
+                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
                     .build();
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
