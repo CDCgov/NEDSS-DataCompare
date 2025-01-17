@@ -9,15 +9,8 @@ on:
       - "docker-compose.yml"
       - "**.md"
 jobs:
-#  sonar_scan:
-#    uses: ./.github/workflows/sonar.yaml
-#    secrets:
-#      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-#      PASSED_GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-#      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
   call-build-microservice-container-workflow:
     name: Build Container
-#    needs: sonar_scan
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
       microservice_name: data-compare-api-service
@@ -31,22 +24,21 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
-#  call-update-helm-data-compare-api:
-#    name: Request DEV deployment
-#    needs: call-build-microservice-container-workflow
-#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-#    with:
-#      microservice_name: data-compare-api-service
-#      values_file_with_path: charts/data-compare-api-service/values-dts1.yaml
-#      new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
-#    secrets:
-#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+  call-update-helm-data-compare-api:
+    name: Request DEV deployment
+    needs: call-build-microservice-container-workflow
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+    with:
+      microservice_name: data-compare-api-service
+      values_file_with_path: charts/data-compare-api-service/values-dts1.yaml
+      new_image_tag: ${{ needs.call-build-microservice-container-workflow.outputs.output_image_tag }}
+    secrets:
+      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
   call-build-data-compare-processor-microservice-container-workflow:
     name: Build Container
-#    needs: sonar_scan
     uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
     with:
       microservice_name: data-compare-processor-service
@@ -60,46 +52,45 @@ jobs:
       GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
       HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
-#  call-update-helm-data-compare-processor:
-#    name: Request DEV deployment
-#    needs: call-build-data-compare-processor-microservice-container-workflow
-#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-#    with:
-#      microservice_name: data-compare-processor-service
-#      values_file_with_path: charts/data-compare-processor-service/values-dts1.yaml
-#      new_image_tag: ${{ needs.call-build-data-compare-processor-microservice-container-workflow.outputs.output_image_tag }}
-#    secrets:
-#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+  call-update-helm-data-compare-processor:
+    name: Request DEV deployment
+    needs: call-build-data-compare-processor-microservice-container-workflow
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+    with:
+      microservice_name: data-compare-processor-service
+      values_file_with_path: charts/data-compare-processor-service/values-dts1.yaml
+      new_image_tag: ${{ needs.call-build-data-compare-processor-microservice-container-workflow.outputs.output_image_tag }}
+    secrets:
+      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
 
-# NO READY
-#  call-build-data-compare-email-microservice-container-workflow:
-#    name: Build Container
-#    needs: sonar_scan
-#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
-#    with:
-#      microservice_name: data-compare-email-service
-#      dockerfile_relative_path: -f ./DataCompareESender/Dockerfile .
-#      environment_classifier: SNAPSHOT
-#      java_version: "21"
-#    secrets:
-#      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
-#      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
-#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+  call-build-data-compare-email-microservice-container-workflow:
+    name: Build Container
+    needs: sonar_scan
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
+    with:
+      microservice_name: data-compare-email-service
+      dockerfile_relative_path: -f ./DataCompareESender/Dockerfile .
+      environment_classifier: SNAPSHOT
+      java_version: "21"
+    secrets:
+      CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID: ${{secrets.CDC_NBS_SANDBOX_SHARED_SERVICES_ACCOUNTID}}
+      ECR_REPO_BASE_NAME: ${{secrets.ECR_REPO_BASE_NAME}}
+      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
 
-#  call-update-helm-data-compare-email:
-#    name: Request DEV deployment
-#    needs: call-build-data-compare-email-microservice-container-workflow
-#    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
-#    with:
-#      microservice_name: data-compare-email-service
-#      values_file_with_path: charts/data-compare-email-service/values-dts1.yaml
-#      new_image_tag: ${{ needs.call-build-data-compare-email-microservice-container-workflow.outputs.output_image_tag }}
-#    secrets:
-#      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
-#      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
-#      HELM_TOKEN: ${{secrets.HELM_TOKEN}}
+  call-update-helm-data-compare-email:
+    name: Request DEV deployment
+    needs: call-build-data-compare-email-microservice-container-workflow
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Update-helm-charts.yaml@main
+    with:
+      microservice_name: data-compare-email-service
+      values_file_with_path: charts/data-compare-email-service/values-dts1.yaml
+      new_image_tag: ${{ needs.call-build-data-compare-email-microservice-container-workflow.outputs.output_image_tag }}
+    secrets:
+      GIT_USER_EMAIL: ${{secrets.GIT_USER_EMAIL}}
+      GIT_USER_NAME: ${{secrets.GIT_USER_NAME}}
+      HELM_TOKEN: ${{secrets.HELM_TOKEN}}

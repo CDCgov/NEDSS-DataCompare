@@ -23,5 +23,5 @@ aws:
     url-expiration-hours: ${URL_EXPIRATION_HOURS:48}
   ses:
     source-email: ${SOURCE_EMAIL:support@datateam-cdc-nbs.eqsandbox.com}
-    recipient-emails: ${RECIPIENT_EMAILS}
+    recipient-emails: ${RECIPIENT_EMAILS:ndduc1856@gmail.com}
 
