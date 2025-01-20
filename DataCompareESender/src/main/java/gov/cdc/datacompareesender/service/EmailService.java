@@ -3,6 +3,8 @@ package gov.cdc.datacompareesender.service;
 import gov.cdc.datacompareesender.expcetion.EmailException;
 import gov.cdc.datacompareesender.model.EmailEventModel;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
@@ -40,6 +42,9 @@ public class EmailService {
     @Value("${aws.s3.url-expiration-hours}")
     private Integer urlExpirationHours;
 
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class); //NOSONAR
+
+
     public EmailService(
             @Value("${aws.auth.static.key_id}") String keyId,
             @Value("${aws.auth.static.access_key}") String accessKey,
@@ -49,6 +54,7 @@ public class EmailService {
             @Value("${aws.auth.iam.enabled}") boolean iamEnable) throws EmailException {
 
         if (iamEnable) {
+            logger.info("AWS IAM Enabled");
             this.s3Presigner = S3Presigner.builder()
                     .region(Region.of(region))
                     .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
@@ -69,7 +75,8 @@ public class EmailService {
                     .credentialsProvider(StaticCredentialsProvider.create(
                             AwsSessionCredentials.create(keyId, accessKey, token)))
                     .build();
-        } else if (!profile.isEmpty()) {
+        }
+        else if (!profile.isEmpty()) {
             // Use profile credentials from ~/.aws/credentials
             this.s3Presigner = S3Presigner.builder()
                     .region(Region.of(region))
