@@ -55,13 +55,16 @@ public class EmailService {
 
         if (iamEnable) {
             logger.info("AWS IAM Enabled");
+
+            var credentials = DefaultCredentialsProvider.create();
+
             this.s3Presigner = S3Presigner.builder()
                     .region(Region.of(region))
-                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
+                    .credentialsProvider(credentials) // Automatically retrieves IAM role credentials
                     .build();
             this.sesClient = SesClient.builder()
                     .region(Region.of(region))
-                    .credentialsProvider(DefaultCredentialsProvider.create()) // Automatically retrieves IAM role credentials
+                    .credentialsProvider(credentials) // Automatically retrieves IAM role credentials
                     .build();
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
@@ -95,6 +98,7 @@ public class EmailService {
     public void sendComparisonEmail(EmailEventModel emailEvent) {
         try {
             String presignedUrl = generatePresignedUrl(emailEvent.getDifferentFile());
+            logger.info("PreSigned URL: {}", presignedUrl);
             String emailBody = buildEmailContent(emailEvent, presignedUrl);
 
             SendEmailRequest request = SendEmailRequest.builder()
