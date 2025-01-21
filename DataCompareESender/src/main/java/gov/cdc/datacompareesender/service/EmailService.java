@@ -12,6 +12,8 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.Bucket;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 public class EmailService {
     private final SesClient sesClient;
     private final S3Presigner s3Presigner;
+    private final S3Client s3Client;
 
 
     @Value("${aws.ses.source-email}")
@@ -66,6 +69,12 @@ public class EmailService {
                     .region(Region.of(region))
                     .credentialsProvider(credentials) // Automatically retrieves IAM role credentials
                     .build();
+
+            this.s3Client = S3Client.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(credentials) // Automatically retrieves IAM role credentials
+                    .build();
+
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Presigner = S3Presigner.builder()
@@ -97,8 +106,19 @@ public class EmailService {
 
     public void sendComparisonEmail(EmailEventModel emailEvent) {
         try {
+
+
             String presignedUrl = generatePresignedUrl(emailEvent.getDifferentFile());
             logger.info("PreSigned URL: {}", presignedUrl);
+
+            var buckets = s3Client.listBuckets();
+            var buck = buckets.buckets();
+            System.out.println("Your S3 buckets are:");
+            for (Bucket bucket : buck) {
+                logger.info("Bucket: {}", bucket.name());
+
+            }
+
             String emailBody = buildEmailContent(emailEvent, presignedUrl);
 
             SendEmailRequest request = SendEmailRequest.builder()
