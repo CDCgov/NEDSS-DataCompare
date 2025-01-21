@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.Bucket;
@@ -27,7 +30,6 @@ import java.util.stream.Collectors;
 public class EmailService {
     private final SesClient sesClient;
     private final S3Presigner s3Presigner;
-    private final S3Client s3Client;
 
 
     @Value("${aws.ses.source-email}")
@@ -67,35 +69,30 @@ public class EmailService {
                     .credentialsProvider(credentials) // Automatically retrieves IAM role credentials
                     .build();
 
-            this.s3Client = S3Client.builder()
-                    .region(Region.of(region))
-                    .credentialsProvider(credentials) // Automatically retrieves IAM role credentials
-                    .build();
-
         }
-//        else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
-//            this.s3Presigner = S3Presigner.builder()
-//                    .region(Region.of(region))
-//                    .credentialsProvider(StaticCredentialsProvider.create(
-//                            AwsSessionCredentials.create(keyId, accessKey, token)))
-//                    .build();
-//            this.sesClient = SesClient.builder()
-//                    .region(Region.of(region))
-//                    .credentialsProvider(StaticCredentialsProvider.create(
-//                            AwsSessionCredentials.create(keyId, accessKey, token)))
-//                    .build();
-//        }
-//        else if (!profile.isEmpty()) {
-//            // Use profile credentials from ~/.aws/credentials
-//            this.s3Presigner = S3Presigner.builder()
-//                    .region(Region.of(region))
-//                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
-//                    .build();
-//            this.sesClient = SesClient.builder()
-//                    .region(Region.of(region))
-//                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
-//                    .build();
-//        }
+        else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
+            this.s3Presigner = S3Presigner.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(StaticCredentialsProvider.create(
+                            AwsSessionCredentials.create(keyId, accessKey, token)))
+                    .build();
+            this.sesClient = SesClient.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(StaticCredentialsProvider.create(
+                            AwsSessionCredentials.create(keyId, accessKey, token)))
+                    .build();
+        }
+        else if (!profile.isEmpty()) {
+            // Use profile credentials from ~/.aws/credentials
+            this.s3Presigner = S3Presigner.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
+                    .build();
+            this.sesClient = SesClient.builder()
+                    .region(Region.of(region))
+                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
+                    .build();
+        }
         else {
             throw new DataProcessorException("No Valid AWS Profile or Credentials found");
         }
@@ -103,18 +100,8 @@ public class EmailService {
 
     public void sendComparisonEmail(EmailEventModel emailEvent) {
         try {
-
-
             String presignedUrl = generatePresignedUrl(emailEvent.getDifferentFile());
             logger.info("PreSigned URL: {}", presignedUrl);
-
-            var buckets = s3Client.listBuckets();
-            var buck = buckets.buckets();
-            System.out.println("Your S3 buckets are:");
-            for (Bucket bucket : buck) {
-                logger.info("Bucket: {}", bucket.name());
-
-            }
 
             String emailBody = buildEmailContent(emailEvent, presignedUrl);
 

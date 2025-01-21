@@ -51,6 +51,7 @@ kafka:
   topic:
     data-compare-topic: data_comparing
     data-compare-email-topic: data_comparing_email
+    data-compare-email-topic-v2: data_comparing_email_v2
 
 
 ---

@@ -47,6 +47,9 @@ public class DataCompareService implements IDataCompareService {
     @Value("${kafka.topic.data-compare-email-topic}")
     String emailTopicName = "";
 
+    @Value("${kafka.topic.data-compare-email-topic-v2}")
+    String emailTopicNameV2 = "";
+
     public DataCompareService(IS3DataPullerService s3DataPullerService, DataCompareLogRepository dataCompareLogRepository, KafkaProducerService kafkaProducerService) {
         this.s3DataPullerService = s3DataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
@@ -152,6 +155,8 @@ public class DataCompareService implements IDataCompareService {
             emailEventModel.setFileName(pullerEventModel.getSecondLayerFolderName());
             var stringEmailModel = gson.toJson(emailEventModel);
             kafkaProducerService.sendEventToProcessor(stringEmailModel, emailTopicName);
+            kafkaProducerService.sendEventToProcessor(stringEmailModel, emailTopicNameV2);
+
         }
         catch (Exception e)
         {
