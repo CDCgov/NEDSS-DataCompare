@@ -5,7 +5,7 @@ spring:
 
 kafka:
   topic:
-    data-compare-topic: data_comparing_email
+    data-compare-topic: data_comparing_email_DUMP
 
 aws:
   auth:
