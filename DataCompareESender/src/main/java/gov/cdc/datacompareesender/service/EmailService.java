@@ -57,9 +57,6 @@ public class EmailService {
             logger.info("AWS IAM Enabled");
 
             var credentials = DefaultCredentialsProvider.create();
-            logger.info("AWS Account Id {}", credentials.accountId());
-            logger.info("AWS access Id {}", credentials.accessKeyId());
-
 
             this.s3Presigner = S3Presigner.builder()
                     .region(Region.of(region))
