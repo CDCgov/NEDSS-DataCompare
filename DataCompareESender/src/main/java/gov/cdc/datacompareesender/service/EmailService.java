@@ -76,29 +76,29 @@ public class EmailService {
                     .build();
 
         }
-        else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
-            this.s3Presigner = S3Presigner.builder()
-                    .region(Region.of(region))
-                    .credentialsProvider(StaticCredentialsProvider.create(
-                            AwsSessionCredentials.create(keyId, accessKey, token)))
-                    .build();
-            this.sesClient = SesClient.builder()
-                    .region(Region.of(region))
-                    .credentialsProvider(StaticCredentialsProvider.create(
-                            AwsSessionCredentials.create(keyId, accessKey, token)))
-                    .build();
-        }
-        else if (!profile.isEmpty()) {
-            // Use profile credentials from ~/.aws/credentials
-            this.s3Presigner = S3Presigner.builder()
-                    .region(Region.of(region))
-                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
-                    .build();
-            this.sesClient = SesClient.builder()
-                    .region(Region.of(region))
-                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
-                    .build();
-        }
+//        else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
+//            this.s3Presigner = S3Presigner.builder()
+//                    .region(Region.of(region))
+//                    .credentialsProvider(StaticCredentialsProvider.create(
+//                            AwsSessionCredentials.create(keyId, accessKey, token)))
+//                    .build();
+//            this.sesClient = SesClient.builder()
+//                    .region(Region.of(region))
+//                    .credentialsProvider(StaticCredentialsProvider.create(
+//                            AwsSessionCredentials.create(keyId, accessKey, token)))
+//                    .build();
+//        }
+//        else if (!profile.isEmpty()) {
+//            // Use profile credentials from ~/.aws/credentials
+//            this.s3Presigner = S3Presigner.builder()
+//                    .region(Region.of(region))
+//                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
+//                    .build();
+//            this.sesClient = SesClient.builder()
+//                    .region(Region.of(region))
+//                    .credentialsProvider(ProfileCredentialsProvider.create(profile))
+//                    .build();
+//        }
         else {
             throw new EmailException("No Valid AWS Profile or Credentials found");
         }
