@@ -12,7 +12,6 @@ import gov.cdc.datacompareprocessor.repository.dataCompare.model.DataCompareLog;
 import gov.cdc.datacompareprocessor.service.interfaces.IDataCompareService;
 import gov.cdc.datacompareprocessor.service.interfaces.IS3DataPullerService;
 import gov.cdc.datacompareprocessor.service.model.DifferentModel;
-import gov.cdc.datacompareprocessor.service.model.EmailEventModel;
 import gov.cdc.datacompareprocessor.service.model.PullerEventModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,6 @@ import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static gov.cdc.datacompareprocessor.share.StackTraceUtil.getStackTraceAsString;
 import static gov.cdc.datacompareprocessor.share.StringHelper.convertStringToList;
@@ -43,17 +41,11 @@ public class DataCompareService implements IDataCompareService {
     private static final Map<String, JsonObject> unmatchedRecordsRdb = new HashMap<>();
     private static final Map<String, JsonObject> unmatchedRecordsRdbModern = new HashMap<>();
 
-    private final KafkaProducerService kafkaProducerService;
-    @Value("${kafka.topic.data-compare-email-topic}")
-    String emailTopicName = "";
 
-    @Value("${kafka.topic.data-compare-email-topic-v2}")
-    String emailTopicNameV2 = "";
-
-    public DataCompareService(IS3DataPullerService s3DataPullerService, DataCompareLogRepository dataCompareLogRepository, KafkaProducerService kafkaProducerService) {
+    public DataCompareService(IS3DataPullerService s3DataPullerService,
+                              DataCompareLogRepository dataCompareLogRepository) {
         this.s3DataPullerService = s3DataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
-        this.kafkaProducerService = kafkaProducerService;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
@@ -144,19 +136,6 @@ public class DataCompareService implements IDataCompareService {
                     pullerEventModel.getThirdLayerFolderName(),
                     "DIFFERENCE",
                     "differences.json", stringValue);
-
-            // TODO: create object with info to pull from S3 and invoke the event
-
-            EmailEventModel emailEventModel = new EmailEventModel();
-            emailEventModel.setBucketName(bucketName);
-            emailEventModel.setRdbPath(pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName());
-            emailEventModel.setRdbModernPath(pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName());
-            emailEventModel.setDifferentFile(pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName() + "/DIFFERENCE/differences.json");
-            emailEventModel.setFileName(pullerEventModel.getSecondLayerFolderName());
-            var stringEmailModel = gson.toJson(emailEventModel);
-            kafkaProducerService.sendEventToProcessor(stringEmailModel, emailTopicName);
-            kafkaProducerService.sendEventToProcessor(stringEmailModel, emailTopicNameV2);
-
         }
         catch (Exception e)
         {
