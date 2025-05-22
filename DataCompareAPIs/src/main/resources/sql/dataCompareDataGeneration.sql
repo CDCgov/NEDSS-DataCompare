@@ -590,7 +590,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                WHERE RowNum BETWEEN :startRow AND :endRow;',
                'SELECT COUNT(*)
                FROM NOTIFICATION;',
-               'notification_local_id',
+               'NOTIFICATION_LOCAL_ID',
                'RowNum, NOTIFICATION_LAST_CHANGE_TIME',
                1
        )
