@@ -479,7 +479,8 @@ public class DataCompareService implements IDataCompareService {
     /**
      * Max indicate the table that will be used as the subject to be compared against, depending on number of records tables, max can be table from RDB or RDB Modern
      * */
-    protected String compareJsonFiles(String fileRdbPath, String fileRdbModernPath, PullerEventModel pullerEventModel, String uniqueIdField,
+    protected String compareJsonFiles(String fileRdbPath, String fileRdbModernPath,
+                                      PullerEventModel pullerEventModel, String uniqueIdField,
                                     int index, List<String> ignoreCols, String maxSource)
     {
         Map<String, JsonObject> mapRdb = loadJsonAsMapFromS3(fileRdbPath, uniqueIdField);
@@ -639,8 +640,8 @@ public class DataCompareService implements IDataCompareService {
         try {
             for (JsonElement element : jsonElement.getAsJsonArray()) {
                 JsonObject jsonObject = element.getAsJsonObject();
-                String id = jsonObject.has(uniqueIdField) && !jsonObject.get(uniqueIdField).isJsonNull()
-                        ? jsonObject.get(uniqueIdField).getAsString()
+                String id = jsonObject.has(uniqueIdField.toUpperCase()) && !jsonObject.get(uniqueIdField.toUpperCase()).isJsonNull()
+                        ? jsonObject.get(uniqueIdField.toUpperCase()).getAsString()
                         : "NULL";
                 recordMap.put(id, jsonObject);
             }
