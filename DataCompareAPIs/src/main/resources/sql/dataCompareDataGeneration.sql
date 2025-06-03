@@ -597,7 +597,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        (
        		'NOTIFICATION_EVENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                          SELECT DISTINCT NOTIFICATION_EVENT.*,
                                 ROW_NUMBER() OVER (ORDER BY NOTIFICATION_EVENT.INVESTIGATION_KEY ASC) AS RowNum
@@ -615,7 +615,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Job_flow_log',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT Job_flow_log.*,
                                                 ROW_NUMBER() OVER (ORDER BY Job_flow_log.record_id ASC) AS RowNum
@@ -633,7 +633,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_DATA',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_DATA.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_DATA.LDF_GROUP_KEY ASC) AS RowNum
@@ -651,7 +651,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'ORGANIZATION_LDF_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT ORGANIZATION_LDF_GROUP.*,
                                                 ROW_NUMBER() OVER (ORDER BY ORGANIZATION_LDF_GROUP.LDF_GROUP_KEY ASC) AS RowNum
@@ -669,7 +669,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PATIENT_LDF_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT PATIENT_LDF_GROUP.*,
                                                 ROW_NUMBER() OVER (ORDER BY PATIENT_LDF_GROUP.LDF_GROUP_KEY ASC) AS RowNum
@@ -687,7 +687,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PROVIDER_LDF_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT PROVIDER_LDF_GROUP.*,
                                                 ROW_NUMBER() OVER (ORDER BY PROVIDER_LDF_GROUP.LDF_GROUP_KEY ASC) AS RowNum
@@ -705,7 +705,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_PAGE_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_PAGE_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_PAGE_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -723,7 +723,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PublicHealthCaseFact',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT PublicHealthCaseFact.*,
                                                 ROW_NUMBER() OVER (ORDER BY PublicHealthCaseFact.public_health_case_uid ASC) AS RowNum
@@ -741,7 +741,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB_TEST',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB_TEST.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB_TEST.LAB_TEST_KEY ASC) AS RowNum
@@ -759,7 +759,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB_REPORT_USER_COMMENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB_REPORT_USER_COMMENT.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB_REPORT_USER_COMMENT.LAB_TEST_KEY ASC) AS RowNum
@@ -777,7 +777,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'MORBIDITY_REPORT  ',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT MORBIDITY_REPORT  .*,
                                                 ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT.MORB_RPT_KEY ASC) AS RowNum
@@ -795,7 +795,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'MORBIDITY_REPORT_EVENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT MORBIDITY_REPORT_EVENT.*,
                                                 ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT_EVENT.INVESTIGATION_KEY ASC) AS RowNum
@@ -813,7 +813,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'MORB_RPT_USER_COMMENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT MORB_RPT_USER_COMMENT.*,
                                                 ROW_NUMBER() OVER (ORDER BY MORB_RPT_USER_COMMENT.MORB_RPT_KEY ASC) AS RowNum
@@ -832,7 +832,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB_TEST_RESULT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB_TEST_RESULT.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB_TEST_RESULT.LAB_TEST_KEY ASC) AS RowNum
@@ -850,7 +850,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB_RESULT_COMMENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB_RESULT_COMMENT.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB_RESULT_COMMENT.LAB_TEST_UID ASC) AS RowNum
@@ -868,7 +868,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB_RESULT_VAL',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB_RESULT_VAL.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB_RESULT_VAL.LAB_TEST_UID ASC) AS RowNum
@@ -886,7 +886,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB100',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB100.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB100.LAB_RPT_LOCAL_ID ASC) AS RowNum
@@ -904,7 +904,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LAB101',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB101.*,
                                                 ROW_NUMBER() OVER (ORDER BY LAB101.RESULTED_LAB_TEST_KEY ASC) AS RowNum
@@ -922,7 +922,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Codeset',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT Codeset.*,
                                                 ROW_NUMBER() OVER (ORDER BY Codeset.CD ASC) AS RowNum
@@ -940,7 +940,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_INTERVIEW',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_INTERVIEW.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_INTERVIEW.D_INTERVIEW_KEY ASC) AS RowNum
@@ -958,7 +958,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_INTERVIEW_NOTE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_INTERVIEW_NOTE.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_INTERVIEW_NOTE.NBS_ANSWER_UID ASC) AS RowNum
@@ -976,7 +976,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_CASE_MANAGEMENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_CASE_MANAGEMENT.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_CASE_MANAGEMENT.INVESTIGATION_KEY ASC) AS RowNum
@@ -994,7 +994,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'CASE_COUNT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CASE_COUNT.*,
                                                 ROW_NUMBER() OVER (ORDER BY CASE_COUNT.INVESTIGATION_KEY ASC) AS RowNum
@@ -1012,7 +1012,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'TOTALIDM',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT TOTALIDM.*,
                                                 ROW_NUMBER() OVER (ORDER BY TOTALIDM.TotalIDM_id ASC) AS RowNum
@@ -1030,7 +1030,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_INTERVIEW_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_INTERVIEW_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_INTERVIEW_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1048,7 +1048,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'STD_HIV_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT STD_HIV_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY STD_HIV_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -1066,7 +1066,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'INV_HIV',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT INV_HIV.*,
                                                 ROW_NUMBER() OVER (ORDER BY INV_HIV.INVESTIGATION_KEY ASC) AS RowNum
@@ -1084,7 +1084,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_STD_PAGE_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_STD_PAGE_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_STD_PAGE_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1102,7 +1102,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'CODE_VAL_GENERAL',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CODE_VAL_GENERAL.*,
                                                 ROW_NUMBER() OVER (ORDER BY CODE_VAL_GENERAL.CODE_KEY ASC) AS RowNum
@@ -1120,7 +1120,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'CONDITION',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONDITION.*,
                                                 ROW_NUMBER() OVER (ORDER BY CONDITION.CONDITION_KEY ASC) AS RowNum
@@ -1138,7 +1138,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_PLACE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_PLACE.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_PLACE.PLACE_UID ASC) AS RowNum
@@ -1156,7 +1156,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'GENERIC_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT GENERIC_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY GENERIC_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1174,7 +1174,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'CRS_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CRS_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY CRS_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1192,7 +1192,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'BMIRD_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT BMIRD_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY BMIRD_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1210,7 +1210,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'MEASLES_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT MEASLES_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY MEASLES_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1229,7 +1229,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'ANTIMICROBIAL',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT ANTIMICROBIAL.*,
                                                 ROW_NUMBER() OVER (ORDER BY ANTIMICROBIAL.ANTIMICROBIAL_KEY ASC) AS RowNum
@@ -1247,7 +1247,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'ANTIMICROBIAL_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                          SELECT DISTINCT ANTIMICROBIAL_GROUP.*,
                                                                 ROW_NUMBER() OVER (ORDER BY ANTIMICROBIAL_GROUP.ANTIMICROBIAL_GRP_KEY ASC) AS RowNum
@@ -1265,7 +1265,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'TREATMENT_EVENT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT TREATMENT_EVENT.*,
                                                 ROW_NUMBER() OVER (ORDER BY TREATMENT_EVENT.INVESTIGATION_KEY ASC) AS RowNum
@@ -1283,7 +1283,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'BMIRD_MULTI_VALUE_FIELD_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT BMIRD_MULTI_VALUE_FIELD_GROUP.*,
                                                 ROW_NUMBER() OVER (ORDER BY BMIRD_MULTI_VALUE_FIELD_GROUP.BMIRD_MULTI_VAL_GRP_KEY ASC) AS RowNum
@@ -1301,7 +1301,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'BMIRD_MULTI_VALUE_FIELD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT BMIRD_MULTI_VALUE_FIELD.*,
                                                 ROW_NUMBER() OVER (ORDER BY BMIRD_MULTI_VALUE_FIELD.BMIRD_MULTI_VAL_FIELD_KEY ASC) AS RowNum
@@ -1319,7 +1319,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'USER_PROFILE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT USER_PROFILE.*,
                                                 ROW_NUMBER() OVER (ORDER BY USER_PROFILE.NEDSS_ENTRY_ID ASC) AS RowNum
@@ -1337,7 +1337,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'CASE_LAB_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CASE_LAB_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY CASE_LAB_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -1355,7 +1355,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'EVENT_METRIC',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT EVENT_METRIC.*,
                                                 ROW_NUMBER() OVER (ORDER BY EVENT_METRIC.EVENT_UID ASC) AS RowNum
@@ -1373,7 +1373,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_VACCINATION',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_VACCINATION.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_VACCINATION.VACCINATION_UID ASC) AS RowNum
@@ -1391,7 +1391,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_VACCINATION',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_VACCINATION.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_VACCINATION.PATIENT_KEY ASC) AS RowNum
@@ -1409,7 +1409,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'HEP100',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT HEP100.*,
                                                 ROW_NUMBER() OVER (ORDER BY HEP100.INVESTIGATION_KEY ASC) AS RowNum
@@ -1427,7 +1427,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'BMIRD_STREP_PNEUMO_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT BMIRD_STREP_PNEUMO_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY BMIRD_STREP_PNEUMO_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -1445,7 +1445,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'MORBIDITY_REPORT_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT MORBIDITY_REPORT_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -1463,7 +1463,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'RUBELLA_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT RUBELLA_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY RUBELLA_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1481,7 +1481,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PERTUSSIS_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT PERTUSSIS_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY PERTUSSIS_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1499,7 +1499,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'HEPATITIS_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT HEPATITIS_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY HEPATITIS_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -1517,7 +1517,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_INV_PLACE_REPEAT',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_INV_PLACE_REPEAT.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_INV_PLACE_REPEAT.D_INV_PLACE_REPEAT_KEY ASC) AS RowNum
@@ -1535,7 +1535,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'HEP_MULTI_VALUE_FIELD_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT HEP_MULTI_VALUE_FIELD_GROUP.*,
                                                 ROW_NUMBER() OVER (ORDER BY HEP_MULTI_VALUE_FIELD_GROUP.HEP_MULTI_VAL_GRP_KEY ASC) AS RowNum
@@ -1553,7 +1553,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'HEP_MULTI_VALUE_FIELD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT HEP_MULTI_VALUE_FIELD.*,
                                                 ROW_NUMBER() OVER (ORDER BY HEP_MULTI_VALUE_FIELD.HEP_MULTI_VAL_DATA_KEY ASC) AS RowNum
@@ -1571,7 +1571,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PERTUSSIS_SUSPECTED_SOURCE_FLD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT PERTUSSIS_SUSPECTED_SOURCE_FLD.*,
                                                 ROW_NUMBER() OVER (ORDER BY PERTUSSIS_SUSPECTED_SOURCE_FLD.PERTUSSIS_SUSPECT_SRC_FLD_KEY ASC) AS RowNum
@@ -1589,7 +1589,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PERTUSSIS_SUSPECTED_SOURCE_GRP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                          SELECT DISTINCT PERTUSSIS_SUSPECTED_SOURCE_FLD.*,
                                                                 ROW_NUMBER() OVER (ORDER BY PERTUSSIS_SUSPECTED_SOURCE_GRP.PERTUSSIS_SUSPECTED_SOURCE_GRP_KEY ASC) AS RowNum
@@ -1607,7 +1607,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PERTUSSIS_TREATMENT_FIELD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT PERTUSSIS_TREATMENT_FIELD.*,
                                                 ROW_NUMBER() OVER (ORDER BY PERTUSSIS_TREATMENT_FIELD.PERTUSSIS_TREATMENT_FLD_KEY ASC) AS RowNum
@@ -1625,7 +1625,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'PERTUSSIS_TREATMENT_GROUP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                          SELECT DISTINCT PERTUSSIS_TREATMENT_GROUP.*,
                                                                 ROW_NUMBER() OVER (ORDER BY PERTUSSIS_TREATMENT_GROUP.PERTUSSIS_TREATMENT_GRP_KEY ASC) AS RowNum
@@ -1643,7 +1643,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_CONTACT_RECORD_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_CONTACT_RECORD_CASE.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_CONTACT_RECORD_CASE.D_CONTACT_RECORD_KEY ASC) AS RowNum
@@ -1661,7 +1661,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'INV_SUMM_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT INV_SUMM_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY INV_SUMM_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -1679,7 +1679,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_TB_HIV',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_TB_HIV.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_TB_HIV.D_TB_HIV_KEY ASC) AS RowNum
@@ -1697,7 +1697,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_TB_PAM',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_TB_PAM/.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_TB_PAM.D_TB_PAM_KEY ASC) AS RowNum
@@ -1715,7 +1715,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_VAR_PAM',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_VAR_PAM.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_VAR_PAM.D_VAR_PAM_KEY ASC) AS RowNum
@@ -1733,7 +1733,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_ADDL_RISK',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_ADDL_RISK_KEY) AS COMPOSITE_KEY, D_ADDL_RISK.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_ADDL_RISK.TB_PAM_UID, D_ADDL_RISK.D_ADDL_RISK_KEY ASC) AS RowNum
@@ -1751,7 +1751,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_DISEASE_SITE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_DISEASE_SITE_KEY) AS COMPOSITE_KEY, D_DISEASE_SITE.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_DISEASE_SITE.TB_PAM_UID,D_DISEASE_SITE.D_DISEASE_SITE_KEY ASC) AS RowNum
@@ -1769,7 +1769,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_GT_12_REAS',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_GT_12_REAS_KEY) AS COMPOSITE_KEY ,D_GT_12_REAS.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_GT_12_REAS.TB_PAM_UID,D_GT_12_REAS.D_GT_12_REAS_KEY ASC) AS RowNum
@@ -1787,7 +1787,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_HC_PROV_TY_3',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_HC_PROV_TY_3_KEY) AS COMPOSITE_KEY , D_HC_PROV_TY_3.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_HC_PROV_TY_3.TB_PAM_UID, D_HC_PROV_TY_3.D_HC_PROV_TY_3_KEY ASC) AS RowNum
@@ -1805,7 +1805,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_MOVE_CNTRY',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVE_CNTRY_KEY) AS COMPOSITE_KEY , D_MOVE_CNTRY.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_MOVE_CNTRY.TB_PAM_UID,D_MOVE_CNTRY.D_MOVE_CNTRY_KEY ASC) AS RowNum
@@ -1823,7 +1823,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_MOVE_CNTY',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVE_CNTY_KEY) AS COMPOSITE_KEY , D_MOVE_CNTY.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_MOVE_CNTY.TB_PAM_UID,D_MOVE_CNTY.D_MOVE_CNTY_KEY ASC) AS RowNum
@@ -1841,7 +1841,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_MOVE_STATE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVE_STATE_KEY) AS COMPOSITE_KEY ,  D_MOVE_STATE.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_MOVE_STATE.TB_PAM_UID , D_MOVE_STATE.D_MOVE_STATE_KEY ASC) AS RowNum
@@ -1859,7 +1859,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_MOVED_WHERE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVED_WHERE_KEY) AS COMPOSITE_KEY ,  D_MOVED_WHERE.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_MOVED_WHERE.TB_PAM_UID,D_MOVED_WHERE.D_MOVED_WHERE_KEY ASC) AS RowNum
@@ -1877,7 +1877,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_OUT_OF_CNTRY',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_OUT_OF_CNTRY_KEY) AS COMPOSITE_KEY ,  D_OUT_OF_CNTRY.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_OUT_OF_CNTRY.TB_PAM_UID, D_OUT_OF_CNTRY.D_OUT_OF_CNTRY_KEY ASC) AS RowNum
@@ -1895,7 +1895,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_PCR_SOURCE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,VAR_PAM_UID)+''_''+CONVERT(VARCHAR,D_PCR_SOURCE_KEY) AS COMPOSITE_KEY , D_PCR_SOURCE.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_PCR_SOURCE.VAR_PAM_UID,D_PCR_SOURCE.D_PCR_SOURCE_KEY ASC) AS RowNum
@@ -1913,7 +1913,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_RASH_LOC_GE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,VAR_PAM_UID)+''_''+CONVERT(VARCHAR,D_RASH_LOC_GEN_KEY) AS COMPOSITE_KEY ,  D_RASH_LOC_GEN.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_RASH_LOC_GEN.VAR_PAM_UID,D_RASH_LOC_GEN.D_RASH_LOC_GEN_KEY ASC) AS RowNum
@@ -1931,7 +1931,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_SMR_EXAM_TY',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_SMR_EXAM_TY_KEY) AS COMPOSITE_KEY ,  D_SMR_EXAM_TY.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_SMR_EXAM_TY.TB_PAM_UID,D_SMR_EXAM_TY.D_SMR_EXAM_TY_KEY ASC) AS RowNum
@@ -1949,7 +1949,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_HEPATITIS',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                                         SELECT DISTINCT LDF_HEPATITIS.*,
                                                                                ROW_NUMBER() OVER (ORDER BY LDF_HEPATITIS.INVESTIGATION_KEY ASC) AS RowNum
@@ -1967,7 +1967,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_TB_PAM',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_TB_PAM.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_TB_PAM.INVESTIGATION_KEY ASC) AS RowNum
@@ -1985,7 +1985,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'F_VAR_PAM',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_VAR_PAM.*,
                                                 ROW_NUMBER() OVER (ORDER BY F_VAR_PAM.INVESTIGATION_KEY ASC) AS RowNum
@@ -2003,7 +2003,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'AGGREGATE_REPORT_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT AGGREGATE_REPORT_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY AGGREGATE_REPORT_DATAMART.REPORT_LOCAL_ID ASC) AS RowNum
@@ -2021,7 +2021,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Summary_Case_Group',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT Summary_Case_Group.*,
                                                 ROW_NUMBER() OVER (ORDER BY Summary_Case_Group.SUMMARY_CASE_SRC_KEY ASC) AS RowNum
@@ -2039,7 +2039,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'SUMMARY_REPORT_CASE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                          SELECT DISTINCT SUMMARY_REPORT_CASE.*,
                                                                 ROW_NUMBER() OVER (ORDER BY SUMMARY_REPORT_CASE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2057,7 +2057,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'SR100',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT SR100.*,
                                                 ROW_NUMBER() OVER (ORDER BY SR100.INVESTIGATION_KEY ASC) AS RowNum
@@ -2075,7 +2075,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'TB_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT TB_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY TB_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -2093,7 +2093,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'TB_HIV_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT TB_HIV_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY TB_HIV_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -2111,7 +2111,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'VAR_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT VAR_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY VAR_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -2129,7 +2129,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_BMIRD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_BMIRD.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_BMIRD.INVESTIGATION_KEY ASC) AS RowNum
@@ -2147,7 +2147,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_FOODBORNE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_FOODBORNE.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_FOODBORNE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2165,7 +2165,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_MUMPS',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_MUMPS.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_MUMPS.INVESTIGATION_KEY ASC) AS RowNum
@@ -2183,7 +2183,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_TETANUS',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_TETANUS.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_TETANUS.INVESTIGATION_KEY ASC) AS RowNum
@@ -2201,7 +2201,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_VACCINE_PREVENT_DISEASES',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_VACCINE_PREVENT_DISEASES.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_VACCINE_PREVENT_DISEASES.INVESTIGATION_KEY ASC) AS RowNum
@@ -2219,7 +2219,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_GENERIC',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_GENERIC.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_GENERIC.INVESTIGATION_KEY ASC) AS RowNum
@@ -2237,7 +2237,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_GENERIC2',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_GENERIC2.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_GENERIC2.INVESTIGATION_KEY ASC) AS RowNum
@@ -2255,7 +2255,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_LDF_META_DATA',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_LDF_META_DATA.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_LDF_META_DATA.ldf_uid ASC) AS RowNum
@@ -2273,7 +2273,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'TB_PAM_LDF',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT TB_PAM_LDF.*,
                                                 ROW_NUMBER() OVER (ORDER BY TB_PAM_LDF.TB_PAM_UID ASC) AS RowNum
@@ -2291,7 +2291,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'VAR_PAM_LDF',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT VAR_PAM_LDF.*,
                                                 ROW_NUMBER() OVER (ORDER BY VAR_PAM_LDF.INVESTIGATION_KEY ASC) AS RowNum
@@ -2309,7 +2309,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_DATAMART_COLUMN_REF',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_DATAMART_COLUMN_REF.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_DATAMART_COLUMN_REF.LDF_UID ASC) AS RowNum
@@ -2327,7 +2327,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_DATAMART_TABLE_REF',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_DATAMART_TABLE_REF.*,
                                                 ROW_NUMBER() OVER (ORDER BY LDF_DATAMART_TABLE_REF.LDF_DATAMART_TABLE_REF_UID ASC) AS RowNum
@@ -2345,7 +2345,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'D_CONTACT_RECORD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT D_CONTACT_RECORD.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_CONTACT_RECORD.D_CONTACT_RECORD_KEY ASC) AS RowNum
@@ -2363,7 +2363,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_ARBO_HUMA',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_ARBO_HUMAN.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_ARBO_HUMAN.INVESTIGATION_KEY ASC) AS RowNum
@@ -2381,7 +2381,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_C_AURIS',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_C_AURIS.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_C_AURIS.INVESTIGATION_KEY ASC) AS RowNum
@@ -2399,7 +2399,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_CONG_SYPHILIS',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_CONG_SYPHILIS.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_CONG_SYPHILIS.INVESTIGATION_KEY ASC) AS RowNum
@@ -2417,7 +2417,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_CP_CRE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_CP_CRE.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_CP_CRE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2435,7 +2435,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_GENERIC_V2',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_GENERIC_V2.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_GENERIC_V2.INVESTIGATION_KEY ASC) AS RowNum
@@ -2453,7 +2453,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_HEPATITIS_A_ACUTE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_HEPATITIS_A_ACUTE.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_HEPATITIS_A_ACUTE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2471,7 +2471,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_HEPATITIS_B_C_ACUTE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_HEPATITIS_B_C_ACUTE.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_HEPATITIS_B_C_ACUTE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2489,7 +2489,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_HEPATITIS_B_C_CHRONIC',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_HEPATITIS_B_C_CHRONIC.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_HEPATITIS_B_C_CHRONIC.INVESTIGATION_KEY ASC) AS RowNum
@@ -2507,7 +2507,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_HEPATITIS_B_PERINATAL',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_HEPATITIS_B_PERINATAL.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_HEPATITIS_B_PERINATAL.INVESTIGATION_KEY ASC) AS RowNum
@@ -2525,7 +2525,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_HEPATITIS_CORE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_HEPATITIS_CORE.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_HEPATITIS_CORE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2543,7 +2543,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_HIV',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_HIV.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_HIV.INVESTIGATION_KEY ASC) AS RowNum
@@ -2561,7 +2561,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_MIS_COVID_19',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_MIS_COVID_19.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_MIS_COVID_19.INVESTIGATION_KEY ASC) AS RowNum
@@ -2579,7 +2579,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_STD',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT DM_INV_STD.*,
                                                 ROW_NUMBER() OVER (ORDER BY DM_INV_STD.INVESTIGATION_KEY ASC) AS RowNum
@@ -2597,7 +2597,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Job_batch_log',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                          SELECT DISTINCT Job_batch_log.*,
                                                                 ROW_NUMBER() OVER (ORDER BY Job_batch_log.record_id ASC) AS RowNum
@@ -2615,7 +2615,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'LDF_GENERIC1',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                                                                      SELECT DISTINCT LDF_GENERIC1.*,
                                                                                                             ROW_NUMBER() OVER (ORDER BY LDF_GENERIC1.INVESTIGATION_KEY ASC) AS RowNum
@@ -2633,7 +2633,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'COVID_CONTACT_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (                                              SELECT DISTINCT SRC_PATIENT_FIRST_NAME+''_''+ SRC_PATIENT_LAST_NAME + ''_''+CONVERT(VARCHAR,SRC_PATIENT_DOB) AS COMPOSITE_KEY, COVID_CONTACT_DATAMART.*,
                                                                        ROW_NUMBER() OVER (ORDER BY SRC_PATIENT_FIRST_NAME,SRC_PATIENT_LAST_NAME,SRC_PATIENT_DOB ASC) AS RowNum
                                                                 FROM COVID_CONTACT_DATAMART
@@ -2650,7 +2650,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'COVID_LAB_CELR_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
             SELECT DISTINCT  COVID_LAB_CELR_DATAMART.*,
                    ROW_NUMBER() OVER (ORDER BY COVID_LAB_CELR_DATAMART.Testing_lab_specimen_ID ASC) AS RowNum
@@ -2668,7 +2668,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'GEOCODING_LOCATION',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
             SELECT DISTINCT GEOCODING_LOCATION.*,
                    ROW_NUMBER() OVER (ORDER BY GEOCODING_LOCATION.GEOCODING_LOCATION_KEY ASC) AS RowNum
@@ -2686,7 +2686,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Covid_Case_Datamart',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
             SELECT DISTINCT Covid_Case_Datamart.*,
                    ROW_NUMBER() OVER (ORDER BY Covid_Case_Datamart.COVID_CASE_DATAMART_KEY ASC) AS RowNum
@@ -2704,7 +2704,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Covid_lab_datamart',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
              SELECT DISTINCT Covid_lab_datamart.*,
                     ROW_NUMBER() OVER (ORDER BY Covid_lab_datamart.Covid_lab_datamart_key ASC) AS RowNum
@@ -2722,7 +2722,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'Covid_Vaccination_datamart',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
             SELECT DISTINCT Covid_Vaccination_datamart.*,
                    ROW_NUMBER() OVER (ORDER BY Covid_Vaccination_datamart.Covid_Vaccination_datamart_KEY ASC) AS RowNum
@@ -2740,7 +2740,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_ARBOVIRAL_CASES_MMG',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
             SELECT DISTINCT DM_INV_ARBOVIRAL_CASES_MMG.*,
                    ROW_NUMBER() OVER (ORDER BY DM_INV_ARBOVIRAL_CASES_MMG.INVESTIGATION_KEY ASC) AS RowNum
@@ -2758,7 +2758,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_CM2',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
             SELECT DISTINCT DM_INV_CM2.*,
                    ROW_NUMBER() OVER (ORDER BY DM_INV_CM2.INVESTIGATION_KEY ASC) AS RowNum
@@ -2776,7 +2776,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_CRH',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
            SELECT DISTINCT DM_INV_CRH.*,
          ROW_NUMBER() OVER (ORDER BY DM_INV_CRH.INVESTIGATION_KEY ASC) AS RowNum
@@ -2794,7 +2794,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_FTP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
           SELECT DISTINCT DM_INV_FTP.*,
                ROW_NUMBER() OVER (ORDER BY DM_INV_FTP.INVESTIGATION_KEY ASC) AS RowNum
@@ -2812,7 +2812,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_NINE',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                       SELECT DISTINCT DM_INV_NINE.*,
                ROW_NUMBER() OVER (ORDER BY DM_INV_NINE.INVESTIGATION_KEY ASC) AS RowNum
@@ -2830,7 +2830,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_SAMP',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                       SELECT DISTINCT DM_INV_SAMP.*,
                ROW_NUMBER() OVER (ORDER BY DM_INV_SAMP.INVESTIGATION_KEY ASC) AS RowNum
@@ -2848,7 +2848,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_TB_DATAMART',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                       SELECT DISTINCT DM_INV_TB_DATAMART.*,
                ROW_NUMBER() OVER (ORDER BY DM_INV_TB_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
@@ -2866,7 +2866,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        	(
        		'DM_INV_UN',
        		'RDB',
-       		'RDB_MODER',
+       		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                       SELECT DISTINCT DM_INV_UN.*,
                              ROW_NUMBER() OVER (ORDER BY DM_INV_UN.INVESTIGATION_KEY ASC) AS RowNum
@@ -2880,7 +2880,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'INVESTIGATION_KEY',
        		'RowNum, INVESTIGATION_KEY',
        		1
-       		)
+       		),
 
 
 
