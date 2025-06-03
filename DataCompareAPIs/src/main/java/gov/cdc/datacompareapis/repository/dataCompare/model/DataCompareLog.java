@@ -44,4 +44,7 @@ public class DataCompareLog {
 
     @Column(name = "run_by_user")
     private String runByUser;
+
+    @Column(name = "rows_compared")
+    private long rowsCompared;
 }

@@ -40,7 +40,8 @@ public class DataCompareService implements IDataCompareService {
     // Potentially can store these unmatched in S3
     private static final Map<String, JsonObject> unmatchedRecordsRdb = new HashMap<>();
     private static final Map<String, JsonObject> unmatchedRecordsRdbModern = new HashMap<>();
-
+    private static  long RdpRowCount = 0;
+    private static  long RdpModernRowCount = 0;
 
     public DataCompareService(IS3DataPullerService s3DataPullerService,
                               DataCompareLogRepository dataCompareLogRepository) {
@@ -148,6 +149,9 @@ public class DataCompareService implements IDataCompareService {
             logRdb.setStatus("Error");
             logRdbModern.setStatus("Error");
         }
+
+        logRdb.setRowsCompared(RdpRowCount);
+        logRdbModern.setRowsCompared(RdpModernRowCount);
 
         var currentTime = getCurrentTimeStamp();
         logRdb.setEndDateTime(currentTime);
@@ -508,6 +512,7 @@ public class DataCompareService implements IDataCompareService {
             List<String> missingColList = new ArrayList<>();
 
             JsonObject recordRdb = mapRdb.get(id);
+            RdpRowCount = RdpRowCount + 1;
             JsonObject recordRdbModern = mapRdbModern.get(id);
             var newModernRdbRecord = new HashMap<String, JsonObject>();
 
@@ -618,6 +623,7 @@ public class DataCompareService implements IDataCompareService {
 
         // Identify records present only in File B and retain them in memory
         for (String id : mapRdbModern.keySet()) {
+            RdpModernRowCount = RdpModernRowCount + 1;
             if (!mapRdb.containsKey(id)) {
                 unmatchedRecordsRdbModern.put(id, mapRdbModern.get(id));
             }
