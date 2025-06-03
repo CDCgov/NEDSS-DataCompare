@@ -577,24 +577,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                1
        ),
        (
-               'NOTIFICATION',
-               'RDB',
-               'RDB_MODERN',
-               'WITH PaginatedResults AS (
-                   SELECT DISTINCT NOTIFICATION.*,
-                          ROW_NUMBER() OVER (ORDER BY NOTIFICATION.notification_local_id ASC) AS RowNum
-                   FROM NOTIFICATION
-               )
-               SELECT *
-               FROM PaginatedResults
-               WHERE RowNum BETWEEN :startRow AND :endRow;',
-               'SELECT COUNT(*)
-               FROM NOTIFICATION;',
-               'NOTIFICATION_LOCAL_ID',
-               'RowNum, NOTIFICATION_LAST_CHANGE_TIME',
-               1
-       ),
-       (
        		'NOTIFICATION_EVENT',
        		'RDB',
        		'RDB_MODER',
@@ -835,7 +817,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LAB_TEST_RESULT.*,
-                                                ROW_NUMBER() OVER (ORDER BY LAB_TEST_RESULT.PATIENT_KEY ASC) AS RowNum
+                                                ROW_NUMBER() OVER (ORDER BY LAB_TEST_RESULT.LAB_TEST_KEY ASC) AS RowNum
                                          FROM LAB_TEST_RESULT
                                       )
                                       SELECT *
@@ -843,8 +825,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM LAB_TEST_RESULT;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
+       		'LAB_TEST_KEY',
+       		'RowNum, LAB_TEST_KEY',
        		1
        		),
        	(
@@ -935,25 +917,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       FROM Codeset;',
        		'CD',
        		'RowNum, CD',
-       		1
-       		),
-       	--not found
-       	(
-       		'Observatio',
-       		'RDB',
-       		'RDB_MODER',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT Observation.*,
-                                                ROW_NUMBER() OVER (ORDER BY Observation.PATIENT_KEY ASC) AS RowNum
-                                         FROM Observation
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM Observation;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
        		1
        		),
        	(
@@ -1137,7 +1100,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'CONDITIO',
+       		'CONDITION',
        		'RDB',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
@@ -1390,7 +1353,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'D_VACCINATIO',
+       		'D_VACCINATION',
        		'RDB',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
@@ -1408,7 +1371,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'F_VACCINATIO',
+       		'F_VACCINATION',
        		'RDB',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
@@ -1421,8 +1384,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM F_VACCINATION;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
+       		'PATIENT_KEY',
+       		'RowNum, PATIENT_KEY',
        		1
        		),
        	(
@@ -1485,7 +1448,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT RUBELLA_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY RUBELLA_CASE.PATIENT_KEY ASC) AS RowNum
+                                                ROW_NUMBER() OVER (ORDER BY RUBELLA_CASE.INVESTIGATION_KEY ASC) AS RowNum
                                          FROM RUBELLA_CASE
                                       )
                                       SELECT *
@@ -1493,8 +1456,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM RUBELLA_CASE;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
        		1
        		),
        	(
@@ -1665,7 +1628,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT F_CONTACT_RECORD_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY F_CONTACT_RECORD_CASE.PATIENT_KEY ASC) AS RowNum
+                                                ROW_NUMBER() OVER (ORDER BY F_CONTACT_RECORD_CASE.D_CONTACT_RECORD_KEY ASC) AS RowNum
                                          FROM F_CONTACT_RECORD_CASE
                                       )
                                       SELECT *
@@ -1673,8 +1636,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM F_CONTACT_RECORD_CASE;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
+       		'D_CONTACT_RECORD_KEY',
+       		'RowNum, D_CONTACT_RECORD_KEY',
        		1
        		),
        	(
@@ -1966,6 +1929,24 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
+       		'LDF_HEPATITIS',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+                                                                        SELECT DISTINCT LDF_HEPATITIS.*,
+                                                                               ROW_NUMBER() OVER (ORDER BY LDF_HEPATITIS.INVESTIGATION_KEY ASC) AS RowNum
+                                                                        FROM LDF_HEPATITIS
+                                                                     )
+                                                                     SELECT *
+                                                                     FROM PaginatedResults
+                                                                     WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                                                                     FROM LDF_HEPATITIS;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
        		'F_TB_PAM',
        		'RDB',
        		'RDB_MODER',
@@ -2127,44 +2108,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
-       	--NOT FOUND
-       	(
-       		'RVCTPAM',
-       		'RDB',
-       		'RDB_MODER',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT RVCTPAM.*,
-                                                ROW_NUMBER() OVER (ORDER BY RVCTPAM.PATIENT_KEY ASC) AS RowNum
-                                         FROM RVCTPAM
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM RVCTPAM;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
-       		1
-       		),
-       	--NOT FOUND
-       	(
-       		'VaricellaPAM',
-       		'RDB',
-       		'RDB_MODER',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT VaricellaPAM.*,
-                                                ROW_NUMBER() OVER (ORDER BY VaricellaPAM.PATIENT_KEY ASC) AS RowNum
-                                         FROM VaricellaPAM
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM VaricellaPAM;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
-       		1
-       		),
        	(
        		'LDF_BMIRD',
        		'RDB',
@@ -2207,7 +2150,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB_MODER',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT LDF_MUMPS.*,
-                                                ROW_NUMBER() OVER (ORDER BY LDF_MUMPS.PATIENT_KEY ASC) AS RowNum
+                                                ROW_NUMBER() OVER (ORDER BY LDF_MUMPS.INVESTIGATION_KEY ASC) AS RowNum
                                          FROM LDF_MUMPS
                                       )
                                       SELECT *
@@ -2215,8 +2158,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM LDF_MUMPS;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
        		1
        		),
        	(
@@ -2307,24 +2250,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       FROM D_LDF_META_DATA;',
        		'ldf_uid',
        		'RowNum, ldf_uid',
-       		1
-       		),
-       	(
-       		'VAR_LDF',
-       		'RDB',
-       		'RDB_MODER',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT VAR_LDF.*,
-                                                ROW_NUMBER() OVER (ORDER BY VAR_LDF.PATIENT_KEY ASC) AS RowNum
-                                         FROM VAR_LDF
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM VAR_LDF;',
-       		'NOTIFICATION_KEY',
-       		'RowNum',
        		1
        		),
        	(
@@ -2667,6 +2592,275 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                                       FROM Job_batch_log;',
        		'record_id',
        		'RowNum, record_id, create_dttm, update_dttm',
+       		1
+       		),
+       	(
+       		'LDF_GENERIC1',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+                                                                                                     SELECT DISTINCT LDF_GENERIC1.*,
+                                                                                                            ROW_NUMBER() OVER (ORDER BY LDF_GENERIC1.INVESTIGATION_KEY ASC) AS RowNum
+                                                                                                     FROM LDF_GENERIC1
+                                                                                                  )
+                                                                                                  SELECT *
+                                                                                                  FROM PaginatedResults
+                                                                                                  WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                                                                                                  FROM LDF_GENERIC1;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'COVID_CONTACT_DATAMART',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (                                              SELECT DISTINCT SRC_PATIENT_FIRST_NAME+''_''+ SRC_PATIENT_LAST_NAME + ''_''+CONVERT(VARCHAR,SRC_PATIENT_DOB) AS COMPOSITE_KEY, COVID_CONTACT_DATAMART.*,
+                                                                       ROW_NUMBER() OVER (ORDER BY SRC_PATIENT_FIRST_NAME,SRC_PATIENT_LAST_NAME,SRC_PATIENT_DOB ASC) AS RowNum
+                                                                FROM COVID_CONTACT_DATAMART
+                                                             )
+                                                             SELECT *
+                                                             FROM PaginatedResults
+                                                             WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                                                             FROM COVID_CONTACT_DATAMART;',
+       		'COMPOSITE_KEY',
+       		'RowNum, COMPOSITE_KEY',
+       		1
+       		),
+       	(
+       		'COVID_LAB_CELR_DATAMART',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+            SELECT DISTINCT  COVID_LAB_CELR_DATAMART.*,
+                   ROW_NUMBER() OVER (ORDER BY COVID_LAB_CELR_DATAMART.Testing_lab_specimen_ID ASC) AS RowNum
+            FROM COVID_LAB_CELR_DATAMART
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM COVID_LAB_CELR_DATAMART;',
+       		'Testing_lab_specimen_ID',
+       		'RowNum, Testing_lab_specimen_ID',
+       		1
+       		),
+       	(
+       		'GEOCODING_LOCATION',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+            SELECT DISTINCT GEOCODING_LOCATION.*,
+                   ROW_NUMBER() OVER (ORDER BY GEOCODING_LOCATION.GEOCODING_LOCATION_KEY ASC) AS RowNum
+            FROM GEOCODING_LOCATION
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM GEOCODING_LOCATION;',
+       		'GEOCODING_LOCATION_KEY',
+       		'RowNum, GEOCODING_LOCATION_KEY',
+       		1
+       		),
+       	(
+       		'Covid_Case_Datamart',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+            SELECT DISTINCT Covid_Case_Datamart.*,
+                   ROW_NUMBER() OVER (ORDER BY Covid_Case_Datamart.COVID_CASE_DATAMART_KEY ASC) AS RowNum
+            FROM Covid_Case_Datamart
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM Covid_Case_Datamart;',
+       		'COVID_CASE_DATAMART_KEY',
+       		'RowNum, COVID_CASE_DATAMART_KEY',
+       		1
+       		),
+       	(
+       		'Covid_lab_datamart',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+             SELECT DISTINCT Covid_lab_datamart.*,
+                    ROW_NUMBER() OVER (ORDER BY Covid_lab_datamart.Covid_lab_datamart_key ASC) AS RowNum
+             FROM Covid_lab_datamart
+          )
+          SELECT *
+          FROM PaginatedResults
+          WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+          FROM Covid_lab_datamart;',
+       		'Covid_lab_datamart_KEY',
+       		'RowNum, Covid_lab_datamart_KEY',
+       		1
+       		),
+       	(
+       		'Covid_Vaccination_datamart',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+            SELECT DISTINCT Covid_Vaccination_datamart.*,
+                   ROW_NUMBER() OVER (ORDER BY Covid_Vaccination_datamart.Covid_Vaccination_datamart_KEY ASC) AS RowNum
+            FROM Covid_Vaccination_datamart
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM Covid_Vaccination_datamart;',
+       		'Covid_Vaccination_datamart_KEY',
+       		'RowNum, Covid_Vaccination_datamart_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_ARBOVIRAL_CASES_MMG',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+            SELECT DISTINCT DM_INV_ARBOVIRAL_CASES_MMG.*,
+                   ROW_NUMBER() OVER (ORDER BY DM_INV_ARBOVIRAL_CASES_MMG.INVESTIGATION_KEY ASC) AS RowNum
+            FROM DM_INV_ARBOVIRAL_CASES_MMG
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM DM_INV_ARBOVIRAL_CASES_MMG;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_CM2',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+            SELECT DISTINCT DM_INV_CM2.*,
+                   ROW_NUMBER() OVER (ORDER BY DM_INV_CM2.INVESTIGATION_KEY ASC) AS RowNum
+            FROM DM_INV_CM2
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM DM_INV_CM2;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_CRH',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+           SELECT DISTINCT DM_INV_CRH.*,
+         ROW_NUMBER() OVER (ORDER BY DM_INV_CRH.INVESTIGATION_KEY ASC) AS RowNum
+           FROM DM_INV_CRH
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM DM_INV_CRH;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_FTP',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+          SELECT DISTINCT DM_INV_FTP.*,
+               ROW_NUMBER() OVER (ORDER BY DM_INV_FTP.INVESTIGATION_KEY ASC) AS RowNum
+          FROM DM_INV_FTP
+         )
+         SELECT *
+         FROM PaginatedResults
+         WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+         FROM DM_INV_FTP;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_NINE',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+                      SELECT DISTINCT DM_INV_NINE.*,
+               ROW_NUMBER() OVER (ORDER BY DM_INV_NINE.INVESTIGATION_KEY ASC) AS RowNum
+                      FROM DM_INV_NINE
+                   )
+                   SELECT *
+                   FROM PaginatedResults
+                   WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                   FROM DM_INV_NINE;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_SAMP',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+                      SELECT DISTINCT DM_INV_SAMP.*,
+               ROW_NUMBER() OVER (ORDER BY DM_INV_SAMP.INVESTIGATION_KEY ASC) AS RowNum
+                      FROM DM_INV_SAMP
+                   )
+                   SELECT *
+                   FROM PaginatedResults
+                   WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                   FROM DM_INV_SAMP;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_TB_DATAMART',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+                      SELECT DISTINCT DM_INV_TB_DATAMART.*,
+               ROW_NUMBER() OVER (ORDER BY DM_INV_TB_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
+                      FROM DM_INV_TB_DATAMART
+                   )
+                   SELECT *
+                   FROM PaginatedResults
+                   WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                   FROM DM_INV_TB_DATAMART;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
+       		1
+       		),
+       	(
+       		'DM_INV_UN',
+       		'RDB',
+       		'RDB_MODER',
+       		'WITH PaginatedResults AS (
+                      SELECT DISTINCT DM_INV_UN.*,
+                             ROW_NUMBER() OVER (ORDER BY DM_INV_UN.INVESTIGATION_KEY ASC) AS RowNum
+                      FROM DM_INV_UN
+                   )
+                   SELECT *
+                   FROM PaginatedResults
+                   WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'SELECT COUNT(*)
+                   FROM DM_INV_UN;',
+       		'INVESTIGATION_KEY',
+       		'RowNum, INVESTIGATION_KEY',
        		1
        		)
 
