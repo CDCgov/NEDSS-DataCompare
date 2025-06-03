@@ -577,6 +577,24 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                1
        ),
        (
+               'NOTIFICATION',
+               'RDB',
+               'RDB_MODERN',
+               'WITH PaginatedResults AS (
+                   SELECT DISTINCT NOTIFICATION.*,
+                          ROW_NUMBER() OVER (ORDER BY NOTIFICATION.notification_local_id ASC) AS RowNum
+                   FROM NOTIFICATION
+               )
+               SELECT *
+               FROM PaginatedResults
+               WHERE RowNum BETWEEN :startRow AND :endRow;',
+               'SELECT COUNT(*)
+               FROM NOTIFICATION;',
+               'NOTIFICATION_LOCAL_ID',
+               'RowNum, NOTIFICATION_LAST_CHANGE_TIME',
+               1
+       ),
+       (
        		'NOTIFICATION_EVENT',
        		'RDB',
        		'RDB_MODER',
