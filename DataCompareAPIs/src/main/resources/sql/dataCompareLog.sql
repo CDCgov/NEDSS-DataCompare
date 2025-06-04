@@ -11,5 +11,7 @@ CREATE TABLE Data_Compare_Log
     status_desc VARCHAR(MAX),
     run_by_user VARCHAR(100),
     rows_compared BIGINT,
+    batch_id BIGINT,
+    FOREIGN KEY (batch_id) REFERENCES Data_Compare_Batch(batch_id),
     FOREIGN KEY (config_id) REFERENCES Data_Compare_Config(config_id)
 );

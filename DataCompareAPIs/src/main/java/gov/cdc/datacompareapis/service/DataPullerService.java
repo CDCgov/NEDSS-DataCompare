@@ -5,13 +5,16 @@ import com.google.gson.GsonBuilder;
 import gov.cdc.datacompareapis.configuration.TimestampAdapter;
 import gov.cdc.datacompareapis.exception.DataCompareException;
 import gov.cdc.datacompareapis.kafka.KafkaProducerService;
+import gov.cdc.datacompareapis.repository.dataCompare.DataCompareBatchRepository;
 import gov.cdc.datacompareapis.repository.dataCompare.DataCompareConfigRepository;
 import gov.cdc.datacompareapis.repository.dataCompare.DataCompareLogRepository;
+import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareBatch;
 import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareConfig;
 import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareLog;
 import gov.cdc.datacompareapis.service.interfaces.IDataPullerService;
 import gov.cdc.datacompareapis.service.interfaces.IS3DataService;
 import gov.cdc.datacompareapis.service.model.PullerEventModel;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +27,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static gov.cdc.datacompareapis.shared.StackTraceUtil.getStackTraceAsString;
 import static gov.cdc.datacompareapis.shared.TimestampHandler.getCurrentTimeStamp;
@@ -31,7 +35,7 @@ import static gov.cdc.datacompareapis.shared.TimestampHandler.getCurrentTimeStam
 @Service
 public class DataPullerService implements IDataPullerService {
     private static Logger logger = LoggerFactory.getLogger(DataPullerService.class);
-
+    private static DataCompareBatchRepository dataCompareBatchRepository;
     private final DataCompareConfigRepository dataCompareConfigRepository;
     private final DataCompareLogRepository dataCompareLogRepository;
     private final KafkaProducerService kafkaProducerService;
@@ -39,7 +43,7 @@ public class DataPullerService implements IDataPullerService {
     private final JdbcTemplate rdbJdbcTemplate;
     private final JdbcTemplate rdbModernJdbcTemplate;
     private final IS3DataService s3DataService;
-
+    private static long batchId ;
     @Value("${kafka.topic.data-compare-topic}")
     String processorTopicName = "";
 
@@ -47,13 +51,14 @@ public class DataPullerService implements IDataPullerService {
                              DataCompareLogRepository dataCompareLogRepository,
                              KafkaProducerService kafkaProducerService, @Qualifier("rdbJdbcTemplate") JdbcTemplate rdbJdbcTemplate,
                              @Qualifier("rdbModernJdbcTemplate") JdbcTemplate rdbModernJdbcTemplate,
-                             IS3DataService s3DataService) {
+                             IS3DataService s3DataService , DataCompareBatchRepository dataCompareBatchRepository) {
         this.dataCompareConfigRepository = dataCompareConfigRepository;
         this.dataCompareLogRepository = dataCompareLogRepository;
         this.kafkaProducerService = kafkaProducerService;
         this.rdbJdbcTemplate = rdbJdbcTemplate;
         this.rdbModernJdbcTemplate = rdbModernJdbcTemplate;
         this.s3DataService = s3DataService;
+        this.dataCompareBatchRepository = dataCompareBatchRepository;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
@@ -64,7 +69,7 @@ public class DataPullerService implements IDataPullerService {
     @Async("defaultAsyncExecutor")
     public void pullingData(int pullLimit, boolean runNowMode)   {
         List<DataCompareConfig>  configs = getDataConfig();
-
+        batchId = createBatchId();
         if (runNowMode) {
             pullDataRunNow(pullLimit, configs);
         }
@@ -100,9 +105,11 @@ public class DataPullerService implements IDataPullerService {
         dataCompareLog.setFileLocation("S3");
         dataCompareLog.setStatus(status);
         dataCompareLog.setRunByUser("0");
+        dataCompareLog.setBatchId(batchId);
         return dataCompareLog;
 
     }
+
 
     protected void pullDataLogic(int pullLimit, DataCompareConfig config ) {
         var currentTime = getCurrentTimeStamp();
@@ -215,5 +222,17 @@ public class DataPullerService implements IDataPullerService {
         return dataCompareConfigRepository.findAll();
     }
 
+
+
+    private long createBatchId(){
+        var currentTime = getCurrentTimeStamp();
+        DataCompareBatch dataCompareBatch = new DataCompareBatch();
+        String batchName = UUID.randomUUID().toString();
+        dataCompareBatch.setBatchName(batchName);
+        dataCompareBatch.setCreatedDatetime(currentTime);
+        dataCompareBatch.setCreatedBy("0");
+        var batch = dataCompareBatchRepository.save(dataCompareBatch);
+        return  batch.getBatchId();
+    }
 
 }

@@ -46,4 +46,7 @@ public class DataCompareLog {
 
     @Column(name = "rows_compared")
     private long rowsCompared;
+
+    @Column(name = "batch_id")
+    private long batchId;
 }
