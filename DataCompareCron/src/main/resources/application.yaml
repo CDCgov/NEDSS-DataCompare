@@ -18,6 +18,8 @@ data_compare:
 scheduler:
   cron: ${SCHEDULER_CRON:0 */1 * * * *}
   zone: ${SCHEDULER_TIMEZONE:UTC}
+  run_now: ${RUN_NOW:false}
+  auto_apply: ${AUTO_APPLY:false}
 
 logging:
   level:

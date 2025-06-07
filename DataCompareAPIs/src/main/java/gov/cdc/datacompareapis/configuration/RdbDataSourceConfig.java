@@ -25,7 +25,7 @@ import java.util.HashMap;
         entityManagerFactoryRef = "rdbEntityManagerFactory",
         transactionManagerRef = "rdbTransactionManager",
         basePackages = {
-                "gov.cdc.datacompareapis.repository.rdb"
+//                "gov.cdc.datacompareapis.repository.rdb"
         }
 )
 public class RdbDataSourceConfig {
