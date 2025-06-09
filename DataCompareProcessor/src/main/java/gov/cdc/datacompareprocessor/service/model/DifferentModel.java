@@ -10,5 +10,6 @@ public class DifferentModel {
     public String key;
     public String table;
     public String missingColumn;
+    public String nullValueColumns;
     public String differentColumnAndValue;
 }
