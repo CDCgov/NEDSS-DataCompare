@@ -35,7 +35,7 @@ import static gov.cdc.datacompareapis.shared.TimestampHandler.getCurrentTimeStam
 @Service
 public class DataPullerService implements IDataPullerService {
     private static Logger logger = LoggerFactory.getLogger(DataPullerService.class);
-    private static DataCompareBatchRepository dataCompareBatchRepository;
+    private final DataCompareBatchRepository dataCompareBatchRepository;
     private final DataCompareConfigRepository dataCompareConfigRepository;
     private final DataCompareLogRepository dataCompareLogRepository;
     private final KafkaProducerService kafkaProducerService;
@@ -43,7 +43,7 @@ public class DataPullerService implements IDataPullerService {
     private final JdbcTemplate rdbJdbcTemplate;
     private final JdbcTemplate rdbModernJdbcTemplate;
     private final IS3DataService s3DataService;
-    private static long batchId ;
+    private final long batchId ;
     @Value("${kafka.topic.data-compare-topic}")
     String processorTopicName = "";
 
@@ -64,7 +64,9 @@ public class DataPullerService implements IDataPullerService {
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
                 .serializeNulls()
                 .create();
+        this.batchId=0;
     }
+
 
     @Async("defaultAsyncExecutor")
     public void pullingData(int pullLimit, boolean runNowMode)   {
