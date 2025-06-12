@@ -40,8 +40,8 @@ public class DataCompareService implements IDataCompareService {
     // Potentially can store these unmatched in S3
     private static final Map<String, JsonObject> unmatchedRecordsRdb = new HashMap<>();
     private static final Map<String, JsonObject> unmatchedRecordsRdbModern = new HashMap<>();
-
-
+    private static Set<String> rdbIdData = new HashSet<>();
+    private static Set<String> rdbModernIdData = new HashSet<>();
     public DataCompareService(IS3DataPullerService s3DataPullerService,
                               DataCompareLogRepository dataCompareLogRepository) {
         this.s3DataPullerService = s3DataPullerService;
@@ -57,6 +57,8 @@ public class DataCompareService implements IDataCompareService {
     public void processingData(PullerEventModel pullerEventModel) {
         unmatchedRecordsRdb.clear();
         unmatchedRecordsRdbModern.clear();
+        rdbIdData.clear();
+        rdbModernIdData.clear();
         Map<String, Integer> maxIndexMapper = getMaxIndexWithSource(pullerEventModel);
         Integer maxIndex = maxIndexMapper.get("maxValue");
         String maxIndexSource = maxIndexMapper.get("source") == 1
@@ -118,7 +120,6 @@ public class DataCompareService implements IDataCompareService {
             var modelList = compareJsonFilesOnRemaining( pullerEventModel.getKeyColumn(), ignoreColList);
             differModels.addAll(modelList);
 
-
             var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getFileName());
             differModels.addAll(remainList);
 
@@ -148,6 +149,9 @@ public class DataCompareService implements IDataCompareService {
             logRdb.setStatus("Error");
             logRdbModern.setStatus("Error");
         }
+
+        logRdb.setRowsCompared(rdbIdData.size());
+        logRdbModern.setRowsCompared(rdbModernIdData.size());
 
         var currentTime = getCurrentTimeStamp();
         logRdb.setEndDateTime(currentTime);
@@ -284,6 +288,8 @@ public class DataCompareService implements IDataCompareService {
         StringBuilder missingColBuilder = new StringBuilder();
         List<DifferentModel> differentModels = new ArrayList<>();
 
+        StringBuilder nullValueColBuilder = new StringBuilder();
+
         if (mapRdb.size() < mapRdbModern.size()) {
             for (String id : mapRdb.keySet()) {
                 if (mapRdbModern.containsKey(id)) {
@@ -294,6 +300,7 @@ public class DataCompareService implements IDataCompareService {
                     mapRdbModern.remove(id);
                     List<String> differList = new ArrayList<>();
                     List<String> missingColList = new ArrayList<>();
+                    List<String> nullValueColList = new ArrayList<>();
 
                     for (String key : recordRdb.keySet()) {
                         if (ignoreCols.contains(key)) {
@@ -305,7 +312,11 @@ public class DataCompareService implements IDataCompareService {
                         JsonElement valueRdbModern = recordRdbModern.get(key);
                         recordRdb.remove(key);
                         recordRdbModern.remove(key);
-
+                        if (valueRdb==null && valueRdbModern==null){
+                            nullValueColBuilder.setLength(0);
+                            nullValueColBuilder.append(key);
+                            nullValueColList.add(nullValueColBuilder.toString());
+                        }
                         if (!valueRdb.equals(valueRdbModern)) {
 
 
@@ -332,6 +343,17 @@ public class DataCompareService implements IDataCompareService {
 
                         }
                     }
+                    nullValueColBuilder.setLength(0);
+                    nullValueColBuilder.append("[");
+                    for (int i = 0; i < nullValueColList.size(); i++) {
+
+                        nullValueColBuilder.append(nullValueColList.get(i));
+                        // Add a comma if it's not the last element
+                        if (i < nullValueColList.size() - 1) {
+                            nullValueColBuilder.append(",");
+                        }
+                    }
+                    nullValueColBuilder.append("]");
 
                     diffBuilder.setLength(0);
                     diffBuilder.append("[");
@@ -357,6 +379,7 @@ public class DataCompareService implements IDataCompareService {
                     }
                     missingColBuilder.append("]");
                     differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
+                    differentModel.setNullValueColumns(nullValueColBuilder.toString().replaceAll("\"", ""));
 
                     differentModel.setKey(id);
                     differentModel.setKeyColumn(uniqueIdField);
@@ -366,6 +389,10 @@ public class DataCompareService implements IDataCompareService {
                         differentModels.add(differentModel);
                     }
                     else if (!differentModel.getMissingColumn().equals("[]"))
+                    {
+                        differentModels.add(differentModel);
+                    }
+                    else if (!differentModel.getNullValueColumns().equals("[]"))
                     {
                         differentModels.add(differentModel);
                     }
@@ -385,7 +412,7 @@ public class DataCompareService implements IDataCompareService {
                     mapRdbModern.remove(id);
                     List<String> differList = new ArrayList<>();
                     List<String> missingColList = new ArrayList<>();
-
+                    List<String> nullValueColList = new ArrayList<>();
                     for (String key : mapRdbModern.keySet()) {
                         if (ignoreCols.contains(key)) {
                             continue;
@@ -394,9 +421,14 @@ public class DataCompareService implements IDataCompareService {
                         // Get value from specific column
                         JsonElement valueRdb = recordRdb.get(key);
                         JsonElement valueRdbModern = recordRdbModern.get(key);
+
                         recordRdb.remove(key);
                         recordRdbModern.remove(key);
-
+                        if (valueRdb==null && valueRdbModern==null){
+                            nullValueColBuilder.setLength(0);
+                            nullValueColBuilder.append(key);
+                            nullValueColList.add(nullValueColBuilder.toString());
+                        }
                         if (!valueRdbModern.equals(valueRdb)) {
 
 
@@ -422,7 +454,17 @@ public class DataCompareService implements IDataCompareService {
 
                         }
                     }
+                    nullValueColBuilder.setLength(0);
+                    nullValueColBuilder.append("[");
+                    for (int i = 0; i < nullValueColList.size(); i++) {
 
+                        nullValueColBuilder.append(nullValueColList.get(i));
+                        // Add a comma if it's not the last element
+                        if (i < nullValueColList.size() - 1) {
+                            nullValueColBuilder.append(",");
+                        }
+                    }
+                    nullValueColBuilder.append("]");
                     diffBuilder.setLength(0);
                     diffBuilder.append("[");
                     for (int i = 0; i < differList.size(); i++) {
@@ -448,6 +490,8 @@ public class DataCompareService implements IDataCompareService {
                     missingColBuilder.append("]");
                     differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
 
+                    differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
+
 
                     differentModel.setKey(id);
                     differentModel.setKeyColumn(uniqueIdField);
@@ -457,6 +501,10 @@ public class DataCompareService implements IDataCompareService {
                         differentModels.add(differentModel);
                     }
                     else if (!differentModel.getMissingColumn().equals("[]"))
+                    {
+                        differentModels.add(differentModel);
+                    }
+                    else if (!differentModel.getNullValueColumns().equals("[]"))
                     {
                         differentModels.add(differentModel);
                     }
@@ -497,6 +545,7 @@ public class DataCompareService implements IDataCompareService {
 
         StringBuilder diffBuilder = new StringBuilder();
         StringBuilder missingColBuilder = new StringBuilder();
+        StringBuilder nullValueColBuilder = new StringBuilder();
         List<DifferentModel> differentModels = new ArrayList<>();
 
 
@@ -507,7 +556,10 @@ public class DataCompareService implements IDataCompareService {
             List<String> differList = new ArrayList<>();
             List<String> missingColList = new ArrayList<>();
 
+            List<String> nullValueColList = new ArrayList<>();
+
             JsonObject recordRdb = mapRdb.get(id);
+            rdbIdData.add(id);
             JsonObject recordRdbModern = mapRdbModern.get(id);
             var newModernRdbRecord = new HashMap<String, JsonObject>();
 
@@ -527,10 +579,12 @@ public class DataCompareService implements IDataCompareService {
                 JsonElement valueRdb = recordRdb.get(key);
                 JsonElement valueRdbModern = recordRdbModern.get(key);
                 recordRdbModern.remove(key);
-
+                if (valueRdb==null && valueRdbModern == null){
+                    nullValueColBuilder.setLength(0);
+                    nullValueColBuilder.append(key);
+                    nullValueColList.add(nullValueColBuilder.toString());
+                }
                 if (!valueRdb.equals(valueRdbModern)) {
-
-
                     if (valueRdbModern != null) {
                         diffBuilder.setLength(0);
                         diffBuilder.append(key).append(": ")
@@ -552,6 +606,7 @@ public class DataCompareService implements IDataCompareService {
                     }
 
                 }
+
             }
 
             if (!recordRdbModern.isEmpty()) {
@@ -576,6 +631,18 @@ public class DataCompareService implements IDataCompareService {
                 }
             }
 
+
+            nullValueColBuilder.setLength(0);
+            nullValueColBuilder.append("[");
+            for (int i = 0; i < nullValueColList.size(); i++) {
+
+                nullValueColBuilder.append(nullValueColList.get(i));
+                // Add a comma if it's not the last element
+                if (i < nullValueColList.size() - 1) {
+                    nullValueColBuilder.append(",");
+                }
+            }
+            nullValueColBuilder.append("]");
 
             diffBuilder.setLength(0);
             diffBuilder.append("[");
@@ -602,7 +669,7 @@ public class DataCompareService implements IDataCompareService {
             missingColBuilder.append("]");
             differentModel.setMissingColumn(missingColBuilder.toString().replaceAll("\"", ""));
 
-
+            differentModel.setNullValueColumns(nullValueColBuilder.toString().replaceAll("\"", ""));
 
             differentModel.setKey(id);
             differentModel.setKeyColumn(uniqueIdField);
@@ -612,12 +679,15 @@ public class DataCompareService implements IDataCompareService {
                 differentModels.add(differentModel);
             } else if (!differentModel.getMissingColumn().equals("[]")) {
                 differentModels.add(differentModel);
+            } else if (!differentModel.getNullValueColumns().equals("[]")) {
+                differentModels.add(differentModel);
             }
         }
 
 
         // Identify records present only in File B and retain them in memory
         for (String id : mapRdbModern.keySet()) {
+            rdbModernIdData.add(id);
             if (!mapRdb.containsKey(id)) {
                 unmatchedRecordsRdbModern.put(id, mapRdbModern.get(id));
             }
