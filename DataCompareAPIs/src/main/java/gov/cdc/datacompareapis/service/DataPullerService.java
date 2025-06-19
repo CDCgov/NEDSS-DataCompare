@@ -43,7 +43,7 @@ public class DataPullerService implements IDataPullerService {
     private final JdbcTemplate rdbJdbcTemplate;
     private final JdbcTemplate rdbModernJdbcTemplate;
     private final IS3DataService s3DataService;
-    private final long batchId ;
+    private long batchId ;
     @Value("${kafka.topic.data-compare-topic}")
     String processorTopicName = "";
 
