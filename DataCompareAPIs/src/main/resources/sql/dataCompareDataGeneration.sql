@@ -613,24 +613,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'Job_flow_log',
-       		'RDB',
-       		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT Job_flow_log.*,
-                                                ROW_NUMBER() OVER (ORDER BY Job_flow_log.record_id ASC) AS RowNum
-                                         FROM Job_flow_log
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM Job_flow_log;',
-       		'record_id',
-       		'RowNum, record_id, create_dttm, update_dttm',
-       		1
-       		),
-       	(
        		'LDF_DATA',
        		'RDB',
        		'RDB_MODERN',
@@ -721,24 +703,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'PublicHealthCaseFact',
-       		'RDB',
-       		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT PublicHealthCaseFact.*,
-                                                ROW_NUMBER() OVER (ORDER BY PublicHealthCaseFact.public_health_case_uid ASC) AS RowNum
-                                         FROM PublicHealthCaseFact
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM PublicHealthCaseFact;',
-       		'public_health_case_uid',
-       		'RowNum, public_health_case_uid',
-       		1
-       		),
-       	(
        		'LAB_TEST',
        		'RDB',
        		'RDB_MODERN',
@@ -757,19 +721,19 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'LAB_REPORT_USER_COMMENT',
+       		'LAB_RPT_USER_COMMENT',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT LAB_REPORT_USER_COMMENT.*,
-                                                ROW_NUMBER() OVER (ORDER BY LAB_REPORT_USER_COMMENT.LAB_TEST_KEY ASC) AS RowNum
-                                         FROM LAB_REPORT_USER_COMMENT
+                                         SELECT DISTINCT LAB_RPT_USER_COMMENT.*,
+                                                ROW_NUMBER() OVER (ORDER BY LAB_RPT_USER_COMMENT.LAB_TEST_KEY ASC) AS RowNum
+                                         FROM LAB_RPT_USER_COMMENT
                                       )
                                       SELECT *
                                       FROM PaginatedResults
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
-                                      FROM LAB_REPORT_USER_COMMENT;',
+                                      FROM LAB_RPT_USER_COMMENT;',
        		'LAB_TEST_KEY',
        		'RowNum, LAB_TEST_KEY',
        		1
@@ -998,7 +962,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT CASE_COUNT.*,
                                                 ROW_NUMBER() OVER (ORDER BY CASE_COUNT.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM CaseCount
+                                         FROM Case_Count
                                       )
                                       SELECT *
                                       FROM PaginatedResults
@@ -1052,7 +1016,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT STD_HIV_DATAMART.*,
                                                 ROW_NUMBER() OVER (ORDER BY STD_HIV_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM STD HIV Datamart
+                                         FROM STD_HIV_DATAMART
                                       )
                                       SELECT *
                                       FROM PaginatedResults
@@ -1591,8 +1555,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                                         SELECT DISTINCT PERTUSSIS_SUSPECTED_SOURCE_FLD.*,
-                                                                ROW_NUMBER() OVER (ORDER BY PERTUSSIS_SUSPECTED_SOURCE_GRP.PERTUSSIS_SUSPECTED_SOURCE_GRP_KEY ASC) AS RowNum
+                                                         SELECT DISTINCT PERTUSSIS_SUSPECTED_SOURCE_GRP.*,
+                                                                ROW_NUMBER() OVER (ORDER BY PERTUSSIS_SUSPECTED_SOURCE_GRP.PERTUSSIS_SUSPECT_SRC_GRP_KEY ASC) AS RowNum
                                                          FROM PERTUSSIS_SUSPECTED_SOURCE_GRP
                                                       )
                                                       SELECT *
@@ -1600,8 +1564,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                                       FROM PERTUSSIS_SUSPECTED_SOURCE_GRP;',
-       		'PERTUSSIS_SUSPECTED_SOURCE_GRP_KEY',
-       		'RowNum, PERTUSSIS_SUSPECTED_SOURCE_GRPKEY',
+       		'PERTUSSIS_SUSPECT_SRC_GRP_KEY',
+       		'RowNum, PERTUSSIS_SUSPECT_SRC_GRP_KEY',
        		1
        		),
        	(
@@ -1699,7 +1663,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT D_TB_PAM/.*,
+                                         SELECT DISTINCT D_TB_PAM.*,
                                                 ROW_NUMBER() OVER (ORDER BY D_TB_PAM.D_TB_PAM_KEY ASC) AS RowNum
                                          FROM D_TB_PAM
                                       )
@@ -2025,7 +1989,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT Summary_Case_Group.*,
                                                 ROW_NUMBER() OVER (ORDER BY Summary_Case_Group.SUMMARY_CASE_SRC_KEY ASC) AS RowNum
-                                         FROM Summary_Case_Group/SUMMARY_REPORT_CASE
+                                         FROM Summary_Case_Group
                                       )
                                       SELECT *
                                       FROM PaginatedResults
@@ -2043,7 +2007,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                                          SELECT DISTINCT SUMMARY_REPORT_CASE.*,
                                                                 ROW_NUMBER() OVER (ORDER BY SUMMARY_REPORT_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                                         FROM Summary_Case_Group/SUMMARY_REPORT_CASE
+                                                         FROM SUMMARY_REPORT_CASE
                                                       )
                                                       SELECT *
                                                       FROM PaginatedResults
@@ -2595,24 +2559,6 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		1
        		),
        	(
-       		'Job_batch_log',
-       		'RDB',
-       		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                                         SELECT DISTINCT Job_batch_log.*,
-                                                                ROW_NUMBER() OVER (ORDER BY Job_batch_log.record_id ASC) AS RowNum
-                                                         FROM Job_batch_log
-                                                      )
-                                                      SELECT *
-                                                      FROM PaginatedResults
-                                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                                      FROM Job_batch_log;',
-       		'record_id',
-       		'RowNum, record_id, create_dttm, update_dttm',
-       		1
-       		),
-       	(
        		'LDF_GENERIC1',
        		'RDB',
        		'RDB_MODERN',
@@ -2880,11 +2826,4 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'INVESTIGATION_KEY',
        		'RowNum, INVESTIGATION_KEY',
        		1
-       		),
-
-
-
-
-
-
-
+       		)
