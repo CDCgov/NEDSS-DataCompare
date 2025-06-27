@@ -1312,7 +1312,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM CASE_LAB_DATAMART;',
-       		'INVESTIGATION_KEY',
+       		'INVESTIGATION_LOCAL_ID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
