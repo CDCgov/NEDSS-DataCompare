@@ -2593,22 +2593,23 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RowNum, COMPOSITE_KEY',
        		1
        		),
-       	(
+        (
        		'COVID_LAB_CELR_DATAMART',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-            SELECT DISTINCT  COVID_LAB_CELR_DATAMART.*,
-                   ROW_NUMBER() OVER (ORDER BY COVID_LAB_CELR_DATAMART.Testing_lab_specimen_ID ASC) AS RowNum
-            FROM COVID_LAB_CELR_DATAMART
-         )
-         SELECT *
-         FROM PaginatedResults
-         WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-         FROM COVID_LAB_CELR_DATAMART;',
-       		'Testing_lab_specimen_ID',
-       		'RowNum, Testing_lab_specimen_ID',
+       		' WITH PaginatedResults AS (
+                  SELECT  DISTINCT Patient_ID +''_''+ +CONVERT(VARCHAR,Specimen_collection_date_time) + ''_'' + TESTING_LAB_ID
+                  AS COMPOSITE_KEY, COVID_LAB_CELR_DATAMART.*,
+                         ROW_NUMBER() OVER (ORDER BY COVID_LAB_CELR_DATAMART.Testing_lab_specimen_ID ASC) AS RowNum
+                  FROM COVID_LAB_CELR_DATAMART
+               )
+               SELECT *
+               FROM PaginatedResults
+               WHERE RowNum BETWEEN :startRow AND :endRow;' ,
+               'SELECT COUNT(*)
+                  FROM COVID_LAB_CELR_DATAMART;'
+               'COMPOSITE_KEY' ,
+              'RowNum, COMPOSITE_KEY, File_created_date',
        		1
        		),
        	(
