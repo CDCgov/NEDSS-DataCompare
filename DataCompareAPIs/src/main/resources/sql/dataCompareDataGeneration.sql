@@ -826,7 +826,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'SELECT COUNT(*)
                                       FROM LAB_RESULT_COMMENT;',
        		'LAB_TEST_UID',
-       		'RowNum, LAB_TEST_UID',
+       		'RowNum, LAB_TEST_UID, LAB_RESULT_COMMENT_KEY, RESULT_COMMENT_GRP_KEY',
        		1
        		),
        	(
