@@ -1654,8 +1654,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_TB_HIV;',
-       		'D_TB_HIV_KEY',
-       		'RowNum, D_TB_HIV_KEY, LAST_CHG_TIME',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_TB_HIV_KEY',
        		1
        		),
        	(
@@ -1672,8 +1672,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_TB_PAM;',
-       		'D_TB_PAM_KEY',
-       		'RowNum, D_TB_PAM_KEY, LAST_CHG_TIME',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_TB_PAM_KEY',
        		1
        		),
        	(
@@ -1690,8 +1690,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_VAR_PAM;',
-       		'D_VAR_PAM_KEY',
-       		'RowNum, D_VAR_PAM_KEY',
+       		'VAR_PAM_UID',
+       		'RowNum, VAR_PAM_UID, D_VAR_PAM_KEY',
        		1
        		),
        	(
@@ -1708,8 +1708,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_ADDL_RISK;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_ADDL_RISK_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_ADDL_RISK_KEY, D_ADDL_RISK_GROUP_KEY',
        		1
        		),
        	(
@@ -1726,8 +1726,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_DISEASE_SITE;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_DISEASE_SITE_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_DISEASE_SITE_KEY, D_DISEASE_SITE_GROUP_KEY',
        		1
        		),
        	(
@@ -1744,8 +1744,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_GT_12_REAS;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_GT_12_REAS_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_GT_12_REAS_KEY, D_GT_12_REAS_GROUP_KEY',
        		1
        		),
        	(
@@ -1762,8 +1762,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_HC_PROV_TY_3;',
-       		'COMPOSITE_KEY',
-       		'RowNum , COMPOSITE_KEY, TB_PAM_UID, D_HC_PROV_TY_3_KEY',
+       		'TB_PAM_UID',
+       		'RowNum , TB_PAM_UID, D_HC_PROV_TY_3_KEY, D_HC_PROV_TY_3_GROUP_KEY',
        		1
        		),
        	(
@@ -1780,8 +1780,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_MOVE_CNTRY;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_MOVE_CNTRY_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_MOVE_CNTRY_KEY, D_MOVE_CNTRY_GROUP_KEY',
        		1
        		),
        	(
@@ -1798,8 +1798,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_MOVE_CNTY;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_MOVE_CNTY_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_MOVE_CNTY_KEY, D_MOVE_CNTY_GROUP_KEY',
        		1
        		),
        	(
@@ -1816,8 +1816,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_MOVE_STATE;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_MOVE_STATE_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_MOVE_STATE_KEY, D_MOVE_STATE_GROUP_KEY',
        		1
        		),
        	(
@@ -1834,8 +1834,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_MOVED_WHERE;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_MOVED_WHERE_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_MOVED_WHERE_KEY, D_MOVED_WHERE_GROUP_KEY',
        		1
        		),
        	(
@@ -1852,8 +1852,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_OUT_OF_CNTRY;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_OUT_OF_CNTRY_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_OUT_OF_CNTRY_KEY, D_OUT_OF_CNTRY_GROUP_KEY',
        		1
        		),
        	(
@@ -1870,12 +1870,12 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_PCR_SOURCE;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, VAR_PAM_UID, D_PCR_SOURCE_KEY',
+       		'VAR_PAM_UID',
+       		'RowNum, VAR_PAM_UID, D_PCR_SOURCE_KEY, D_PCR_SOURCE_GROUP_KEY',
        		1
        		),
        	(
-       		'D_RASH_LOC_GE',
+       		'D_RASH_LOC_GEN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
@@ -1888,8 +1888,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_RASH_LOC_GEN;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, VAR_PAM_UID, D_RASH_LOC_GEN_KEY',
+       		'VAR_PAM_UID',
+       		'RowNum, VAR_PAM_UID, D_RASH_LOC_GEN_KEY, D_RASH_LOC_GEN_GROUP_KEY',
        		1
        		),
        	(
@@ -1906,8 +1906,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_SMR_EXAM_TY;',
-       		'COMPOSITE_KEY',
-       		'RowNum, COMPOSITE_KEY, TB_PAM_UID, D_SMR_EXAM_TY_KEY',
+       		'TB_PAM_UID',
+       		'RowNum, TB_PAM_UID, D_SMR_EXAM_TY_KEY, D_SMR_EXAM_TY_GROUP_KEY',
        		1
        		),
        	(
