@@ -879,8 +879,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM LAB101;',
-       		'RESULTED_LAB_TEST_KEY',
-       		'RowNum, RESULTED_LAB_TEST_KEY',
+       		'LAB_RPT_LOCAL_ID',
+       		'RowNum, LAB_RPT_LOCAL_ID, RESULTED_LAB_TEST_KEY, RDB_LAST_REFRESH_TIME',
        		1
        		),
        	(
