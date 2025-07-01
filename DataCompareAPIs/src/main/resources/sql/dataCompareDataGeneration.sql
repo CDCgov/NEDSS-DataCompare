@@ -862,7 +862,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'SELECT COUNT(*)
                                       FROM LAB100;',
        		'LAB_RPT_LOCAL_ID',
-       		'RowNum, LAB_RPT_LOCAL_ID',
+       		'RowNum, LAB_RPT_LOCAL_ID, RESULTED_LAB_TEST_KEY, INVESTIGATION_KEYS, RDB_LAST_REFRESH_TIME',
        		1
        		),
        	(
