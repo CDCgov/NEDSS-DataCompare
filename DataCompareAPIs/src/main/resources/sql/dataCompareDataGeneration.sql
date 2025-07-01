@@ -2123,9 +2123,12 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'SELECT COUNT(*)
                                       FROM LDF_FOODBORNE;',
        		'INVESTIGATION_KEY',
-       		'RowNum, INVESTIGATION_KEY',
-       		1
-       		),
+            'RowNum, INVESTIGATION_KEY, L_11310430LDF_SANDIEGO, L_11310752newfield_2_5_1_2_3_,
+            L_11310760LDF_added_after_tes, L_11311018Confirmation_method, L_11311305newdemofield123,
+            L_11311544retestbug, L_11485487retest_bug2, L_11485535may16field, L_11485561LDF_added_after_tes,
+            L_11310430LDF_SANDIEGO, L_11311544_retestbug, L_11485561_LDF_added_after)te',
+            1
+            ),
        	(
        		'LDF_MUMPS',
        		'RDB',
