@@ -2050,8 +2050,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM TB_DATAMART;',
-       		'INVESTIGATION_KEY',
-       		'RowNum, INVESTIGATION_KEY',
+       		'INVESTIGATION_LOCAL_ID',
+       		'RowNum, INVESTIGATION_LOCAL_ID, INVESTIGATION_KEY',
        		1
        		),
        	(
@@ -2068,8 +2068,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM TB_HIV_DATAMART;',
-       		'INVESTIGATION_KEY',
-       		'RowNum, INVESTIGATION_KEY',
+       		'INVESTIGATION_LOCAL_ID',
+       		'RowNum, INVESTIGATION_LOCAL_ID, INVESTIGATION_KEY',
        		1
        		),
        	(
