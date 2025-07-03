@@ -1699,8 +1699,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_ADDL_RISK_KEY) AS COMPOSITE_KEY, D_ADDL_RISK.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_ADDL_RISK.TB_PAM_UID, D_ADDL_RISK.D_ADDL_RISK_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY, D_ADDL_RISK.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_ADDL_RISK.TB_PAM_UID ASC, D_ADDL_RISK.SEQ_NBR ASC) AS RowNum
                                          FROM D_ADDL_RISK
                                       )
                                       SELECT *
@@ -1717,8 +1717,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_DISEASE_SITE_KEY) AS COMPOSITE_KEY, D_DISEASE_SITE.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_DISEASE_SITE.TB_PAM_UID,D_DISEASE_SITE.D_DISEASE_SITE_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY, D_DISEASE_SITE.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_DISEASE_SITE.TB_PAM_UID ASC, D_DISEASE_SITE.SEQ_NBR ASC) AS RowNum
                                          FROM D_DISEASE_SITE
                                       )
                                       SELECT *
@@ -1735,8 +1735,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_GT_12_REAS_KEY) AS COMPOSITE_KEY ,D_GT_12_REAS.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_GT_12_REAS.TB_PAM_UID,D_GT_12_REAS.D_GT_12_REAS_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY ,D_GT_12_REAS.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_GT_12_REAS.TB_PAM_UID ASC, D_GT_12_REAS.SEQ_NBR ASC) AS RowNum
                                          FROM D_GT_12_REAS
                                       )
                                       SELECT *
@@ -1753,8 +1753,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_HC_PROV_TY_3_KEY) AS COMPOSITE_KEY , D_HC_PROV_TY_3.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_HC_PROV_TY_3.TB_PAM_UID, D_HC_PROV_TY_3.D_HC_PROV_TY_3_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY , D_HC_PROV_TY_3.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_HC_PROV_TY_3.TB_PAM_UID ASC, D_HC_PROV_TY_3.SEQ_NBR ASC) AS RowNum
                                          FROM D_HC_PROV_TY_3
                                       )
                                       SELECT *
@@ -1771,8 +1771,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVE_CNTRY_KEY) AS COMPOSITE_KEY , D_MOVE_CNTRY.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_MOVE_CNTRY.TB_PAM_UID,D_MOVE_CNTRY.D_MOVE_CNTRY_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY , D_MOVE_CNTRY.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_MOVE_CNTRY.TB_PAM_UID ASC, D_MOVE_CNTRY.SEQ_NBR ASC) AS RowNum
                                          FROM D_MOVE_CNTRY
                                       )
                                       SELECT *
@@ -1789,8 +1789,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVE_CNTY_KEY) AS COMPOSITE_KEY , D_MOVE_CNTY.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_MOVE_CNTY.TB_PAM_UID,D_MOVE_CNTY.D_MOVE_CNTY_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY , D_MOVE_CNTY.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_MOVE_CNTY.TB_PAM_UID ASC, D_MOVE_CNTY.SEQ_NBR ASC) AS RowNum
                                          FROM D_MOVE_CNTY
                                       )
                                       SELECT *
@@ -1807,8 +1807,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVE_STATE_KEY) AS COMPOSITE_KEY ,  D_MOVE_STATE.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_MOVE_STATE.TB_PAM_UID , D_MOVE_STATE.D_MOVE_STATE_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY ,  D_MOVE_STATE.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_MOVE_STATE.TB_PAM_UID ASC, D_MOVE_STATE.SEQ_NBR ASC) AS RowNum
                                          FROM D_MOVE_STATE
                                       )
                                       SELECT *
@@ -1825,8 +1825,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_MOVED_WHERE_KEY) AS COMPOSITE_KEY ,  D_MOVED_WHERE.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_MOVED_WHERE.TB_PAM_UID,D_MOVED_WHERE.D_MOVED_WHERE_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY ,  D_MOVED_WHERE.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_MOVED_WHERE.TB_PAM_UID ASC, D_MOVED_WHERE.SEQ_NBR ASC) AS RowNum
                                          FROM D_MOVED_WHERE
                                       )
                                       SELECT *
@@ -1843,8 +1843,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_OUT_OF_CNTRY_KEY) AS COMPOSITE_KEY ,  D_OUT_OF_CNTRY.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_OUT_OF_CNTRY.TB_PAM_UID, D_OUT_OF_CNTRY.D_OUT_OF_CNTRY_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY ,  D_OUT_OF_CNTRY.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_OUT_OF_CNTRY.TB_PAM_UID ASC, D_OUT_OF_CNTRY.SEQ_NBR ASC) AS RowNum
                                          FROM D_OUT_OF_CNTRY
                                       )
                                       SELECT *
@@ -1861,8 +1861,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,VAR_PAM_UID)+''_''+CONVERT(VARCHAR,D_PCR_SOURCE_KEY) AS COMPOSITE_KEY , D_PCR_SOURCE.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_PCR_SOURCE.VAR_PAM_UID,D_PCR_SOURCE.D_PCR_SOURCE_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,VAR_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY , D_PCR_SOURCE.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_PCR_SOURCE.VAR_PAM_UID ASC, D_PCR_SOURCE.SEQ_NBR ASC) AS RowNum
                                          FROM D_PCR_SOURCE
                                       )
                                       SELECT *
@@ -1879,8 +1879,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,VAR_PAM_UID)+''_''+CONVERT(VARCHAR,D_RASH_LOC_GEN_KEY) AS COMPOSITE_KEY ,  D_RASH_LOC_GEN.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_RASH_LOC_GEN.VAR_PAM_UID,D_RASH_LOC_GEN.D_RASH_LOC_GEN_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,VAR_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY ,  D_RASH_LOC_GEN.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_RASH_LOC_GEN.VAR_PAM_UID ASC, D_RASH_LOC_GEN.SEQ_NBR ASC) AS RowNum
                                          FROM D_RASH_LOC_GEN
                                       )
                                       SELECT *
@@ -1897,8 +1897,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,D_SMR_EXAM_TY_KEY) AS COMPOSITE_KEY ,  D_SMR_EXAM_TY.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_SMR_EXAM_TY.TB_PAM_UID,D_SMR_EXAM_TY.D_SMR_EXAM_TY_KEY ASC) AS RowNum
+                                         SELECT DISTINCT CONVERT(VARCHAR,TB_PAM_UID)+''_''+CONVERT(VARCHAR,ISNULL(SEQ_NBR,1)) AS COMPOSITE_KEY ,  D_SMR_EXAM_TY.*,
+                                                ROW_NUMBER() OVER (ORDER BY D_SMR_EXAM_TY.TB_PAM_UID ASC, D_SMR_EXAM_TY.SEQ_NBR ASC) AS RowNum
                                          FROM D_SMR_EXAM_TY
                                       )
                                       SELECT *
@@ -1915,13 +1915,13 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                                                        SELECT DISTINCT LDF_HEPATITIS.*,
-                                                                               ROW_NUMBER() OVER (ORDER BY LDF_HEPATITIS.INVESTIGATION_KEY ASC) AS RowNum
-                                                                        FROM LDF_HEPATITIS
-                                                                     )
-                                                                     SELECT *
-                                                                     FROM PaginatedResults
-                                                                     WHERE RowNum BETWEEN :startRow AND :endRow;',
+                                          SELECT DISTINCT LDF_HEPATITIS.*,
+                                                 ROW_NUMBER() OVER (ORDER BY LDF_HEPATITIS.INVESTIGATION_KEY ASC) AS RowNum
+                                          FROM LDF_HEPATITIS
+                                   )
+                                   SELECT *
+                                   FROM PaginatedResults
+                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                                                      FROM LDF_HEPATITIS;',
        		'INVESTIGATION_KEY',
