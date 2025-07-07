@@ -1303,8 +1303,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CASE_LAB_DATAMART.*,
-                                                ROW_NUMBER() OVER (ORDER BY CASE_LAB_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
+                                         SELECT DISTINCT INVESTIGATION_LOCAL_ID+''_''+CONVERT(VARCHAR(24), PHC_ADD_TIME, 121) AS COMPOSITE_KEY, CASE_LAB_DATAMART.*,
+                                                ROW_NUMBER() OVER (ORDER BY CASE_LAB_DATAMART.INVESTIGATION_LOCAL_ID ASC, CASE_LAB_DATAMART.PHC_ADD_TIME ASC) AS RowNum
                                          FROM CASE_LAB_DATAMART
                                       )
                                       SELECT *
@@ -1312,8 +1312,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM CASE_LAB_DATAMART;',
-       		'INVESTIGATION_LOCAL_ID',
-       		'RowNum, INVESTIGATION_KEY',
+       		'COMPOSITE_KEY',
+       		'RowNum, COMPOSITE_KEY, INVESTIGATION_KEY',
        		1
        		),
        	(
