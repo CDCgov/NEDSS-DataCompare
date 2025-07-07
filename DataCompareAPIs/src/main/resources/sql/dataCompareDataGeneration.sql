@@ -2610,7 +2610,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                FROM PaginatedResults
                WHERE RowNum BETWEEN :startRow AND :endRow;' ,
                'SELECT COUNT(*)
-                  FROM COVID_LAB_CELR_DATAMART;'
+                  FROM COVID_LAB_CELR_DATAMART;',
                'COMPOSITE_KEY' ,
               'RowNum, COMPOSITE_KEY, File_created_date',
        		1
