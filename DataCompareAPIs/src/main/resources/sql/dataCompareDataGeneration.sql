@@ -852,17 +852,23 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT LAB100.*,
-                                                ROW_NUMBER() OVER (ORDER BY LAB100.LAB_RPT_LOCAL_ID ASC) AS RowNum
-                                         FROM LAB100
+                                         SELECT DISTINCT LAB100.LAB_RPT_LOCAL_ID+''_''+CONVERT(VARCHAR, LAB_TEST.LAB_TEST_UID) AS COMPOSITE_KEY, LAB100.*,
+                                                 ROW_NUMBER() OVER (ORDER BY LAB100.LAB_RPT_LOCAL_ID ASC, lab_test.lab_test_uid ASC) AS RowNum
+                                          FROM LAB100 
+                                          INNER JOIN LAB_TEST 
+                                                 ON LAB_TEST.LAB_TEST_KEY = LAB100.RESULTED_LAB_TEST_KEY 
+                                                 AND LAB_TEST.LAB_RPT_LOCAL_ID = LAB100.LAB_RPT_LOCAL_ID
                                       )
                                       SELECT *
                                       FROM PaginatedResults
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
-                                      FROM LAB100;',
-       		'LAB_RPT_LOCAL_ID',
-       		'RowNum, LAB_RPT_LOCAL_ID, RESULTED_LAB_TEST_KEY, INVESTIGATION_KEYS, RDB_LAST_REFRESH_TIME',
+                                      FROM LAB100
+                                      INNER JOIN LAB_TEST 
+                                                 ON LAB_TEST.LAB_TEST_KEY = LAB100.RESULTED_LAB_TEST_KEY 
+                                                 AND LAB_TEST.LAB_RPT_LOCAL_ID = LAB100.LAB_RPT_LOCAL_ID;',
+       		'COMPOSITE_KEY',
+       		'RowNum, COMPOSITE_KEY, LAB_RPT_LOCAL_ID, PATIENT_KEY, RESULTED_LAB_TEST_KEY, MORB_RPT_KEY, INVESTIGATION_KEYS, LDF_GROUP_KEY, RDB_LAST_REFRESH_TIME',
        		1
        		),
        	(
@@ -870,16 +876,22 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT LAB101.*,
-                                                ROW_NUMBER() OVER (ORDER BY LAB101.RESULTED_LAB_TEST_KEY ASC) AS RowNum
-                                         FROM LAB101
+                                         SELECT DISTINCT LAB101.LAB_RPT_LOCAL_ID+''_''+CONVERT(VARCHAR, LAB_TEST.LAB_TEST_UID) AS COMPOSITE_KEY, LAB101.*,
+                                                 ROW_NUMBER() OVER (ORDER BY LAB101.LAB_RPT_LOCAL_ID ASC, LAB_TEST.LAB_TEST_UID ASC) AS RowNum
+                                          FROM LAB101 
+                                          INNER JOIN LAB_TEST 
+                                                 ON LAB_TEST.LAB_TEST_KEY = LAB101.RESULTED_LAB_TEST_KEY 
+                                                 AND LAB_TEST.LAB_RPT_LOCAL_ID = LAB101.LAB_RPT_LOCAL_ID
                                       )
                                       SELECT *
                                       FROM PaginatedResults
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
-                                      FROM LAB101;',
-       		'LAB_RPT_LOCAL_ID',
+                                      FROM LAB101
+                                      INNER JOIN LAB_TEST 
+                                          ON LAB_TEST.LAB_TEST_KEY = LAB101.RESULTED_LAB_TEST_KEY 
+                                          AND LAB_TEST.LAB_RPT_LOCAL_ID = LAB101.LAB_RPT_LOCAL_ID;',
+       		'COMPOSITE_KEY',
        		'RowNum, LAB_RPT_LOCAL_ID, RESULTED_LAB_TEST_KEY, RDB_LAST_REFRESH_TIME',
        		1
        		),
