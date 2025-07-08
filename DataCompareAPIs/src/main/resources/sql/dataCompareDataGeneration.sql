@@ -618,9 +618,30 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
                                          SELECT DISTINCT 
-                                                 CONVERT(VARCHAR,ISNULL(LDF_GROUP.BUSINESS_OBJECT_UID, 1))+''_''+CONVERT(VARCHAR,ISNULL(LDF_DATA.CDC_NATIONAL_ID, 1))+''_''+CONVERT(VARCHAR,ISNULL( LDF_DATA.DISPLAY_ORDER_NUMBER,1))+''_''+CONVERT(VARCHAR,ISNULL( LDF_DATA.import_version_nbr,1))+''_''+LOWER(CONVERT(VARCHAR(32), ISNULL(HASHBYTES(''MD5'', LDF_DATA.LABEL_TXT),1), 2)) AS COMPOSITE_KEY,
-                                                 LDF_DATA.*,
-                                                 ROW_NUMBER() OVER (ORDER BY LDF_GROUP.BUSINESS_OBJECT_UID ASC, LDF_DATA.CDC_NATIONAL_ID ASC, LDF_DATA.DISPLAY_ORDER_NUMBER ASC, LDF_DATA.import_version_nbr ASC, LDF_DATA.LABEL_TXT ASC ) AS RowNum
+                                                 CONVERT(VARCHAR,ISNULL(LDF_GROUP.BUSINESS_OBJECT_UID, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.LDF_COLUMN_TYPE, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.CONDITION_CD, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.CDC_NATIONAL_ID, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.CLASS_CD, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.CODE_SET_NM, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.BUSINESS_OBJ_NM, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.DISPLAY_ORDER_NUMBER, 1))+''_''+
+                                                 CONVERT(VARCHAR,ISNULL(LDF_DATA.IMPORT_VERSION_NBR, 1))+''_''+
+                                                 LOWER(CONVERT(VARCHAR(32), ISNULL(HASHBYTES(''MD5'', LDF_DATA.LABEL_TXT),1), 2)
+                                          ) AS COMPOSITE_KEY,
+                                          LDF_DATA.*,
+                                          ROW_NUMBER() OVER (ORDER BY 
+                                                 LDF_GROUP.BUSINESS_OBJECT_UID ASC, 
+                                                 LDF_DATA.LDF_COLUMN_TYPE ASC,
+                                                 LDF_DATA.CONDITION_CD ASC,
+                                                 LDF_DATA.CDC_NATIONAL_ID ASC, 
+                                                 LDF_DATA.CLASS_CD ASC, 
+                                                 LDF_DATA.CODE_SET_NM ASC, 
+                                                 LDF_DATA.BUSINESS_OBJ_NM ASC,
+                                                 LDF_DATA.DISPLAY_ORDER_NUMBER ASC, 
+                                                 LDF_DATA.import_version_nbr ASC, 
+                                                 LDF_DATA.LABEL_TXT ASC 
+                                          ) AS RowNum
                                           FROM LDF_DATA 
                                           INNER JOIN LDF_GROUP ON LDF_GROUP.LDF_GROUP_KEY = LDF_DATA.LDF_GROUP_KEY
                                       )
