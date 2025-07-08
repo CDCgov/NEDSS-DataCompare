@@ -193,6 +193,10 @@ public class DataPullerService implements IDataPullerService {
 
                 kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
                 logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
+
+                // Set run_now to false and save to database
+                config.setRunNow(false);
+                dataCompareConfigRepository.save(config);
             }
             else {
                 logRdb.setStatus("Error");
