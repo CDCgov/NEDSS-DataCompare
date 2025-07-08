@@ -139,7 +139,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                'SELECT COUNT(*)
                FROM LDF_GROUP;',
                'BUSINESS_OBJECT_UID',
-               'RowNum',
+               'RowNum, LDF_GROUP_KEY',
                1
        ),
        (
@@ -617,17 +617,21 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT LDF_DATA.*,
-                                                ROW_NUMBER() OVER (ORDER BY LDF_DATA.LDF_GROUP_KEY ASC) AS RowNum
-                                         FROM LDF_DATA
+                                         SELECT DISTINCT 
+                                                 CONVERT(VARCHAR,ISNULL(LDF_GROUP.BUSINESS_OBJECT_UID, 1))+''_''+CONVERT(VARCHAR,ISNULL(LDF_DATA.CDC_NATIONAL_ID, 1))+''_''+CONVERT(VARCHAR,ISNULL( LDF_DATA.DISPLAY_ORDER_NUMBER,1))+''_''+CONVERT(VARCHAR,ISNULL( LDF_DATA.import_version_nbr,1))+''_''+LOWER(CONVERT(VARCHAR(32), ISNULL(HASHBYTES(''MD5'', LDF_DATA.LABEL_TXT),1), 2)) AS COMPOSITE_KEY,
+                                                 LDF_DATA.*,
+                                                 ROW_NUMBER() OVER (ORDER BY LDF_GROUP.BUSINESS_OBJECT_UID ASC, LDF_DATA.CDC_NATIONAL_ID ASC, LDF_DATA.DISPLAY_ORDER_NUMBER ASC, LDF_DATA.import_version_nbr ASC, LDF_DATA.LABEL_TXT ASC ) AS RowNum
+                                          FROM LDF_DATA 
+                                          INNER JOIN LDF_GROUP ON LDF_GROUP.LDF_GROUP_KEY = LDF_DATA.LDF_GROUP_KEY
                                       )
                                       SELECT *
                                       FROM PaginatedResults
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
-                                      FROM LDF_DATA;',
-       		'LDF_DATA_KEY',
-       		'RowNum, LDF_DATA_KEY',
+                                      FROM LDF_DATA
+                                      INNER JOIN LDF_GROUP ON LDF_GROUP.LDF_GROUP_KEY = LDF_DATA.LDF_GROUP_KEY;',
+       		'COMPOSITE_KEY',
+       		'RowNum, COMPOSITE_KEY, LDF_DATA_KEY, LDF_GROUP_KEY',
        		1
        		),
        	(
