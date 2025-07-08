@@ -312,12 +312,12 @@ public class DataCompareService implements IDataCompareService {
                         JsonElement valueRdbModern = recordRdbModern.get(key);
                         recordRdb.remove(key);
                         recordRdbModern.remove(key);
-                        if (valueRdb==null && valueRdbModern==null){
+                        if (valueRdb==null && valueRdbModern == null){
                             nullValueColBuilder.setLength(0);
                             nullValueColBuilder.append(key);
                             nullValueColList.add(nullValueColBuilder.toString());
                         }
-                        if (!valueRdb.equals(valueRdbModern)) {
+                        else if (!valueRdb.equals(valueRdbModern)) {
 
 
                             if (valueRdbModern != null) {
@@ -424,12 +424,12 @@ public class DataCompareService implements IDataCompareService {
 
                         recordRdb.remove(key);
                         recordRdbModern.remove(key);
-                        if (valueRdb==null && valueRdbModern==null){
+                        if (valueRdb==null && valueRdbModern == null){
                             nullValueColBuilder.setLength(0);
                             nullValueColBuilder.append(key);
                             nullValueColList.add(nullValueColBuilder.toString());
                         }
-                        if (!valueRdbModern.equals(valueRdb)) {
+                        else if (!valueRdbModern.equals(valueRdb)) {
 
 
                             if (valueRdb != null) {
@@ -584,7 +584,7 @@ public class DataCompareService implements IDataCompareService {
                     nullValueColBuilder.append(key);
                     nullValueColList.add(nullValueColBuilder.toString());
                 }
-                if (!valueRdb.equals(valueRdbModern)) {
+                else if(!valueRdb.equals(valueRdbModern)) {
                     if (valueRdbModern != null) {
                         diffBuilder.setLength(0);
                         diffBuilder.append(key).append(": ")
