@@ -15,3 +15,9 @@ CREATE TABLE Data_Compare_Config
     created_by VARCHAR(50) DEFAULT '0',
     updated_by VARCHAR(50) DEFAULT '0'
 );
+
+-- Add new columns for supporting different target table in same database
+ALTER TABLE Data_Compare_Config
+ADD target_table_name VARCHAR(200),
+    target_query VARCHAR(MAX),
+    target_query_count VARCHAR(MAX);
