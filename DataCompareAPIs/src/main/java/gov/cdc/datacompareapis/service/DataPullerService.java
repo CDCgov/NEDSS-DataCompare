@@ -128,77 +128,6 @@ public class DataPullerService implements IDataPullerService {
         boolean errorDuringPullingDataTarget = false;
         String stackTraceTarget = null;
 
-        // ODSE-to-ODSE logic for different tables
-        if ("NBS_ODSE".equalsIgnoreCase(config.getSourceDb()) && "NBS_ODSE".equalsIgnoreCase(config.getTargetDb())) {
-            sourceCount = odseJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
-            targetCount = odseJdbcTemplate.queryForObject(config.getTargetQueryCount(), Integer.class);
-            if (sourceCount != null && targetCount != null) {
-                int totalSourcePages = (int) Math.ceil((double) sourceCount / pullLimit);
-                int totalTargetPages = (int) Math.ceil((double) targetCount / pullLimit);
-
-                for (int i = 0; i < totalSourcePages; i++) {
-                    try {
-                        if (errorDuringPullingDataSource) break;
-                        int startRow = i * pullLimit + 1;
-                        int endRow = (i + 1) * pullLimit;
-                        String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
-                        List<Map<String, Object>> returnData = odseJdbcTemplate.queryForList(query);
-                        String rawJsonData = gson.toJson(returnData);
-                        s3DataService.persistToS3MultiPart(config.getSourceDb(), rawJsonData, config.getTableName(), currentTime, i);
-                    } catch (Exception e) {
-                        stackTraceSource = getStackTraceAsString(e);
-                        logger.error(e.getMessage());
-                        errorDuringPullingDataSource = true;
-                    }
-                }
-                for (int i = 0; i < totalTargetPages; i++) {
-                    try {
-                        if (errorDuringPullingDataTarget) break;
-                        int startRow = i * pullLimit + 1;
-                        int endRow = (i + 1) * pullLimit;
-                        String query = preparingPaginationQuery(config.getTargetQuery(), startRow, endRow);
-                        List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
-                        String rawJsonData = gson.toJson(returnData);
-                        s3DataService.persistToS3MultiPart(config.getTargetDb(), rawJsonData, config.getTargetTableName(), currentTime, i);
-                    } catch (Exception e) {
-                        stackTraceTarget = getStackTraceAsString(e);
-                        logger.error(e.getMessage());
-                        errorDuringPullingDataTarget = true;
-                    }
-                }
-                dataCompareLogSource.setStatusDesc(stackTraceSource);
-                var logSource = dataCompareLogRepository.save(dataCompareLogSource);
-                dataCompareLogTarget.setStatusDesc(stackTraceTarget);
-                var logTarget = dataCompareLogRepository.save(dataCompareLogTarget);
-                if (!errorDuringPullingDataSource && !errorDuringPullingDataTarget) {
-                    PullerEventModel pullerEventModel = new PullerEventModel();
-                    pullerEventModel.setSourceFileName(config.getTableName());
-                    pullerEventModel.setTargetFileName(config.getTargetTableName());
-                    pullerEventModel.setFirstLayerOdseSourceFolderName(config.getSourceDb());
-                    pullerEventModel.setFirstLayerOdseTargetFolderName(config.getTargetDb());
-                    pullerEventModel.setSecondLayerFolderName(config.getTableName());
-                    pullerEventModel.setKeyColumn(config.getKeyColumns());
-                    pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
-                    String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
-                    pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
-                    pullerEventModel.setOdseSourceMaxIndex(totalSourcePages);
-                    pullerEventModel.setOdseTargetMaxIndex(totalTargetPages);
-                    pullerEventModel.setLogIdOdseSource(logSource.getDcLogId());
-                    pullerEventModel.setLogIdOdseTarget(logTarget.getDcLogId());
-                    String pullerEventString = gson.toJson(pullerEventModel);
-                    kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
-                    logger.info("PULLER IS COMPLETED FOR {} and {}", config.getTableName(), config.getTargetTableName());
-//                    config.setRunNow(false);
-                    dataCompareConfigRepository.save(config);
-                } else {
-                    logSource.setStatus("Error");
-                    logTarget.setStatus("Error");
-                    dataCompareLogRepository.save(logSource);
-                    dataCompareLogRepository.save(logTarget);
-                }
-            }
-        }
-
         if("RDB".equalsIgnoreCase(config.getSourceDb()) && "RDB_MODERN".equalsIgnoreCase(config.getTargetDb())) {
             sourceCount = rdbJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
             targetCount = rdbModernJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
@@ -274,11 +203,83 @@ public class DataPullerService implements IDataPullerService {
                     kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
                     logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
 
-                    // Set run_now to false and save to database
-//                    config.setRunNow(false);
+                    config.setRunNow(false);
                     dataCompareConfigRepository.save(config);
                 }
                 else {
+                    logSource.setStatus("Error");
+                    logTarget.setStatus("Error");
+                    dataCompareLogRepository.save(logSource);
+                    dataCompareLogRepository.save(logTarget);
+                }
+            }
+        }
+
+        // ODSE-to-ODSE logic for different tables
+        if ("NBS_ODSE".equalsIgnoreCase(config.getSourceDb()) && "NBS_ODSE".equalsIgnoreCase(config.getTargetDb())) {
+            sourceCount = odseJdbcTemplate.queryForObject(config.getQueryCount(), Integer.class);
+            targetCount = odseJdbcTemplate.queryForObject(config.getTargetQueryCount(), Integer.class);
+            if (sourceCount != null && targetCount != null) {
+                int totalSourcePages = (int) Math.ceil((double) sourceCount / pullLimit);
+                int totalTargetPages = (int) Math.ceil((double) targetCount / pullLimit);
+
+                for (int i = 0; i < totalSourcePages; i++) {
+                    try {
+                        if (errorDuringPullingDataSource) break;
+                        int startRow = i * pullLimit + 1;
+                        int endRow = (i + 1) * pullLimit;
+                        String query = preparingPaginationQuery(config.getQuery(), startRow, endRow);
+                        List<Map<String, Object>> returnData = odseJdbcTemplate.queryForList(query);
+                        String rawJsonData = gson.toJson(returnData);
+                        s3DataService.persistToS3MultiPart(config.getSourceDb(), rawJsonData, config.getTableName(), currentTime, i);
+                    } catch (Exception e) {
+                        stackTraceSource = getStackTraceAsString(e);
+                        logger.error(e.getMessage());
+                        errorDuringPullingDataSource = true;
+                    }
+                }
+                for (int i = 0; i < totalTargetPages; i++) {
+                    try {
+                        if (errorDuringPullingDataTarget) break;
+                        int startRow = i * pullLimit + 1;
+                        int endRow = (i + 1) * pullLimit;
+                        String query = preparingPaginationQuery(config.getTargetQuery(), startRow, endRow);
+                        List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
+                        String rawJsonData = gson.toJson(returnData);
+                        s3DataService.persistToS3MultiPart(config.getTargetDb(), rawJsonData, config.getTargetTableName(), currentTime, i);
+                    } catch (Exception e) {
+                        stackTraceTarget = getStackTraceAsString(e);
+                        logger.error(e.getMessage());
+                        errorDuringPullingDataTarget = true;
+                    }
+                }
+                dataCompareLogSource.setStatusDesc(stackTraceSource);
+                var logSource = dataCompareLogRepository.save(dataCompareLogSource);
+                dataCompareLogTarget.setStatusDesc(stackTraceTarget);
+                var logTarget = dataCompareLogRepository.save(dataCompareLogTarget);
+                if (!errorDuringPullingDataSource && !errorDuringPullingDataTarget) {
+                    PullerEventModel pullerEventModel = new PullerEventModel();
+                    pullerEventModel.setSourceFileName(config.getTableName());
+                    pullerEventModel.setTargetFileName(config.getTargetTableName());
+                    pullerEventModel.setFirstLayerOdseSourceFolderName(config.getSourceDb());
+                    pullerEventModel.setFirstLayerOdseTargetFolderName(config.getTargetDb());
+                    pullerEventModel.setSecondLayerFolderName(config.getTableName());
+                    pullerEventModel.setKeyColumn(config.getKeyColumns());
+                    pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
+                    String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
+                    pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
+                    pullerEventModel.setOdseSourceMaxIndex(totalSourcePages);
+                    pullerEventModel.setOdseTargetMaxIndex(totalTargetPages);
+                    pullerEventModel.setLogIdOdseSource(logSource.getDcLogId());
+                    pullerEventModel.setLogIdOdseTarget(logTarget.getDcLogId());
+                    String pullerEventString = gson.toJson(pullerEventModel);
+
+                    kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
+                    logger.info("PULLER IS COMPLETED FOR {} and {}", config.getTableName(), config.getTargetTableName());
+
+                    config.setRunNow(false);
+                    dataCompareConfigRepository.save(config);
+                } else {
                     logSource.setStatus("Error");
                     logTarget.setStatus("Error");
                     dataCompareLogRepository.save(logSource);

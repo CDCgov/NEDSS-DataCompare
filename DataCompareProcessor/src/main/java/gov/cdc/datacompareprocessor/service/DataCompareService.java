@@ -105,116 +105,100 @@ public class DataCompareService implements IDataCompareService {
             }
         }
 
-//        Optional<DataCompareLog> logResultRdb = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdb());
-//        DataCompareLog logRdb = new DataCompareLog();
-//        String stackTrace;
-//        if (logResultRdb.isPresent()) {
-//            logRdb = logResultRdb.get();
-//        }
-//
-//        Optional<DataCompareLog> logResultRdbModern = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdbModern());
-//        DataCompareLog logRdbModern = new DataCompareLog();
-//        String stackTraceModern;
-//        if (logResultRdbModern.isPresent()) {
-//            logRdbModern = logResultRdbModern.get();
-//        }
-
-
         boolean error = false;
         int index = 0;
-//        if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
-            try {
-                for (int i = 0; i < maxIndex; i++) {
-                    String sourcePath = "";
-                    String targetPath = "";
-                    if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
-                        sourcePath = pullerEventModel.getFirstLayerRdbFolderName()
-                                + "/" + pullerEventModel.getSecondLayerFolderName()
-                                + "/" + pullerEventModel.getThirdLayerFolderName()
-                                + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
-                        targetPath  = pullerEventModel.getFirstLayerRdbModernFolderName()
-                                + "/" + pullerEventModel.getSecondLayerFolderName()
-                                + "/" + pullerEventModel.getThirdLayerFolderName()
-                                + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
-                    }
-
-                    if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
-                        sourcePath = pullerEventModel.getFirstLayerOdseSourceFolderName()
-                            + "/" + pullerEventModel.getSourceFileName()
+        try {
+            for (int i = 0; i < maxIndex; i++) {
+                String sourcePath = "";
+                String targetPath = "";
+                if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
+                    sourcePath = pullerEventModel.getFirstLayerRdbFolderName()
+                            + "/" + pullerEventModel.getSecondLayerFolderName()
                             + "/" + pullerEventModel.getThirdLayerFolderName()
                             + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
-                        targetPath  = pullerEventModel.getFirstLayerOdseTargetFolderName()
-                            + "/" + pullerEventModel.getTargetFileName()
+                    targetPath  = pullerEventModel.getFirstLayerRdbModernFolderName()
+                            + "/" + pullerEventModel.getSecondLayerFolderName()
                             + "/" + pullerEventModel.getThirdLayerFolderName()
-                            + "/" + pullerEventModel.getTargetFileName() + "_" + i + ".json";
-                    }
-
-                    List<String> ignoreCols = convertStringToList(pullerEventModel.getIgnoreColumns());
-
-                    List<String> differFileNames = new ArrayList<>();
-                    differFileNames.add(
-                            compareJsonFiles(sourcePath, targetPath, pullerEventModel, pullerEventModel.getKeyColumn(), i, ignoreCols, maxIndexSource)
-                    );
-
-                    for (String differFileName : differFileNames) {
-                        JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
-                        Type listType = new TypeToken<List<DifferentModel>>() {
-                        }.getType();
-                        List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
-                        differModels.addAll(
-                                modelList
-                        );
-                    }
-
-                    index = i;
-                }
-
-                var ignoreColList =  convertStringToList(pullerEventModel.getIgnoreColumns());
-                var modelList = compareJsonFilesOnRemaining( pullerEventModel.getKeyColumn(), ignoreColList);
-                differModels.addAll(modelList);
-
-                var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getSourceFileName());
-                differModels.addAll(remainList);
-
-                Predicate<DifferentModel> sourcePredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in SOURCE_TABLE");
-                Predicate<DifferentModel> targetPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in TARGET_TABLE");
-                processFirstFound(differModels, sourcePredicate);
-                processFirstFound(differModels, targetPredicate);
-
-                differModels.sort(Comparator.comparing(DifferentModel::getKey, Comparator.nullsFirst(Comparator.naturalOrder())));
-
-                var stringValue = gson.toJson(differModels);
-
-                if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
-                    s3DataPullerService.uploadDataToS3(
-                            pullerEventModel.getFirstLayerRdbModernFolderName(),
-                            pullerEventModel.getSecondLayerFolderName(),
-                            pullerEventModel.getThirdLayerFolderName(),
-                            "DIFFERENCE",
-                            "differences.json", stringValue);
+                            + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
                 }
 
                 if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
-                    s3DataPullerService.uploadDataToS3(
-                            pullerEventModel.getFirstLayerOdseTargetFolderName(),
-                            pullerEventModel.getSecondLayerFolderName(),
-                            pullerEventModel.getThirdLayerFolderName(),
-                            "DIFFERENCE",
-                            "differences.json", stringValue);
-
+                    sourcePath = pullerEventModel.getFirstLayerOdseSourceFolderName()
+                        + "/" + pullerEventModel.getSourceFileName()
+                        + "/" + pullerEventModel.getThirdLayerFolderName()
+                        + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
+                    targetPath  = pullerEventModel.getFirstLayerOdseTargetFolderName()
+                        + "/" + pullerEventModel.getTargetFileName()
+                        + "/" + pullerEventModel.getThirdLayerFolderName()
+                        + "/" + pullerEventModel.getTargetFileName() + "_" + i + ".json";
                 }
+
+                List<String> ignoreCols = convertStringToList(pullerEventModel.getIgnoreColumns());
+
+                List<String> differFileNames = new ArrayList<>();
+                differFileNames.add(
+                        compareJsonFiles(sourcePath, targetPath, pullerEventModel, pullerEventModel.getKeyColumn(), i, ignoreCols, maxIndexSource)
+                );
+
+                for (String differFileName : differFileNames) {
+                    JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
+                    Type listType = new TypeToken<List<DifferentModel>>() {
+                    }.getType();
+                    List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
+                    differModels.addAll(
+                            modelList
+                    );
+                }
+
+                index = i;
             }
-            catch (Exception e)
-            {
-                error = true;
-                logger.info("ERROR: {}", e.getMessage());
-                stackTraceSource = getStackTraceAsString(e);
-                stackTraceTarget = getStackTraceAsString(e);
-                logSource.setStatusDesc(stackTraceSource);
-                logTarget.setStatusDesc(stackTraceTarget);
-                logSource.setStatus("Error");
-                logTarget.setStatus("Error");
+
+            var ignoreColList =  convertStringToList(pullerEventModel.getIgnoreColumns());
+            var modelList = compareJsonFilesOnRemaining( pullerEventModel.getKeyColumn(), ignoreColList);
+            differModels.addAll(modelList);
+
+            var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getSourceFileName());
+            differModels.addAll(remainList);
+
+            Predicate<DifferentModel> sourcePredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in SOURCE_TABLE");
+            Predicate<DifferentModel> targetPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in TARGET_TABLE");
+            processFirstFound(differModels, sourcePredicate);
+            processFirstFound(differModels, targetPredicate);
+
+            differModels.sort(Comparator.comparing(DifferentModel::getKey, Comparator.nullsFirst(Comparator.naturalOrder())));
+
+            var stringValue = gson.toJson(differModels);
+
+            if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
+                s3DataPullerService.uploadDataToS3(
+                        pullerEventModel.getFirstLayerRdbModernFolderName(),
+                        pullerEventModel.getSecondLayerFolderName(),
+                        pullerEventModel.getThirdLayerFolderName(),
+                        "DIFFERENCE",
+                        "differences.json", stringValue);
             }
+
+            if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
+                s3DataPullerService.uploadDataToS3(
+                        pullerEventModel.getFirstLayerOdseTargetFolderName(),
+                        pullerEventModel.getSecondLayerFolderName(),
+                        pullerEventModel.getThirdLayerFolderName(),
+                        "DIFFERENCE",
+                        "differences.json", stringValue);
+
+            }
+        }
+        catch (Exception e)
+        {
+            error = true;
+            logger.info("ERROR: {}", e.getMessage());
+            stackTraceSource = getStackTraceAsString(e);
+            stackTraceTarget = getStackTraceAsString(e);
+            logSource.setStatusDesc(stackTraceSource);
+            logTarget.setStatusDesc(stackTraceTarget);
+            logSource.setStatus("Error");
+            logTarget.setStatus("Error");
+        }
 
         logSource.setRowsCompared(sourceIdData.size());
         logTarget.setRowsCompared(targetIdData.size());
@@ -244,96 +228,6 @@ public class DataCompareService implements IDataCompareService {
 
         dataCompareLogRepository.save(logSource);
         dataCompareLogRepository.save(logTarget);
-//        }
-
-//        if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
-//            try {
-//                for (int i = 0; i < maxIndex; i++) {
-//                    String odseSourceFile = pullerEventModel.getFirstLayerOdseSourceFolderName()
-//                            + "/" + pullerEventModel.getSecondLayerFolderName()
-//                            + "/" + pullerEventModel.getThirdLayerFolderName()
-//                            + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
-//                    String odseTargetFile  = pullerEventModel.getFirstLayerOdseTargetFolderName()
-//                            + "/" + pullerEventModel.getSecondLayerFolderName()
-//                            + "/" + pullerEventModel.getThirdLayerFolderName()
-//                            + "/" + pullerEventModel.getTargetFileName() + "_" + i + ".json";
-//
-//                    List<String> ignoreColsOdse = convertStringToList(pullerEventModel.getIgnoreColumns());
-//
-//                    List<String> differFileNames = new ArrayList<>();
-//                    differFileNames.add(
-//                            compareJsonFiles(odseSourceFile, odseTargetFile, pullerEventModel, pullerEventModel.getKeyColumn(), i, ignoreColsOdse, maxIndexSource)
-//                    );
-//
-//                    for (String differFileName : differFileNames) {
-//                        JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
-//                        Type listType = new TypeToken<List<DifferentModel>>() {
-//                        }.getType();
-//                        List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
-//                        differModels.addAll(
-//                                modelList
-//                        );
-//                    }
-//
-//                    index = i;
-//                }
-//
-//                var ignoreColList =  convertStringToList(pullerEventModel.getIgnoreColumns());
-//                var modelList = compareJsonFilesOnRemaining(pullerEventModel.getKeyColumn(), ignoreColList);
-//                differModels.addAll(modelList);
-//
-//                var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getSourceFileName());
-//                differModels.addAll(remainList);
-//
-//                Predicate<DifferentModel> odseSourcePredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in NBS_ODSE source");
-//                Predicate<DifferentModel> odseTargetPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in NBS_ODSE target");
-//                processFirstFound(differModels, odseSourcePredicate);
-//                processFirstFound(differModels, odseTargetPredicate);
-//
-//                differModels.sort(Comparator.comparing(DifferentModel::getKey, Comparator.nullsFirst(Comparator.naturalOrder())));
-//
-//                var stringValue = gson.toJson(differModels);
-//                s3DataPullerService.uploadDataToS3(
-//                        pullerEventModel.getFirstLayerRdbModernFolderName(),
-//                        pullerEventModel.getSecondLayerFolderName(),
-//                        pullerEventModel.getThirdLayerFolderName(),
-//                        "DIFFERENCE",
-//                        "differences.json", stringValue);
-//            }
-//            catch (Exception e)
-//            {
-//                error = true;
-//                logger.info("ERROR: {}", e.getMessage());
-//                stackTrace = getStackTraceAsString(e);
-//                stackTraceModern = getStackTraceAsString(e);
-//                logRdb.setStatusDesc(stackTrace);
-//                logRdbModern.setStatusDesc(stackTraceModern);
-//                logRdb.setStatus("Error");
-//                logRdbModern.setStatus("Error");
-//            }
-//
-//            logRdb.setRowsCompared(rdbIdData.size());
-//            logRdbModern.setRowsCompared(rdbModernIdData.size());
-//
-//            var currentTime = getCurrentTimeStamp();
-//            logRdb.setEndDateTime(currentTime);
-//            logRdbModern.setEndDateTime(currentTime);
-//
-//            var rdbPath = pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
-//            var rdbModernPath = pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
-//            logRdb.setFileLocation(rdbPath);
-//            logRdbModern.setFileLocation(rdbModernPath);
-//
-//            if (!error) {
-//                logRdb.setStatus("Complete");
-//                logRdbModern.setStatus("Complete");
-//            }
-//
-//            dataCompareLogRepository.save(logRdb);
-//            dataCompareLogRepository.save(logRdbModern);
-//
-//        }
-
     }
 
     private void processFirstFound(List<DifferentModel> records, Predicate<DifferentModel> predicate) {
