@@ -26,6 +26,14 @@ public class DataCompareConfig {
     @Column(name = "target_db", length = 100)
     private String targetDb;
 
+    @Column(name = "target_table_name", length = 200)
+    private String targetTableName;
+
+    @Column(name = "target_query")
+    private String targetQuery;
+
+    @Column(name = "target_query_count")
+    private String targetQueryCount;
 
 
     @Column(name = "query")
