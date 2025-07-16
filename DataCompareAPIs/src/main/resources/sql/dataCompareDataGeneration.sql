@@ -74,17 +74,21 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                'CONFIRMATION_METHOD_GROUP',
                'RDB',
                'RDB_MODERN',
-               'WITH PaginatedResults AS (
-                   SELECT CONFIRMATION_METHOD_GROUP.*,
-                          ROW_NUMBER() OVER (ORDER BY CONFIRMATION_METHOD_GROUP.INVESTIGATION_KEY ASC) AS RowNum
-                   FROM CONFIRMATION_METHOD_GROUP
-               )
-               SELECT *
-               FROM PaginatedResults
-               WHERE RowNum BETWEEN :startRow AND :endRow;',
+               'with PaginatedResults as (
+                     select DISTINCT cm.CONFIRMATION_METHOD_CD as CONFIRMATION_METHOD_CD
+                     ,i.case_uid as CASE_UID
+                     ,i.inv_local_id as inv_local_id
+                     ,ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                     from confirmation_method_group cmg 
+                     inner join confirmation_method cm on cmg.CONFIRMATION_METHOD_KEY  = cm.CONFIRMATION_METHOD_KEY
+                     inner join investigation i on i.INVESTIGATION_KEY = cmg.INVESTIGATION_KEY
+                     )
+                     SELECT *
+                     FROM PaginatedResults
+                     WHERE RowNum BETWEEN :startRow AND :endRow;',
                'SELECT COUNT(*)
                FROM CONFIRMATION_METHOD_GROUP;',
-               'INVESTIGATION_KEY',
+               'INV_LOCAL_ID',
                'RowNum, CONFIRMATION_DT',
                1
        ),
@@ -599,16 +603,26 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                         SELECT DISTINCT NOTIFICATION_EVENT.*,
-                                ROW_NUMBER() OVER (ORDER BY NOTIFICATION_EVENT.INVESTIGATION_KEY ASC) AS RowNum
-                         FROM NOTIFICATION_EVENT
-                      )
-                      SELECT *
-                      FROM PaginatedResults
-                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            SELECT DISTINCT notfe.NOTIFICATION_KEY
+                            , i.CASE_UID as CASE_UID
+                            , notf.NOTIFICATION_LOCAL_ID as NOTIFICATION_LOCAL_ID 
+                            , notfe.NOTIFICATION_SENT_DT_KEY as NOTIFICATION_SENT_DT_KEY
+                            , notfe.NOTIFICATION_SUBMIT_DT_KEY as NOTIFICATION_SUBMIT_DT_KEY
+                            , notfe.COUNT as COUNT
+                            , pat.PATIENT_UID as PATIENT_UID
+                                   , cd.CONDITION_CD as CONDITION_CD
+                            , ROW_NUMBER() OVER (ORDER BY notfe.INVESTIGATION_KEY ASC) AS RowNum
+                            FROM NOTIFICATION_EVENT notfe inner join NOTIFICATION notf on notf.NOTIFICATION_KEY  = notfe.NOTIFICATION_KEY
+                            inner join INVESTIGATION i on i.INVESTIGATION_KEY  = notfe.INVESTIGATION_KEY
+                            inner join D_PATIENT pat on notfe.PATIENT_KEY = pat.PATIENT_KEY
+                                   inner join CONDITION cd on cd.CONDITION_KEY = notfe.CONDITION_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                       FROM NOTIFICATION_EVENT;',
-       		'NOTIFICATION_KEY',
+       		'NOTIFICATION_LOCAL_ID',
        		'RowNum , NOTIFICATION_KEY',
        		1
        		),
@@ -713,17 +727,81 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'F_PAGE_CASE',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT F_PAGE_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY F_PAGE_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM F_PAGE_CASE
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'with PaginatedResults as (
+                            SELECT distinct 
+                            INVESTIGATION.INV_LOCAL_ID  as INV_LOCAL_ID
+                            ,CONDITION.CONDITION_CD as CONDITION_CD
+                            ,PATIENT.PATIENT_UID as PATIENT_UID
+                            ,HOSPITAL.ORGANIZATION_UID AS HOSPITAL_UID
+                            ,REPORTERORG.ORGANIZATION_UID AS REPORTER_ORG_UID
+                            ,PERSONREPORTER.PROVIDER_UID AS REPORTER_PROVIDER_UID
+                            ,PROVIDER.PROVIDER_UID AS INVESTIGATOR_PROVIDER_UID
+                            ,PHYSICIAN.PROVIDER_UID AS PHYSICIAN_PROVIDER_UID
+                            ,L_INV_ADMINISTRATIVE.PAGE_CASE_UID AS ADMINISTRATIVE_PAGE_CASE_UID
+                            ,L_INV_CLINICAL.PAGE_CASE_UID AS CLINICAL_PAGE_CASE_UID
+                            ,L_INV_COMPLICATION.PAGE_CASE_UID AS COMPLICATION_PAGE_CASE_UID
+                            ,L_INV_CONTACT.PAGE_CASE_UID AS CONTACT_PAGE_CASE_UID
+                            ,L_INV_DEATH.PAGE_CASE_UID AS DEATH_PAGE_CASE_UID
+                            ,L_INV_EPIDEMIOLOGY.PAGE_CASE_UID AS EPIDEMIOLOGY_PAGE_CASE_UID
+                            ,L_INV_HIV.PAGE_CASE_UID AS HIV_PAGE_CASE_UID
+                            ,L_INV_ISOLATE_TRACKING.PAGE_CASE_UID AS ISOLATE_TRACKING_PAGE_CASE_UID
+                            ,L_INV_LAB_FINDING.PAGE_CASE_UID AS LAB_FINDING_PAGE_CASE_UID
+                            ,L_INV_MEDICAL_HISTORY.PAGE_CASE_UID AS MEDICAL_HISTORY_PAGE_CASE_UID
+                            ,L_INV_MOTHER.PAGE_CASE_UID AS MOTHER_PAGE_CASE_UID
+                            ,L_INV_OTHER.PAGE_CASE_UID AS OTHER_PAGE_CASE_UID
+                            ,L_INV_PATIENT_OBS.PAGE_CASE_UID AS PATIENT_OBS_PAGE_CASE_UID
+                            ,L_INV_PREGNANCY_BIRTH.PAGE_CASE_UID AS PREGNANCY_BIRTH_PAGE_CASE_UID
+                            ,L_INV_RESIDENCY.PAGE_CASE_UID AS RESIDENCY_PAGE_CASE_UID
+                            ,L_INV_RISK_FACTOR.PAGE_CASE_UID AS RISK_FACTOR_PAGE_CASE_UID
+                            ,L_INV_SOCIAL_HISTORY.PAGE_CASE_UID AS SOCIAL_HISTORY_PAGE_CASE_UID
+                            ,L_INV_SYMPTOM.PAGE_CASE_UID AS SYMPTOM_PAGE_CASE_UID
+                            ,L_INV_TRAVEL.PAGE_CASE_UID AS TRAVEL_PAGE_CASE_UID
+                            ,L_INV_TREATMENT.PAGE_CASE_UID AS TREATMENT_PAGE_CASE_UID
+                            ,L_INV_UNDER_CONDITION.PAGE_CASE_UID AS UNDER_CONDITION_PAGE_CASE_UID
+                            ,L_INV_VACCINATION.PAGE_CASE_UID AS VACCINATION_PAGE_CASE_UID
+                            ,L_INVESTIGATION_REPEAT.PAGE_CASE_UID AS INVESTIGATION_REPEAT_PAGE_CASE_UID
+                            ,L_INV_PLACE_REPEAT.PAGE_CASE_UID AS PLACE_REPEAT_PAGE_CASE_UID
+                            ,ROW_NUMBER() OVER (ORDER BY INVESTIGATION.INV_LOCAL_ID ASC) AS RowNum
+                            FROM F_PAGE_CASE  FSIV
+                            LEFT OUTER JOIN D_PATIENT PATIENT WITH (NOLOCK) ON	FSIV.PATIENT_KEY= PATIENT.PATIENT_KEY 
+                            LEFT OUTER JOIN D_ORGANIZATION  HOSPITAL WITH (NOLOCK) ON 	FSIV.HOSPITAL_KEY= HOSPITAL.ORGANIZATION_KEY 
+                            LEFT OUTER JOIN D_ORGANIZATION REPORTERORG WITH (NOLOCK) ON 	FSIV.ORG_AS_REPORTER_KEY= REPORTERORG.ORGANIZATION_KEY 
+                            LEFT OUTER JOIN D_PROVIDER PERSONREPORTER WITH (NOLOCK) ON  	FSIV.PERSON_AS_REPORTER_KEY= PERSONREPORTER.PROVIDER_KEY 
+                            LEFT OUTER JOIN D_PROVIDER PROVIDER WITH (NOLOCK) ON 	FSIV.INVESTIGATOR_KEY= PROVIDER.PROVIDER_KEY 
+                            LEFT OUTER JOIN D_PROVIDER PHYSICIAN WITH (NOLOCK) ON 	FSIV.PHYSICIAN_KEY= PHYSICIAN.PROVIDER_KEY 
+                            INNER JOIN INVESTIGATION  INVESTIGATION WITH (NOLOCK) ON 	FSIV.INVESTIGATION_KEY= INVESTIGATION.INVESTIGATION_KEY 
+                            LEFT OUTER JOIN CONDITION CONDITION WITH (NOLOCK) ON 	FSIV.CONDITION_KEY= CONDITION.CONDITION_KEY
+                            LEFT OUTER JOIN   L_INV_ADMINISTRATIVE with (nolock) ON  L_INV_ADMINISTRATIVE.D_INV_ADMINISTRATIVE_KEY  =  FSIV.D_INV_ADMINISTRATIVE_KEY
+                            LEFT OUTER JOIN   L_INV_CLINICAL with (nolock) ON  L_INV_CLINICAL.D_INV_CLINICAL_KEY  =  FSIV.D_INV_CLINICAL_KEY
+                            LEFT OUTER JOIN   L_INV_COMPLICATION with (nolock) ON L_INV_COMPLICATION.D_INV_COMPLICATION_KEY  =  FSIV.D_INV_COMPLICATION_KEY
+                            LEFT OUTER JOIN   L_INV_CONTACT with (nolock) ON L_INV_CONTACT.D_INV_CONTACT_KEY  =  FSIV.D_INV_CONTACT_KEY
+                            LEFT OUTER JOIN   L_INV_DEATH with (nolock) ON L_INV_DEATH.D_INV_DEATH_KEY  =  FSIV.D_INV_DEATH_KEY
+                            LEFT OUTER JOIN   L_INV_EPIDEMIOLOGY with (nolock) ON L_INV_EPIDEMIOLOGY.D_INV_EPIDEMIOLOGY_KEY  =  FSIV.D_INV_EPIDEMIOLOGY_KEY
+                            LEFT OUTER JOIN   L_INV_HIV with (nolock) ON L_INV_HIV.D_INV_HIV_KEY  =  FSIV.D_INV_HIV_KEY
+                            LEFT OUTER JOIN   L_INV_ISOLATE_TRACKING with (nolock) ON L_INV_ISOLATE_TRACKING.D_INV_ISOLATE_TRACKING_KEY  =  FSIV.D_INV_ISOLATE_TRACKING_KEY
+                            LEFT OUTER JOIN   L_INV_LAB_FINDING with (nolock) ON L_INV_LAB_FINDING.D_INV_LAB_FINDING_KEY  =  FSIV.D_INV_LAB_FINDING_KEY
+                            LEFT OUTER JOIN   L_INV_MEDICAL_HISTORY with (nolock) ON L_INV_MEDICAL_HISTORY.D_INV_MEDICAL_HISTORY_KEY  =  FSIV.D_INV_MEDICAL_HISTORY_KEY
+                            LEFT OUTER JOIN   L_INV_MOTHER with (nolock) ON L_INV_MOTHER.D_INV_MOTHER_KEY  =  FSIV.D_INV_MOTHER_KEY
+                            LEFT OUTER JOIN   L_INV_OTHER with (nolock) ON L_INV_OTHER.D_INV_OTHER_KEY  =  FSIV.D_INV_OTHER_KEY
+                            LEFT OUTER JOIN   L_INV_PATIENT_OBS with (nolock) ON L_INV_PATIENT_OBS.D_INV_PATIENT_OBS_KEY  =  FSIV.D_INV_PATIENT_OBS_KEY
+                            LEFT OUTER JOIN   L_INV_PREGNANCY_BIRTH with (nolock) ON L_INV_PREGNANCY_BIRTH.D_INV_PREGNANCY_BIRTH_KEY  =  FSIV.D_INV_PREGNANCY_BIRTH_KEY
+                            LEFT OUTER JOIN   L_INV_RESIDENCY with (nolock) ON L_INV_RESIDENCY.D_INV_RESIDENCY_KEY  =  FSIV.D_INV_RESIDENCY_KEY
+                            LEFT OUTER JOIN   L_INV_RISK_FACTOR with (nolock) ON L_INV_RISK_FACTOR.D_INV_RISK_FACTOR_KEY  =  FSIV.D_INV_RISK_FACTOR_KEY
+                            LEFT OUTER JOIN   L_INV_SOCIAL_HISTORY with (nolock) ON L_INV_SOCIAL_HISTORY.D_INV_SOCIAL_HISTORY_KEY  =  FSIV.D_INV_SOCIAL_HISTORY_KEY
+                            LEFT OUTER JOIN   L_INV_SYMPTOM with (nolock) ON  L_INV_SYMPTOM.D_INV_SYMPTOM_KEY  =  FSIV.D_INV_SYMPTOM_KEY
+                            LEFT OUTER JOIN   L_INV_TRAVEL with (nolock) ON  L_INV_TRAVEL.D_INV_TRAVEL_KEY  =  FSIV.D_INV_TRAVEL_KEY
+                            LEFT OUTER JOIN   L_INV_TREATMENT with (nolock) ON  L_INV_TREATMENT.D_INV_TREATMENT_KEY  =  FSIV.D_INV_TREATMENT_KEY
+                            LEFT OUTER JOIN   L_INV_UNDER_CONDITION with (nolock) ON  L_INV_UNDER_CONDITION.D_INV_UNDER_CONDITION_KEY  =  FSIV.D_INV_UNDER_CONDITION_KEY
+                            LEFT OUTER JOIN   L_INV_VACCINATION with (nolock) ON  L_INV_VACCINATION.D_INV_VACCINATION_KEY  =  FSIV.D_INV_VACCINATION_KEY
+                            LEFT OUTER JOIN   L_INVESTIGATION_REPEAT with (nolock) ON  L_INVESTIGATION_REPEAT.D_INVESTIGATION_REPEAT_KEY  =  FSIV.D_INVESTIGATION_REPEAT_KEY
+                            LEFT OUTER JOIN   L_INV_PLACE_REPEAT with (nolock) ON  L_INV_PLACE_REPEAT.D_INV_PLACE_REPEAT_KEY  =  FSIV.D_INV_PLACE_REPEAT_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM F_PAGE_CASE;',
-       		'INVESTIGATION_KEY',
+       		'INV_LOCAL_ID',
        		'RowNum, ADD_DATE_KEY, LAST_CHG_DATE_KEY',
        		1
        		),
@@ -823,16 +901,43 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT LAB_TEST_RESULT.*,
-                                                ROW_NUMBER() OVER (ORDER BY LAB_TEST_RESULT.LAB_TEST_KEY ASC) AS RowNum
-                                         FROM LAB_TEST_RESULT
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            SELECT  
+                                   LAB_TEST_UID,
+                                   INVESTIGATION.CASE_UID,
+                                   DORG1.ORGANIZATION_UID AS PERFORMING_LAB_UID, 
+                                   DORG2.ORGANIZATION_UID AS ORDERING_ORG_UID, 
+                                   DORG3.ORGANIZATION_UID AS REPORTING_LAB_UID, 
+                                   DT1.DATE_MM_DD_YYYY AS LAB_RPT_DT,
+                                   CD.CONDITION_DESC,
+                                   PT.PATIENT_UID,
+                                   DPRO1.PROVIDER_UID AS COPY_TO_PROVIDER_UID,
+                                   DPRO2.PROVIDER_UID AS LAB_TEST_TECHNICIAN_UID,
+                                   DPRO3.PROVIDER_UID AS SPECIMEN_COLLECTOR_UID,
+                                   DPRO4.PROVIDER_UID AS ORDERING_PROVIDER_UID,
+                                   MORBIDITY_REPORT.MORB_RPT_UID,
+                                   LG.BUSINESS_OBJECT_UID,
+                            ROW_NUMBER() OVER (ORDER BY LAB_TEST_RESULT.LAB_TEST_KEY ASC) AS RowNum
+                            FROM LAB_TEST_RESULT
+                            LEFT JOIN INVESTIGATION ON INVESTIGATION.INVESTIGATION_KEY = LAB_TEST_RESULT.INVESTIGATION_KEY 
+                            LEFT JOIN D_ORGANIZATION DORG1 WITH(NOLOCK) ON LAB_TEST_RESULT.PERFORMING_LAB_KEY = DORG1.ORGANIZATION_KEY
+                            LEFT JOIN D_ORGANIZATION DORG2 WITH(NOLOCK) ON LAB_TEST_RESULT.ORDERING_ORG_KEY = DORG2.ORGANIZATION_KEY
+                            LEFT JOIN D_ORGANIZATION DORG3 WITH(NOLOCK) ON LAB_TEST_RESULT.REPORTING_LAB_KEY = DORG3.ORGANIZATION_KEY		
+                            LEFT JOIN RDB_DATE DT1 WITH(NOLOCK) ON DT1.DATE_KEY = LAB_TEST_RESULT.LAB_RPT_DT_KEY
+                            LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = LAB_TEST_RESULT.CONDITION_KEY
+                            LEFT JOIN D_PATIENT PT ON PT.PATIENT_KEY = LAB_TEST_RESULT.PATIENT_KEY
+                            LEFT JOIN D_PROVIDER DPRO1 WITH(NOLOCK) ON LAB_TEST_RESULT.COPY_TO_PROVIDER_KEY  = DPRO1.PROVIDER_KEY
+                            LEFT JOIN D_PROVIDER DPRO2 WITH(NOLOCK) ON LAB_TEST_RESULT.LAB_TEST_TECHNICIAN_KEY  = DPRO2.PROVIDER_KEY
+                            LEFT JOIN D_PROVIDER DPRO3 WITH(NOLOCK) ON LAB_TEST_RESULT.SPECIMEN_COLLECTOR_KEY  = DPRO3.PROVIDER_KEY
+                            LEFT JOIN D_PROVIDER DPRO4 WITH(NOLOCK) ON LAB_TEST_RESULT.ORDERING_PROVIDER_KEY  = DPRO4.PROVIDER_KEY
+                            LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = LAB_TEST_RESULT.LDF_GROUP_KEY
+                            LEFT JOIN MORBIDITY_REPORT ON MORBIDITY_REPORT.MORB_RPT_KEY = LAB_TEST_RESULT.MORB_RPT_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM LAB_TEST_RESULT;',
-       		'LAB_TEST_KEY',
+       		'LAB_TEST_UID',
        		'RowNum, LAB_TEST_KEY',
        		1
        		),
@@ -978,17 +1083,45 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'D_CASE_MANAGEMENT',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT D_CASE_MANAGEMENT.*,
-                                                ROW_NUMBER() OVER (ORDER BY D_CASE_MANAGEMENT.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM D_CASE_MANAGEMENT
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'DECLARE @sql NVARCHAR(MAX)
+                            DECLARE @startRow INT = :startRow
+                            DECLARE @endRow INT = :endRow
+                            IF EXISTS (SELECT 1 FROM sys.objects WHERE name = ''nrt_case_management'' AND type = ''U'')
+                            BEGIN
+                            SET @sql = ''
+                                   ;WITH PaginatedResults AS (
+                                   SELECT 
+                                          m.*,
+                                          a.public_health_case_uid AS case_management_uid,
+                                          ROW_NUMBER() OVER (ORDER BY m.D_CASE_MANAGEMENT_KEY) AS RowNum
+                                   FROM nrt_case_management a
+                                   JOIN D_CASE_MANAGEMENT m ON a.D_CASE_MANAGEMENT_KEY = m.D_CASE_MANAGEMENT_KEY
+                                   )
+                                   SELECT *
+                                   FROM PaginatedResults
+                                   WHERE RowNum BETWEEN @startRow AND @endRow
+                            ''
+                            END
+                            ELSE
+                            BEGIN
+                            SET @sql = ''
+                                   ;WITH PaginatedResults AS (
+                                   SELECT 
+                                          m.*,
+                                          a.case_management_uid AS case_management_uid,
+                                          ROW_NUMBER() OVER (ORDER BY m.D_CASE_MANAGEMENT_KEY) AS RowNum
+                                   FROM L_CASE_MANAGEMENT a
+                                   JOIN D_CASE_MANAGEMENT m ON a.D_CASE_MANAGEMENT_KEY = m.D_CASE_MANAGEMENT_KEY
+                                   )
+                                   SELECT *
+                                   FROM PaginatedResults
+                                   WHERE RowNum BETWEEN @startRow AND @endRow
+                            ''
+                            END
+                            EXEC sp_executesql @sql, N''@startRow INT, @endRow INT'', @startRow=@startRow, @endRow=@endRow;',
        		'SELECT COUNT(*)
                                       FROM D_CASE_MANAGEMENT;',
-       		'INVESTIGATION_KEY',
+       		'case_management_uid',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -997,16 +1130,38 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CASE_COUNT.*,
-                                                ROW_NUMBER() OVER (ORDER BY CASE_COUNT.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM Case_Count
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            select 
+                            i.case_uid
+                            , cc.case_count
+                            , cc.INVESTIGATION_COUNT
+                            , cd.CONDITION_CD
+                            , pt.patient_uid
+                            , dpro1.provider_uid as investigator_uid
+                            , dpro2.provider_uid as physician_uid
+                            , dpro3.provider_uid as reporter_uid
+                            , dorg1.ORGANIZATION_UID as ORGANIZATION_UID
+                            , dorg2.ORGANIZATION_UID as hospital_uid
+                            , cc.Inv_Assigned_dt_key as Inv_Assigned_dt_key
+                            , cc.INV_START_DT_KEY as INV_START_DT_KEY
+                            , cc.DIAGNOSIS_DT_KEY as DIAGNOSIS_DT_KEY
+                            , cc.INV_RPT_DT_KEY as INV_RPT_DT_KEY
+                            , ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            from CASE_COUNT cc
+                            inner join INVESTIGATION i on cc.investigation_key = i.investigation_key 
+                            inner join CONDITION cd on cd.CONDITION_KEY = cc.CONDITION_KEY
+                            inner join D_PATIENT pt on pt.patient_key = cc.patient_key
+                            inner join D_PROVIDER dpro1 with(nolock) on cc.INVESTIGATOR_KEY  = dpro1.PROVIDER_KEY 
+                            inner join D_PROVIDER dpro2 with(nolock) on cc.PHYSICIAN_KEY  = dpro2.PROVIDER_KEY
+                            inner join D_PROVIDER dpro3 with(nolock) on cc.REPORTER_KEY  = dpro3.PROVIDER_KEY
+                            inner join D_ORGANIZATION dorg1 with(nolock) on cc.Rpt_Src_Org_key = dorg1.ORGANIZATION_KEY 
+                            inner join D_ORGANIZATION dorg2 with(nolock) on cc.ADT_HSPTL_KEY = dorg2.ORGANIZATION_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM CASE_COUNT;',
-       		'INVESTIGATION_KEY',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1051,16 +1206,302 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT STD_HIV_DATAMART.*,
-                                                ROW_NUMBER() OVER (ORDER BY STD_HIV_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM STD_HIV_DATAMART
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            SELECT 
+                            shd.ADI_900_STATUS                
+                            ,shd.ADI_900_STATUS_CD             
+                            ,shd.ADM_REFERRAL_BASIS_OOJ        
+                            ,shd.ADM_RPTNG_CNTY                
+                            ,shd.CA_INIT_INTVWR_ASSGN_DT       
+                            ,shd.CA_INTERVIEWER_ASSIGN_DT      
+                            ,shd.CA_PATIENT_INTV_STATUS        
+                            ,shd.CALC_5_YEAR_AGE_GROUP         
+                            ,shd.CASE_RPT_MMWR_WK              
+                            ,shd.CASE_RPT_MMWR_YR              
+                            ,shd.CC_CLOSED_DT                  
+                            ,shd.CLN_CARE_STATUS_CLOSE_DT      
+                            ,shd.CLN_CONDITION_RESISTANT_TO    
+                            ,shd.CLN_DT_INIT_HLTH_EXM          
+                            ,shd.CLN_NEUROSYPHILLIS_IND        
+                            ,shd.CLN_PRE_EXP_PROPHY_IND        
+                            ,shd.CLN_PRE_EXP_PROPHY_REFER      
+                            ,shd.CLN_SURV_PROVIDER_DIAG_CD     
+                            ,shd.CMP_CONJUNCTIVITIS_IND        
+                            ,shd.CMP_PID_IND                   
+                            ,shd.COINFECTION_ID                
+                            ,shd.CONDITION_CD                  
+                            ,shd.CONFIRMATION_DT               
+                            ,shd.CURR_PROCESS_STATE            
+                            ,shd.DETECTION_METHOD_DESC_TXT     
+                            ,shd.DIAGNOSIS                     
+                            ,shd.DIAGNOSIS_CD                  
+                            ,shd.DIE_FRM_THIS_ILLNESS_IND      
+                            ,shd.DISEASE_IMPORTED_IND          
+                            ,shd.DISSEMINATED_IND              
+                            ,shd.EPI_CNTRY_USUAL_RESID         
+                            ,shd.EPI_LINK_ID                   
+                            ,shd.FIELD_RECORD_NUMBER           
+                            ,shd.FL_FUP_ACTUAL_REF_TYPE        
+                            ,shd.FL_FUP_DISPO_DT               
+                            ,shd.FL_FUP_DISPOSITION            
+                            ,shd.FL_FUP_EXAM_DT                
+                            ,shd.FL_FUP_EXPECTED_DT            
+                            ,shd.FL_FUP_EXPECTED_IN_IND_CD     
+                            ,shd.FL_FUP_INIT_ASSGN_DT          
+                            ,shd.FL_FUP_INTERNET_OUTCOME_CD    
+                            ,shd.FL_FUP_INVESTIGATOR_ASSGN_DT  
+                            ,shd.FL_FUP_NOTIFICATION_PLAN      
+                            ,shd.FL_FUP_OOJ_OUTCOME            
+                            ,shd.FL_FUP_PROV_DIAGNOSIS_CD      
+                            ,shd.FL_FUP_PROV_EXM_REASON        
+                            ,shd.HIV_900_RESULT                
+                            ,shd.HIV_900_TEST_IND              
+                            ,shd.HIV_900_TEST_REFERRAL_DT      
+                            ,shd.HIV_AV_THERAPY_EVER_IND       
+                            ,shd.HIV_AV_THERAPY_LAST_12MO_IND  
+                            ,shd.HIV_CA_900_OTH_RSN_NOT_LO     
+                            ,shd.HIV_CA_900_REASON_NOT_LOC     
+                            ,shd.HIV_ENROLL_PRTNR_SRVCS_IND    
+                            ,shd.HIV_KEEP_900_CARE_APPT_IND    
+                            ,shd.HIV_LAST_900_TEST_DT          
+                            ,shd.HIV_POST_TEST_900_COUNSELING  
+                            ,shd.HIV_PREVIOUS_900_TEST_IND     
+                            ,shd.HIV_REFER_FOR_900_CARE_IND    
+                            ,shd.HIV_REFER_FOR_900_TEST        
+                            ,shd.HIV_RST_PROVIDED_900_RSLT_IND 
+                            ,shd.HIV_SELF_REPORTED_RSLT_900    
+                            ,shd.HIV_STATE_CASE_ID             
+                            ,shd.HSPTLIZD_IND                  
+                            ,shd.INIT_FUP_CLINIC_CODE          
+                            ,shd.INIT_FUP_CLOSED_DT            
+                            ,shd.INIT_FUP_INITIAL_FOLL_UP      
+                            ,shd.INIT_FUP_INTERNET_FOLL_UP     
+                            ,shd.INIT_FUP_INITIAL_FOLL_UP_CD   
+                            ,shd.INIT_FUP_INTERNET_FOLL_UP_CD  
+                            ,shd.INIT_FUP_NOTIFIABLE           
+                            ,shd.INITIATING_AGNCY              
+                            ,shd.INV_ASSIGNED_DT               
+                            ,shd.INV_CASE_STATUS               
+                            ,shd.INV_CLOSE_DT                  
+                            ,shd.INV_LOCAL_ID                  
+                            ,shd.INV_RPT_DT                    
+                            ,shd.INV_START_DT                  
+                            ,shd.INVESTIGATION_DEATH_DATE      
+                            ,shd.INVESTIGATION_STATUS                 
+                            ,shd.INVESTIGATOR_CLOSED_QC              
+                            ,shd.INVESTIGATOR_CURRENT_QC         
+                            ,shd.INVESTIGATOR_DISP_FL_FUP_QC          
+                            ,shd.INVESTIGATOR_FL_FUP_QC          
+                            ,shd.INVESTIGATOR_INIT_INTRVW_QC     
+                            ,shd.INVESTIGATOR_INIT_FL_FUP_QC         
+                            ,shd.INVESTIGATOR_INITIAL_QC           
+                            ,shd.INVESTIGATOR_INTERVIEW_QC        
+                            ,shd.INVESTIGATOR_SUPER_CASE_QC     
+                            ,shd.INVESTIGATOR_SUPER_FL_FUP_QC           
+                            ,shd.INVESTIGATOR_SURV_QC          
+                            ,shd.IPO_CURRENTLY_IN_INSTITUTION  
+                            ,shd.IPO_LIVING_WITH               
+                            ,shd.IPO_NAME_OF_INSTITUTITION     
+                            ,shd.IPO_TIME_AT_ADDRESS_NUM       
+                            ,shd.IPO_TIME_AT_ADDRESS_UNIT      
+                            ,shd.IPO_TIME_IN_COUNTRY_NUM       
+                            ,shd.IPO_TIME_IN_COUNTRY_UNIT      
+                            ,shd.IPO_TIME_IN_STATE_NUM         
+                            ,shd.IPO_TIME_IN_STATE_UNIT        
+                            ,shd.IPO_TYPE_OF_INSTITUTITION     
+                            ,shd.IPO_TYPE_OF_RESIDENCE         
+                            ,shd.IX_DATE_OI                    
+                            ,shd.JURISDICTION_CD               
+                            ,shd.JURISDICTION_NM               
+                            ,shd.LAB_HIV_SPECIMEN_COLL_DT      
+                            ,shd.LAB_NONTREP_SYPH_RSLT_QNT     
+                            ,shd.LAB_NONTREP_SYPH_RSLT_QUA     
+                            ,shd.LAB_NONTREP_SYPH_TEST_TYP     
+                            ,shd.LAB_SYPHILIS_TST_PS_IND       
+                            ,shd.LAB_SYPHILIS_TST_RSLT_PS      
+                            ,shd.LAB_TESTS_PERFORMED           
+                            ,shd.LAB_TREP_SYPH_RESULT_QUAL     
+                            ,shd.LAB_TREP_SYPH_TEST_TYPE       
+                            ,shd.MDH_PREV_STD_HIST             
+                            ,shd.OOJ_AGENCY_SENT_TO            
+                            ,shd.OOJ_DUE_DATE_SENT_TO          
+                            ,shd.OOJ_FR_NUMBER_SENT_TO         
+                            ,shd.OOJ_INITG_AGNCY_OUTC_DUE_DATE 
+                            ,shd.OOJ_INITG_AGNCY_OUTC_SNT_DATE 
+                            ,shd.OOJ_INITG_AGNCY_RECD_DATE              
+                            ,shd.OUTBREAK_IND                  
+                            ,shd.OUTBREAK_NAME                 
+                            ,shd.PATIENT_ADDL_GENDER_INFO      
+                            ,shd.PATIENT_AGE_AT_ONSET          
+                            ,shd.PATIENT_AGE_AT_ONSET_UNIT     
+                            ,shd.PATIENT_AGE_REPORTED          
+                            ,shd.PATIENT_ALIAS                 
+                            ,shd.PATIENT_BIRTH_COUNTRY         
+                            ,shd.PATIENT_BIRTH_SEX             
+                            ,shd.PATIENT_CENSUS_TRACT          
+                            ,shd.PATIENT_CITY                  
+                            ,shd.PATIENT_COUNTRY               
+                            ,shd.PATIENT_COUNTY                
+                            ,shd.PATIENT_CURR_SEX_UNK_RSN      
+                            ,shd.PATIENT_CURRENT_SEX           
+                            ,shd.PATIENT_DECEASED_DATE         
+                            ,shd.PATIENT_DECEASED_INDICATOR    
+                            ,shd.PATIENT_DOB                   
+                            ,shd.PATIENT_EMAIL                 
+                            ,shd.PATIENT_ETHNICITY             
+                            ,shd.PATIENT_LOCAL_ID              
+                            ,shd.PATIENT_MARITAL_STATUS        
+                            ,shd.PATIENT_NAME                  
+                            ,shd.PATIENT_PHONE_CELL            
+                            ,shd.PATIENT_PHONE_HOME            
+                            ,shd.PATIENT_PHONE_WORK            
+                            ,shd.PATIENT_PREFERRED_GENDER      
+                            ,shd.PATIENT_PREGNANT_IND          
+                            ,shd.PATIENT_RACE                  
+                            ,shd.PATIENT_SEX                   
+                            ,shd.PATIENT_STATE                 
+                            ,shd.PATIENT_STREET_ADDRESS_1      
+                            ,shd.PATIENT_STREET_ADDRESS_2      
+                            ,shd.PATIENT_UNK_ETHNIC_RSN        
+                            ,shd.PATIENT_ZIP                   
+                            ,shd.PBI_IN_PRENATAL_CARE_IND      
+                            ,shd.PBI_PATIENT_PREGNANT_WKS      
+                            ,shd.PBI_PREG_AT_EXAM_IND          
+                            ,shd.PBI_PREG_AT_EXAM_WKS          
+                            ,shd.PBI_PREG_AT_IX_IND            
+                            ,shd.PBI_PREG_AT_IX_WKS            
+                            ,shd.PBI_PREG_IN_LAST_12MO_IND     
+                            ,shd.PBI_PREG_OUTCOME                                         
+                            ,shd.PROGRAM_AREA_CD               
+                            ,shd.PROGRAM_JURISDICTION_OID                               
+                            ,shd.RPT_ELICIT_INTERNET_INFO      
+                            ,shd.RPT_FIRST_NDLSHARE_EXP_DT     
+                            ,shd.RPT_FIRST_SEX_EXP_DT          
+                            ,shd.RPT_LAST_NDLSHARE_EXP_DT      
+                            ,shd.PROVIDER_REASON_VISIT_DT      
+                            ,shd.REFERRAL_BASIS                
+                            ,shd.RPT_LAST_SEX_EXP_DT           
+                            ,shd.RPT_MET_OP_INTERNET           
+                            ,shd.RPT_NDLSHARE_EXP_FREQ         
+                            ,shd.RPT_RELATIONSHIP_TO_OP        
+                            ,shd.RPT_SEX_EXP_FREQ              
+                            ,shd.RPT_SRC_CD_DESC               
+                            ,shd.RPT_SPOUSE_OF_OP              
+                            ,shd.RSK_BEEN_INCARCERATD_12MO_IND 
+                            ,shd.RSK_COCAINE_USE_12MO_IND      
+                            ,shd.RSK_CRACK_USE_12MO_IND        
+                            ,shd.RSK_ED_MEDS_USE_12MO_IND      
+                            ,shd.RSK_HEROIN_USE_12MO_IND       
+                            ,shd.RSK_INJ_DRUG_USE_12MO_IND     
+                            ,shd.RSK_METH_USE_12MO_IND         
+                            ,shd.RSK_NITR_POP_USE_12MO_IND     
+                            ,shd.RSK_NO_DRUG_USE_12MO_IND      
+                            ,shd.RSK_OTHER_DRUG_SPEC           
+                            ,shd.RSK_OTHER_DRUG_USE_12MO_IND   
+                            ,shd.RSK_RISK_FACTORS_ASSESS_IND   
+                            ,shd.RSK_SEX_EXCH_DRGS_MNY_12MO_IND
+                            ,shd.RSK_SEX_INTOXCTED_HGH_12MO_IND
+                            ,shd.RSK_SEX_W_ANON_PTRNR_12MO_IND 
+                            ,shd.RSK_SEX_W_FEMALE_12MO_IND     
+                            ,shd.RSK_SEX_W_KNOWN_IDU_12MO_IND  
+                            ,shd.RSK_SEX_W_KNWN_MSM_12M_FML_IND
+                            ,shd.RSK_SEX_W_MALE_12MO_IND       
+                            ,shd.RSK_SEX_W_TRANSGNDR_12MO_IND  
+                            ,shd.RSK_SEX_WOUT_CONDOM_12MO_IND  
+                            ,shd.RSK_SHARED_INJ_EQUIP_12MO_IND 
+                            ,shd.RSK_TARGET_POPULATIONS        
+                            ,shd.SOC_FEMALE_PRTNRS_12MO_IND    
+                            ,shd.SOC_FEMALE_PRTNRS_12MO_TTL    
+                            ,shd.SOC_MALE_PRTNRS_12MO_IND      
+                            ,shd.SOC_MALE_PRTNRS_12MO_TOTAL    
+                            ,shd.SOC_PLACES_TO_HAVE_SEX        
+                            ,shd.SOC_PLACES_TO_MEET_PARTNER    
+                            ,shd.SOC_PRTNRS_PRD_FML_IND        
+                            ,shd.SOC_PRTNRS_PRD_FML_TTL        
+                            ,shd.SOC_PRTNRS_PRD_MALE_IND       
+                            ,shd.SOC_PRTNRS_PRD_MALE_TTL       
+                            ,shd.SOC_PRTNRS_PRD_TRNSGNDR_IND   
+                            ,shd.SOC_SX_PRTNRS_INTNT_12MO_IND  
+                            ,shd.SOC_TRANSGNDR_PRTNRS_12MO_IND 
+                            ,shd.SOC_TRANSGNDR_PRTNRS_12MO_TTL 
+                            ,shd.SOURCE_SPREAD                 
+                            ,shd.STD_PRTNRS_PRD_TRNSGNDR_TTL   
+                            ,shd.SURV_CLOSED_DT                
+                            ,shd.SURV_INVESTIGATOR_ASSGN_DT    
+                            ,shd.SURV_PATIENT_FOLL_UP          
+                            ,shd.SURV_PROVIDER_CONTACT         
+                            ,shd.SURV_PROVIDER_EXAM_REASON     
+                            ,shd.SYM_NEUROLOGIC_SIGN_SYM       
+                            ,shd.SYM_OCULAR_MANIFESTATIONS     
+                            ,shd.SYM_OTIC_MANIFESTATION        
+                            ,shd.SYM_LATE_CLINICAL_MANIFES     
+                            ,shd.TRT_TREATMENT_DATE,            
+                            i.case_uid as case_uid, 
+                            AM.nbs_case_answer_uid as am_nbs_case_answer_uid, 
+                            CLN.nbs_case_answer_uid as cln_nbs_case_answer_uid, 
+                            CMP.nbs_case_answer_uid as cmp_nbs_case_answer_uid,
+                            ICC.nbs_case_answer_uid as icc_nbs_case_answer_uid,
+                            EPI.nbs_case_answer_uid as epi_nbs_case_answer_uid,
+                            HIV.D_INV_HIV_KEY as hiv_key,
+                            LF.nbs_case_answer_uid as lf_nbs_case_answer_uid,
+                            MH.nbs_case_answer_uid as mh_nbs_case_answer_uid,
+                            OBS.nbs_case_answer_uid as obs_nbs_case_answer_uid,
+                            PBI.nbs_case_answer_uid as pbi_nbs_case_answer_uid,
+                            RI.nbs_case_answer_uid as ri_nbs_case_answer_uid,
+                            SH.nbs_case_answer_uid as sh_nbs_case_answer_uid,
+                            SYM.nbs_case_answer_uid as sym_nbs_case_answer_uid,
+                            TRT.nbs_case_answer_uid as trt_nbs_case_answer_uid,
+                            PAT.patient_local_id as pat_patient_local_id,
+                            INVEST.PROVIDER_LOCAL_ID as INVESTIGATOR_LOCAL_ID,
+                            CRNTI.PROVIDER_LOCAL_ID as CURRENT_INVESTIGATOR_LOCAL_ID,
+                            DISP.PROVIDER_LOCAL_ID as DISPOSITIONED_BY_LOCAL_ID,
+                            FLD.PROVIDER_LOCAL_ID as INVESTIGATOR_FLD_FOLLOW_UP_LOCAL_ID,
+                            INITIV.PROVIDER_LOCAL_ID as INIT_ASGNED_INTERVIEWER_LOCAL_ID,
+                            FUP.PROVIDER_LOCAL_ID as  INIT_ASGNED_FLD_FOLLOW_UP_LOCAL_ID,
+                            INIT.PROVIDER_LOCAL_ID as INIT_FOLLOW_UP_INVSTGTR_LOCAL_ID,
+                            IVW.PROVIDER_LOCAL_ID as INTERVIEWER_ASSIGNED_LOCAL_ID,
+                            SUPV.PROVIDER_LOCAL_ID as SUPRVSR_OF_CASE_ASSGNMENT_LOCAL_ID,
+                            SUPVFUP.PROVIDER_LOCAL_ID as SUPRVSR_OF_FLD_FOLLOW_UP_LOCAL_ID,
+                            SURV.PROVIDER_LOCAL_ID as SURVEILLANCE_INVESTIGATOR_LOCAL_ID,
+                            ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            FROM STD_HIV_DATAMART shd
+                            INNER JOIN F_STD_PAGE_CASE PC with(nolock) ON  shd.INVESTIGATION_KEY = PC.INVESTIGATION_KEY
+                            INNER JOIN INVESTIGATION I with(nolock) ON  shd.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+                            INNER JOIN (SELECT DISTINCT INVESTIGATION_KEY, CONFIRMATION_DT         
+                                          FROM CONFIRMATION_METHOD_GROUP with(nolock)) AS CONF ON CONF.INVESTIGATION_KEY = PC.INVESTIGATION_KEY
+                            INNER JOIN D_CASE_MANAGEMENT CM with(nolock) ON CM.INVESTIGATION_KEY = PC.INVESTIGATION_KEY
+                            INNER JOIN D_INV_ADMINISTRATIVE AM with(nolock) ON AM.D_INV_ADMINISTRATIVE_KEY = PC.D_INV_ADMINISTRATIVE_KEY
+                            INNER JOIN D_INV_CLINICAL CLN with(nolock) ON CLN.D_INV_CLINICAL_KEY = PC.D_INV_CLINICAL_KEY
+                            INNER JOIN D_INV_COMPLICATION CMP with(nolock) ON CMP.D_INV_COMPLICATION_KEY = PC.D_INV_COMPLICATION_KEY
+                            INNER JOIN D_INV_CONTACT ICC with(nolock) ON ICC.D_INV_CONTACT_KEY = PC.D_INV_CONTACT_KEY
+                            INNER JOIN D_INV_EPIDEMIOLOGY EPI with(nolock) ON EPI.D_INV_EPIDEMIOLOGY_KEY = PC.D_INV_EPIDEMIOLOGY_KEY
+                            INNER JOIN INV_HIV HIV with(nolock) ON HIV.INVESTIGATION_KEY = PC.INVESTIGATION_KEY
+                            INNER JOIN D_INV_LAB_FINDING LF with(nolock) ON LF.D_INV_LAB_FINDING_KEY = PC.D_INV_LAB_FINDING_KEY
+                            INNER JOIN D_INV_MEDICAL_HISTORY MH with(nolock) ON MH.D_INV_MEDICAL_HISTORY_KEY = PC.D_INV_MEDICAL_HISTORY_KEY
+                            INNER JOIN D_INV_PATIENT_OBS OBS with(nolock) ON OBS.D_INV_PATIENT_OBS_KEY = PC.D_INV_PATIENT_OBS_KEY
+                            INNER JOIN D_INV_PREGNANCY_BIRTH PBI with(nolock) ON PBI.D_INV_PREGNANCY_BIRTH_KEY = PC.D_INV_PREGNANCY_BIRTH_KEY
+                            INNER JOIN D_INV_RISK_FACTOR RI with(nolock) ON RI.D_INV_RISK_FACTOR_KEY = PC.D_INV_RISK_FACTOR_KEY
+                            INNER JOIN D_INV_SOCIAL_HISTORY SH with(nolock) ON SH.D_INV_SOCIAL_HISTORY_KEY = PC.D_INV_SOCIAL_HISTORY_KEY
+                            INNER JOIN D_INV_SYMPTOM SYM with(nolock) ON SYM.D_INV_SYMPTOM_KEY = PC.D_INV_SYMPTOM_KEY
+                            INNER JOIN D_INV_TREATMENT TRT with(nolock) ON TRT.D_INV_TREATMENT_KEY = PC.D_INV_TREATMENT_KEY
+                            INNER JOIN D_PATIENT PAT with(nolock) ON PAT.PATIENT_KEY = PC.PATIENT_KEY
+                            INNER JOIN D_PROVIDER INVEST with(nolock) ON INVEST.PROVIDER_KEY = PC.CLOSED_BY_KEY 
+                            INNER JOIN D_PROVIDER CRNTI with(nolock) ON CRNTI.PROVIDER_KEY = PC.INVESTIGATOR_KEY 
+                            INNER JOIN D_PROVIDER DISP with(nolock) ON DISP.PROVIDER_KEY = PC.DISPOSITIONED_BY_KEY 
+                            INNER JOIN D_PROVIDER FLD with(nolock) ON FLD.PROVIDER_KEY = PC.INVSTGTR_FLD_FOLLOW_UP_KEY 
+                            INNER JOIN D_PROVIDER INITIV with(nolock) ON INITIV.PROVIDER_KEY = PC.INIT_ASGNED_INTERVIEWER_KEY 
+                            INNER JOIN D_PROVIDER FUP with(nolock) ON FUP.PROVIDER_KEY = PC.INIT_ASGNED_FLD_FOLLOW_UP_KEY 
+                            INNER JOIN D_PROVIDER INIT with(nolock) ON INIT.PROVIDER_KEY = PC.INIT_FOLLOW_UP_INVSTGTR_KEY 
+                            INNER JOIN D_PROVIDER IVW with(nolock) ON IVW.PROVIDER_KEY = PC.INTERVIEWER_ASSIGNED_KEY 
+                            INNER JOIN D_PROVIDER SUPV with(nolock) ON SUPV.PROVIDER_KEY = PC.SUPRVSR_OF_CASE_ASSGNMENT_KEY 
+                            INNER JOIN D_PROVIDER SUPVFUP with(nolock) ON SUPVFUP.PROVIDER_KEY = PC.SUPRVSR_OF_FLD_FOLLOW_UP_KEY 
+                            INNER JOIN D_PROVIDER SURV with(nolock) ON SURV.PROVIDER_KEY = PC.SURVEILLANCE_INVESTIGATOR_KEY 
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM STD_HIV_DATAMART;',
-       		'INVESTIGATION_KEY',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1068,17 +1509,35 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'INV_HIV',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT INV_HIV.*,
-                                                ROW_NUMBER() OVER (ORDER BY INV_HIV.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM INV_HIV
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'with PaginatedResults as (
+                            SELECT 
+                            i.case_uid as case_uid,
+                            HIV_STATE_CASE_ID,
+                            HIV_LAST_900_TEST_DT,
+                            HIV_900_TEST_REFERRAL_DT,
+                            HIV_ENROLL_PRTNR_SRVCS_IND,
+                            HIV_PREVIOUS_900_TEST_IND,
+                            HIV_SELF_REPORTED_RSLT_900,
+                            HIV_REFER_FOR_900_TEST,
+                            HIV_900_TEST_IND ,
+                            HIV_900_RESULT ,
+                            HIV_RST_PROVIDED_900_RSLT_IND ,
+                            HIV_POST_TEST_900_COUNSELING ,
+                            HIV_REFER_FOR_900_CARE_IND ,
+                            HIV_KEEP_900_CARE_APPT_IND ,
+                            HIV_AV_THERAPY_LAST_12MO_IND ,
+                            HIV_AV_THERAPY_EVER_IND,
+                            ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            FROM 
+                            INV_HIV ih 
+                            inner join INVESTIGATION  i on ih.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM INV_HIV;',
-       		'INVESTIGATION_KEY',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1087,16 +1546,63 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT F_STD_PAGE_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY F_STD_PAGE_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM F_STD_PAGE_CASE
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            select 
+                                   PATIENT.PATIENT_UID
+                                   ,HOSPITAL.ORGANIZATION_UID as hospital_uid
+                                   ,HOSPDELIVERY.ORGANIZATION_UID as hospdelivery_uid
+                                   ,REPORTERORG.ORGANIZATION_UID as reportingorg_uid
+                                   ,FACILITYORG.ORGANIZATION_UID as facilityorg_uid
+                                   ,PERSONREPORTER.PROVIDER_UID as personreporter_uid
+                                   ,PROVDELIVERY.PROVIDER_UID as provdelivery_uid
+                                   ,MOTHEROBGYN.PROVIDER_UID as motherobgyn_uid
+                                   ,PEDIATRICIAN.PROVIDER_UID as pediatrician_uid
+                                   ,PROVIDER.PROVIDER_UID as provider_uid
+                                   ,PHYSICIAN.PROVIDER_UID as physican_uid
+                                   ,INVESTIGATION.CASE_UID as case_uid
+                                   ,CL.PROVIDER_UID as closuer_invest_uid
+                                   ,DISP.PROVIDER_UID as dispoFup_invest_uid
+                                   ,FACILITY.ORGANIZATION_UID as facility_uid
+                                   ,FLD_FUP_INVESTGTR.PROVIDER_UID as fldFup_invest_uid
+                                   ,PROVIDER_FLD_FUP.PROVIDER_UID as provider_fup_uid
+                                   ,SUPRVSR_FLD_FUP.PROVIDER_UID as suprvsr_fup_uid
+                                   ,INIT_FLD_FUP.PROVIDER_UID as int_fup_uid
+                                   , INIT_INVSTGR_PHC.PROVIDER_UID as  int_invst_uid
+                                   ,INIT_INTERVIEWER.PROVIDER_UID as interviewer_uid
+                                   ,SURV.PROVIDER_UID as surv_invst_uid
+                                   ,CA.PROVIDER_UID as suprvsr_uid
+                                   , ROW_NUMBER() OVER (ORDER BY INVESTIGATION.case_uid ASC) AS RowNum
+                                   from F_STD_PAGE_CASE fsshc
+                                   JOIN dbo.D_PATIENT PATIENT	with(nolock)  on PATIENT.PATIENT_KEY = fsshc.PATIENT_KEY
+                                   JOIN dbo.D_ORGANIZATION  HOSPITAL with(nolock) ON fsshc.HOSPITAL_KEY= HOSPITAL.ORGANIZATION_KEY
+                                   JOIN dbo.D_ORGANIZATION  HOSPDELIVERY with(nolock) ON fsshc.DELIVERING_HOSP_KEY= HOSPDELIVERY.ORGANIZATION_KEY
+                                   JOIN dbo.D_ORGANIZATION REPORTERORG with(nolock) ON fsshc.ORG_AS_REPORTER_KEY= REPORTERORG.ORGANIZATION_KEY
+                                   JOIN dbo.D_ORGANIZATION FACILITYORG with(nolock) ON fsshc.ORDERING_FACILITY_KEY= FACILITYORG.ORGANIZATION_KEY
+                                   JOIN dbo.D_PROVIDER PERSONREPORTER with(nolock) ON  fsshc.PERSON_AS_REPORTER_KEY= PERSONREPORTER.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER PROVDELIVERY with(nolock) ON fsshc.DELIVERING_MD_KEY= PROVDELIVERY.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER MOTHEROBGYN with(nolock) ON fsshc.MOTHER_OB_GYN_KEY= MOTHEROBGYN.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER PEDIATRICIAN with(nolock) ON fsshc.PEDIATRICIAN_KEY= PEDIATRICIAN.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER PROVIDER with(nolock) ON fsshc.INVESTIGATOR_KEY= PROVIDER.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER PHYSICIAN with(nolock) ON fsshc.PHYSICIAN_KEY= PHYSICIAN.PROVIDER_KEY
+                                   JOIN dbo.INVESTIGATION  INVESTIGATION with(nolock) ON fsshc.INVESTIGATION_KEY= INVESTIGATION.INVESTIGATION_KEY
+                                   JOIN dbo.D_PROVIDER CL with(nolock) ON fsshc.CLOSED_BY_KEY= CL.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER DISP with(nolock) ON fsshc.DISPOSITIONED_BY_KEY= DISP.PROVIDER_KEY
+                                   JOIN dbo.D_ORGANIZATION  FACILITY with(nolock) ON fsshc.FACILITY_FLD_FOLLOW_UP_KEY= FACILITY.ORGANIZATION_KEY
+                                   JOIN dbo.D_PROVIDER FLD_FUP_INVESTGTR with(nolock) ON fsshc.INVSTGTR_FLD_FOLLOW_UP_KEY = FLD_FUP_INVESTGTR.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER PROVIDER_FLD_FUP with(nolock) ON fsshc.PROVIDER_FLD_FOLLOW_UP_KEY = PROVIDER_FLD_FUP.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER SUPRVSR_FLD_FUP with(nolock) ON fsshc.SUPRVSR_OF_FLD_FOLLOW_UP_KEY = SUPRVSR_FLD_FUP.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER INIT_FLD_FUP with(nolock) ON fsshc.INIT_ASGNED_FLD_FOLLOW_UP_KEY= INIT_FLD_FUP.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER INIT_INVSTGR_PHC with(nolock) ON fsshc.INIT_FOLLOW_UP_INVSTGTR_KEY= INIT_INVSTGR_PHC.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER INIT_INTERVIEWER with(nolock) ON fsshc.INIT_ASGNED_INTERVIEWER_KEY= INIT_INTERVIEWER.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER INTERVIEWER with(nolock) ON fsshc.INTERVIEWER_ASSIGNED_KEY= INTERVIEWER.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER SURV with(nolock) ON fsshc.SURVEILLANCE_INVESTIGATOR_KEY= SURV.PROVIDER_KEY
+                                   JOIN dbo.D_PROVIDER CA with(nolock) ON fsshc.SUPRVSR_OF_CASE_ASSGNMENT_KEY= CA.PROVIDER_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM F_STD_PAGE_CASE;',
-       		'INVESTIGATION_KEY',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1158,17 +1664,55 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'GENERIC_CASE',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT GENERIC_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY GENERIC_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM GENERIC_CASE
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'with PaginatedResults as (
+                            SELECT 
+                            i.case_uid
+                            ,lg.BUSINESS_OBJECT_UID
+                            ,dpat.PATIENT_UID
+                            ,dpro1.provider_uid as investigator_id
+                            ,dpro2.provider_uid as physician_id
+                            ,dpro3.provider_uid as person_as_reporter_uid
+                            ,dorg1.organization_uid as organization_id
+                            ,dorg2.organization_uid as hospital_uid
+                            ,ih.ILLNESS_DURATION            
+                            ,ih.ILLNESS_DURATION_UNIT       
+                            ,ih.PATIENT_AGE_AT_ONSET        
+                            ,ih.PATIENT_AGE_AT_ONSET_UNIT   
+                            ,ih.FOOD_HANDLR_IND             
+                            ,ih.DAYCARE_ASSOCIATION_IND     
+                            ,ih.DETECTION_METHOD            
+                            ,ih.DETECTION_METHOD_OTHER            
+                            ,ih.PATIENT_PREGNANCY_STATUS    
+                            ,ih.PELVIC_INFLAMMATORY_DISS_IND     
+                            ,con.CONDITION_CD    
+                            ,ih.Inv_Assigned_dt_key
+                            ,ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            FROM 
+                            GENERIC_CASE ih 
+                            inner join INVESTIGATION  i on ih.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+                            INNER JOIN CONDITION con WITH (NOLOCK) 
+                            ON con.CONDITION_KEY = ih.CONDITION_KEY
+                            LEFT OUTER JOIN LDF_GROUP lg WITH (NOLOCK) 
+                            ON lg.LDF_GROUP_KEY = ih.LDF_GROUP_KEY
+                            LEFT OUTER JOIN D_PATIENT dpat WITH (NOLOCK) 
+                            ON ih.PATIENT_KEY = dpat.PATIENT_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro1 WITH (NOLOCK) 
+                            ON ih.Investigator_key = dpro1.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro2 WITH (NOLOCK) 
+                            ON ih.Physician_key = dpro2.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro3 WITH (NOLOCK) 
+                            ON ih.Reporter_key = dpro3.PROVIDER_KEY
+                            LEFT OUTER JOIN D_ORGANIZATION dorg1 WITH (NOLOCK) 
+                            ON ih.Rpt_Src_Org_key = dorg1.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg2 WITH (NOLOCK) 
+                            ON ih.ADT_HSPTL_KEY = dorg2.Organization_key
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM GENERIC_CASE;',
-       		'INVESTIGATION_KEY',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1176,17 +1720,184 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'CRS_CASE',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT CRS_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY CRS_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM CRS_CASE
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
-       		'SELECT COUNT(*)
-                                      FROM CRS_CASE;',
-       		'INVESTIGATION_KEY',
+       		'with PaginatedResults as (
+                            SELECT 
+                            i.case_uid as case_uid
+                            ,lg.BUSINESS_OBJECT_UID as BUSINESS_OBJECT_UID
+                            ,dpat.PATIENT_UID as patient_uid
+                            ,dpro1.provider_uid as investigator_id
+                            ,dpro2.provider_uid as physician_id
+                            ,dpro3.provider_uid as person_as_reporter_uid
+                            ,dorg1.organization_uid as organization_id
+                            ,dorg2.organization_uid as hospital_uid   
+                            ,con.CONDITION_CD    
+                            ,ih.Inv_Assigned_dt_key
+                            ,ih.AT_PREGNANCY_18YOUNGR_CHILDNBR
+                            ,ih.AUTOPSY_PERFORMED_IND         
+                            ,ih.BIRTH_DELIVERED_IN_US_NBR     
+                            ,ih.BIRTH_STATE                   
+                            ,ih.BIRTH_WEIGHT                  
+                            ,ih.BIRTH_WEIGHT_UNIT             
+                            ,ih.BY_WHOM_NOT_MD_DIAGNSD_RUBELLA
+                            ,ih.CHILD_18YOUNGR_RUBELLA_VACCD  
+                            ,ih.CHILD_AGE_AT_DIAGNOSIS_UNIT   
+                            ,ih.CHILD_AGE_AT_THIS_DIAGNOSIS   
+                            ,ih.CHILD_CONGNITAL_HEART_DISEASE 
+                            ,ih.CHILD_DERMAL_ERYTHROPOISESIS  
+                            ,ih.CHILD_CONGNITAL_GLAUCOMA      
+                            ,ih.CHILD_JAUNDICE                
+                            ,ih.CHILD_LOW_PLATELETS           
+                            ,ih.CHILD_MENINGOENCEPHALITIS     
+                            ,ih.CHILD_MICROENCEPHALY          
+                            ,ih.CHILD_OTHER_ABNORMALITIES     
+                            ,ih.CHILD_PURPURA                 
+                            ,ih.CHILD_RADIOLUCENT_BONE        
+                            ,ih.CHILD_CATARACTS               
+                            ,ih.CHILD_ENLARGED_LIVER          
+                            ,ih.CHILD_ENLARGED_SPLEEN         
+                            ,ih.CHILD_HEARING_LOSS            
+                            ,ih.CHILD_MENTAL_RETARDATION      
+                            ,ih.CHILD_OTHER_ABNORMALITIES_1   
+                            ,ih.CHILD_OTHER_ABNORMALITIES_2   
+                            ,ih.CHILD_OTHER_ABNORMALITIES_3   
+                            ,ih.CHILD_OTHER_ABNORMALITIES_4   
+                            ,ih.CHILD_PATENT_DUCTUS_ARTERIOSUS
+                            ,ih.CHILD_PIGMENTARY_RETINOPATHY  
+                            ,ih.CHILD_PULMONIC_STENOSIS       
+                            ,ih.CHILD_RUBELLA_LAB_TEST_DONE   
+                            ,ih.REASON_NOT_A_CRS_CASE         
+                            ,ih.DEATH_CERTIFICATE_2NDARY_CAUSE
+                            ,ih.DEATH_CERTIFICATE_PRIMARY_CAUS
+                            ,ih.DIFFERENCE_BETWEEN_TEST_1_2   
+                            ,ih.FAMILYPLAND_PRIOR_CONCEPTION  
+                            ,ih.FINAL_ANATOMICAL_DEATH_CAUSE  
+                            ,ih.PRENATAL_FIRST_VISIT_DT       
+                            ,ih.GESTATIONAL_AGE_IN_WK_AT_BIRTH
+                            ,ih.HEALTH_PROVIDER_LAST_EVAL_DT  
+                            ,ih.IGM_EIA_1_METHOD_USED         
+                            ,ih.IGM_EIA_2_METHOD_USED         
+                            ,ih.IGM_EIA_NONCAPTURE_RESULT     
+                            ,ih.IGM_EIA_OTHER_TST_RESULT_VAL  
+                            ,ih.IGM_EIA_TEST_1_RESULT_VAL     
+                            ,ih.IGM_EIA_TEST_2_RESULT_VAL     
+                            ,ih.INFANT_DEATH_FRM_CRS          
+                            ,ih.MATERNAL_ILL_CLINICAL_FEATURE 
+                            ,ih.MOTHER_AGE_AT_GIVEN_BIRTH     
+                            ,ih.MOTHER_ARTHRALGIA_ARTHRITIS   
+                            ,ih.MOTHER_BIRTH_CNTRY            
+                            ,ih.MOTHER_EXPOSD_TO_RUBELLA_CASE 
+                            ,ih.MOTHER_GIVEN_PRIOR_BIRTH_IN_US
+                            ,ih.MOTHER_HAD_FEVER              
+                            ,ih.MOTHER_HAD_LYMPHADENOPATHY    
+                            ,ih.MOTHER_HAS_MACULOPAPULAR_RASH 
+                            ,ih.MOTHER_IMMUNIZED_IND          
+                            ,ih.MOTHER_KNOW_EXPOSED_AT_WHERE  
+                            ,ih.MOTHER_LIVING_IN_US_YRS       
+                            ,ih.MOTHER_OCCUPATION_ATCONCEPTION
+                            ,ih.MOTHER_OTHER_VACC_INFO_SRC    
+                            ,ih.MOTHER_RASH_ONSET_DT          
+                            ,ih.MOTHER_RELATIONTO_RUBELLA_CASE
+                            ,ih.MOTHER_RUBELLA_CASE_EXPOSE_DT 
+                            ,ih.MOTHER_TRAVEL_BACK_US_1_DT    
+                            ,ih.MOTHER_TRAVEL_BACK_US_2_DT    
+                            ,ih.MOTHER_TRAVEL_OUT_US_1_DT     
+                            ,ih.MOTHER_TRAVEL_OUT_US_2_DT     
+                            ,ih.MOTHER_TRAVEL_1_TO_CNTRY      
+                            ,ih.MOTHER_TRAVEL_2_TO_CNTRY      
+                            ,ih.MOTHER_UNK_EXPOSURE_TRAVEL_IND
+                            ,ih.MOTHER_IS_A_RPTD_RUBELLA_CASE 
+                            ,ih.MOTHERRUBELLA_IMMUNIZE_INFOSRC
+                            ,ih.OTHER_CONGNITAL_HEART_DISS_IND
+                            ,ih.OTHER_CONGNITALHEART_DISS_DESC
+                            ,ih.OTHER_RELATIONSHIP            
+                            ,ih.OTHER_RUBELLA_LAB_TEST_DESC   
+                            ,ih.OTHER_RUBELLA_LAB_TEST_DONE   
+                            ,ih.OTHER_RUBELLA_LAB_TEST_DT     
+                            ,ih.OTHER_RUBELLA_LAB_TEST_RESULT 
+                            ,ih.OTHER_RUBELLA_SPECIMEN_TYPE   
+                            ,ih.OTHER_RUBELLA_TEST_RESULT_VAL 
+                            ,ih.PREGNANCY_MO_RUBELLA_SYMPTM_UP
+                            ,ih.PRENATAL_CARE_THIS_PREGNANCY  
+                            ,ih.PREVIOUS_PREGNANCY_NBR        
+                            ,ih.RT_PCR_DT                     
+                            ,ih.RT_PCR_OTHER_SPECIMEN_SRC     
+                            ,ih.RT_PCR_PERFORMED              
+                            ,ih.RT_PCR_RESULT                 
+                            ,ih.RT_PCR_SRC                    
+                            ,ih.RT_PCR_TEST_RESULT_VAL        
+                            ,ih.RUBELLA_IGG_TEST_1            
+                            ,ih.RUBELLA_IGG_TEST_1_DT         
+                            ,ih.RUBELLA_IGG_TEST_1_RESULT     
+                            ,ih.RUBELLA_IGG_TEST_2            
+                            ,ih.RUBELLA_IGG_TEST_2_DT         
+                            ,ih.RUBELLA_IGG_TEST_2_RESULT     
+                            ,ih.RUBELLA_IGG_TEST1_RESULT_VAL  
+                            ,ih.RUBELLA_IGG_TEST2_RESULT_VAL  
+                            ,ih.RUBELLA_IGM_EIA_CAPTURE       
+                            ,ih.RUBELLA_IGM_EIA_CAPTURE_DT    
+                            ,ih.RUBELLA_IGM_EIA_CAPTURE_RESULT
+                            ,ih.RUBELLA_IGM_EIA_NONCAPTURE_DT 
+                            ,ih.RUBELLA_IGM_EIA_TESTED        
+                            ,ih.RUBELLA_IGM_OTHER_TEST        
+                            ,ih.RUBELLA_IGM_OTHER_TEST_DESC   
+                            ,ih.RUBELLA_IGM_OTHER_TEST_DT     
+                            ,ih.RUBELLA_IGM_OTHER_TEST_RESULT 
+                            ,ih.RUBELLA_LIKE_ILL_IN_PREGNANCY 
+                            ,ih.RUBELLA_SPECIMEN_TYPE         
+                            ,ih.RUBELLAVACCD_18YOUNGR_CHILDNBR
+                            ,ih.SEROLOGICAL_CONFIRMD_AT_ILL   
+                            ,ih.SEROLOGICAL_TST_BEFR_PREGNANCY
+                            ,ih.SEROLOGICALLY_CONFIRMD_DT     
+                            ,ih.SEROLOGICALLY_CONFIRMD_RESULT 
+                            ,ih.SPECIMEN_TO_CDC_FOR_GENOTYPING
+                            ,ih.TOTAL_LIVE_BIRTH_NBR          
+                            ,ih.VACCINE_SRC                   
+                            ,ih.VIRUS_ISOLATION_DT            
+                            ,ih.VIRUS_ISOLATION_OTHER_SRC     
+                            ,ih.VIRUS_ISOLATION_PERFORMED     
+                            ,ih.VIRUS_ISOLATION_RESULT        
+                            ,ih.VIRUS_ISOLATION_SPECIMEN_SRC  
+                            ,ih.YR_MOTHER_PRIOR_DELIVERY_IN_US      
+                            ,ih.PRENATAL_CARE_OBTAINED_FRM_2  
+                            ,ih.PRENATAL_CARE_OBTAINED_FRM_3  
+                            ,ih.PRENATAL_CARE_OBTAINED_FRM_1                 
+                            ,ih.MOTHER_RUBELLA_ACQUIRED_PLACE 
+                            ,ih.MOTHER_RUBELLA_ACQUIRED_CNTRY 
+                            ,ih.MOTHER_RUBELLA_ACQUIRED_CITY  
+                            ,ih.MOTHER_RUBELLA_ACQUIRED_STATE 
+                            ,ih.MOTHER_RUBELLA_ACQUIRED_CNTY         
+                            ,ih.SENT_FOR_GENOTYPING_DT        
+                            ,ih.DIAGNOSED_BY_PHYSICIAN_IND    
+                            ,ih.MOTHER_RUBELLA_LAB_TEST_IND   
+                            ,ih.MOTHER_VACCINATED_DT               
+                            ,ih.GENOTYPE_SEQUENCED_CRS        
+                            ,ih.GENOTYPE_ID_CRS               
+                            ,ih.GENOTYPE_OTHER_ID_CRS           
+                            ,ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            FROM 
+                            CRS_CASE ih 
+                            inner join INVESTIGATION  i on ih.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+                            INNER JOIN CONDITION con WITH (NOLOCK) 
+                            ON con.CONDITION_KEY = ih.CONDITION_KEY
+                            LEFT OUTER JOIN LDF_GROUP lg WITH (NOLOCK) 
+                            ON lg.LDF_GROUP_KEY = ih.LDF_GROUP_KEY
+                            LEFT OUTER JOIN D_PATIENT dpat WITH (NOLOCK) 
+                            ON ih.PATIENT_KEY = dpat.PATIENT_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro1 WITH (NOLOCK) 
+                            ON ih.Investigator_key = dpro1.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro2 WITH (NOLOCK) 
+                            ON ih.Physician_key = dpro2.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro3 WITH (NOLOCK) 
+                            ON ih.Reporter_key = dpro3.PROVIDER_KEY
+                            LEFT OUTER JOIN D_ORGANIZATION dorg1 WITH (NOLOCK) 
+                            ON ih.Rpt_Src_Org_key = dorg1.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg2 WITH (NOLOCK) 
+                            ON ih.ADT_HSPTL_KEY = dorg2.Organization_key
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1194,17 +1905,214 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'BMIRD_CASE',
        		'RDB',
        		'RDB_MODERN',
-       		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT BMIRD_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY BMIRD_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                         FROM BMIRD_CASE
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+       		'with PaginatedResults as (
+                            select
+                            i.case_uid as case_uid
+                            ,lg.BUSINESS_OBJECT_UID as BUSINESS_OBJECT_UID
+                            ,dpat.PATIENT_UID as PATIENT_UID
+                            ,dpro1.provider_uid as investigator_id
+                            ,dpro2.provider_uid as physician_id
+                            ,dpro3.provider_uid as person_as_reporter_uid
+                            ,dorg1.organization_uid as organization_id
+                            ,dorg2.organization_uid as hospital_uid   
+                            ,dorg3.organization_uid as chronic_care_fac_uid
+                            ,dorg4.organization_uid as daycare_fac_uid
+                            ,con.CONDITION_CD   
+                            ,atm.ANTIMICROBIAL_AGENT_TESTED_IND 
+                            ,atm.SUSCEPTABILITY_METHOD
+                            ,atm.S_I_R_U_RESULT
+                            ,atm.MIC_SIGN
+                            ,atm.MIC_VALUE
+                            ,ih.Inv_Assigned_dt_key
+                            ,ih.TREATMENT_HOSPITAL_KEY 
+                            ,ih.TRANSFERED_IND                
+                            ,ih.BIRTH_WEIGHT_IN_GRAMS         
+                            ,ih.BIRTH_WEIGHT_POUNDS           
+                            ,ih.WEIGHT_IN_POUNDS              
+                            ,ih.WEIGHT_IN_OUNCES              
+                            ,ih.WEIGHT_IN_KILOGRAM            
+                            ,ih.WEIGHT_UNKNOWN                
+                            ,ih.HEIGHT_IN_FEET                
+                            ,ih.HEIGHT_IN_INCHES              
+                            ,ih.HEIGHT_IN_CENTIMETERS         
+                            ,ih.HEIGHT_UNKNOWN                
+                            ,ih.OTH_STREP_PNEUMO1_CULT_SITES  
+                            ,ih.OTH_STREP_PNEUMO2_CULT_SITES  
+                            ,ih.IHC_SPECIMEN_1                
+                            ,ih.IHC_SPECIMEN_2                
+                            ,ih.IHC_SPECIMEN_3                
+                            ,ih.SAMPLE_COLLECTION_DT          
+                            ,ih.CONJ_MENING_VACC              
+                            ,ih.TREATMENT_HOSPITAL_NM         
+                            ,ih.OTH_TYPE_OF_INSURANCE         
+                            ,ih.BIRTH_WEIGHT_OUNCES           
+                            ,ih.PREGNANT_IND                  
+                            ,ih.OUTCOME_OF_FETUS              
+                            ,ih.UNDER_1_MONTH_IND             
+                            ,ih.GESTATIONAL_AGE               
+                            ,ih.BACTERIAL_SPECIES_ISOLATED    
+                            ,ih.FIRST_POSITIVE_CULTURE_DT     
+                            ,ih.UNDERLYING_CONDITION_IND      
+                            ,ih.PATIENT_YR_IN_COLLEGE         
+                            ,ih.CULTURE_SEROTYPE              
+                            ,ih.PATIENT_STATUS_IN_COLLEGE     
+                            ,ih.PATIENT_CURR_LIVING_SITUATION 
+                            ,ih.HIB_VACC_RECEIVED_IND         
+                            ,ih.CULTURE_SEROGROUP             
+                            ,ih.ATTENDING_COLLEGE_IND         
+                            ,ih.OXACILLIN_ZONE_SIZE           
+                            ,ih.OXACILLIN_INTERPRETATION      
+                            ,ih.PNEUVACC_RECEIVED_IND         
+                            ,ih.PNEUCONJ_RECEIVED_IND         
+                            ,ih.FIRST_ADDITIONAL_SPECIMEN_DT  
+                            ,ih.SECOND_ADDITIONAL_SPECIMEN_DT 
+                            ,ih.PATIENT_HAD_SURGERY_IND       
+                            ,ih.SURGERY_DT                    
+                            ,ih.PATIENT_HAVE_BABY_IND         
+                            ,ih.BABY_DELIVERY_DT              
+                            ,ih.IDENT_THRU_AUDIT_IND          
+                            ,ih.SAME_PATHOGEN_RECURRENT_IND   
+                            ,ih.OTHER_SPECIES_ISOLATE_SITE    
+                            ,ih.OTHER_CASE_IDENT_METHOD       
+                            ,ih.OTHER_HOUSING_OPTION          
+                            ,ih.PATIENT_CURR_ATTEND_SCHOOL_NM 
+                            ,ih.POLYSAC_MENINGOC_VACC_IND     
+                            ,ih.FAMILY_MEDICAL_INSURANCE_TYPE 
+                            ,ih.HIB_CONTACT_IN_LAST_2_MON_IND 
+                            ,ih.TYPE_HIB_CONTACT_IN_LAST_2_MON
+                            ,ih.PRETERM_BIRTH_WK_NBR          
+                            ,ih.IMMUNOSUPRESSION_HIV_STATUS   
+                            ,ih.ACUTE_SERUM_AVAILABLE_IND     
+                            ,ih.ACUTE_SERUM_AVAILABLE_DT      
+                            ,ih.CONVALESNT_SERUM_AVAILABLE_IND
+                            ,ih.CONVALESNT_SERUM_AVAILABLE_DT 
+                            ,ih.BIRTH_OUTSIDE_HSPTL_IND       
+                            ,ih.BIRTH_OUTSIDE_HSPTL_LOCATION  
+                            ,ih.BABY_HSPTL_DISCHARGE_DTTIME   
+                            ,ih.BABY_SAME_HSPTL_READMIT_IND   
+                            ,ih.BABY_SAME_HSPTL_READMIT_DTTIME
+                            ,ih.FRM_HOME_TO_DIF_HSPTL_IND     
+                            ,ih.FRM_HOME_TO_DIF_HSPTL_DTTIME  
+                            ,ih.MOTHER_LAST_NM                
+                            ,ih.MOTHER_FIRST_NM               
+                            ,ih.MOTHER_HOSPTL_ADMISSION_DTTIME
+                            ,ih.MOTHER_PATIENT_CHART_NBR      
+                            ,ih.MOTHER_PENICILLIN_ALLERGY_IND 
+                            ,ih.MEMBRANE_RUPTURE_DTTIME       
+                            ,ih.MEMBRANE_RUPTURE_GE_18HRS_IND 
+                            ,ih.RUPTURE_BEFORE_LABOR_ONSET    
+                            ,ih.MEMBRANE_RUPTURE_TYPE         
+                            ,ih.DELIVERY_TYPE                 
+                            ,ih.MOTHER_INTRAPARTUM_FEVER_IND  
+                            ,ih.FIRST_INTRAPARTUM_FEVER_DTTIME
+                            ,ih.RECEIVED_PRENATAL_CARE_IND    
+                            ,ih.PRENATAL_CARE_IN_LABOR_CHART  
+                            ,ih.PRENATAL_CARE_VISIT_NBR       
+                            ,ih.FIRST_PRENATAL_CARE_VISIT_DT  
+                            ,ih.LAST_PRENATAL_CARE_VISIT_DT   
+                            ,ih.LAST_PRENATAL_CARE_VISIT_EGA  
+                            ,ih.GBS_BACTERIURIA_IN_PREGNANCY  
+                            ,ih.PREVIOUS_BIRTH_WITH_GBS_IND   
+                            ,ih.GBS_CULTURED_BEFORE_ADMISSION 
+                            ,ih.GBS_1ST_CULTURE_DT            
+                            ,ih.GBS_1ST_CULTURE_POSITIVE_IND  
+                            ,ih.GBS_2ND_CULTURE_DT            
+                            ,ih.GBS_2ND_CULTURE_POSITIVE_IND  
+                            ,ih.GBS_AFTER_ADM_BEFORE_DELIVERY 
+                            ,ih.AFTER_ADM_GBS_CULTURE_DT      
+                            ,ih.GBS_CULTURE_DELIVERY_AVAILABLE
+                            ,ih.INTRAPARTUM_ANTIBIOTICS_GIVEN 
+                            ,ih.FIRST_ANTIBIOTICS_GIVEN_DTTIME
+                            ,ih.INTRAPARTUMANTIBIOTICSINTERVAL
+                            ,ih.INTRAPARTUM_ANTIBIOTICS_REASON
+                            ,ih.BABY_BIRTH_TIME               
+                            ,ih.NEISERRIA_2NDARY_CASE_IND     
+                            ,ih.NEISERRIA_2ND_CASE_CONTRACT   
+                            ,ih.OTHER_2NDARY_CASE_TYPE        
+                            ,ih.NEISERRIA_RESIST_TO_RIFAMPIN  
+                            ,ih.NEISERRIA_RESIST_TO_SULFA     
+                            ,ih.FIRST_HSPTL_DISCHARGE_TIME    
+                            ,ih.FIRST_HSPTL_READMISSION_TIME  
+                            ,ih.SECOND_HSPTL_ADMISSION_TIME   
+                            ,ih.ABCCASE                       
+                            ,ih.HSPTL_MATERNAL_ADMISSION_TIME 
+                            ,ih.MEMBRANE_RUPTURE_TIME         
+                            ,ih.INTRAPARTUM_FEVER_RECORD_TIME 
+                            ,ih.ANTIBIOTICS_1ST_ADMIN_TIME    
+                            ,ih.BMIRD_MULTI_VAL_GRP_KEY       
+                            ,ih.OTHER_PRIOR_ILLNESS           
+                            ,ih.OTHER_MALIGNANCY              
+                            ,ih.ORGAN_TRANSPLANT              
+                            ,ih.DAYCARE_IND                   
+                            ,ih.NURSING_HOME_IND              
+                            ,ih.TYPES_OF_OTHER_INFECTION      
+                            ,ih.BACTERIAL_OTHER_SPECIED       
+                            ,ih.STERILE_SITE_OTHER            
+                            ,ih.UNDERLYING_CONDITIONS_OTHER   
+                            ,ih.CULTURE_SEROGROUP_OTHER       
+                            ,ih.PERSISTENT_DISEASE_IND        
+                            ,ih.GBS_CULTURE_POSITIVE_IND      
+                            ,ih.BACTERIAL_OTHER_ISOLATED      
+                            ,ih.FAMILY_MED_INSURANCE_TYPE_OTHE
+                            ,ih.PRIOR_STATE_CASE_ID           
+                            ,ih.BIRTH_CNTRY_CD                
+                            ,ih.INITIAL_HSPTL_NAME            
+                            ,ih.BIRTH_HSPTL_NAME              
+                            ,ih.FROM_HOME_HSPTL_NAME          
+                            ,ih.CULTURE_IDENT_ORG_NAME        
+                            ,ih.TRANSFER_FRM_HSPTL_NAME       
+                            ,ih.CASE_REPORT_STATUS            
+                            ,ih.TRANSFER_FRM_HSPTL_ID         
+                            ,ih.BIRTH_HSPTL_ID                
+                            ,ih.DIF_HSPTL_ID                  
+                            ,ih.ABC_STATE_CASE_ID             
+                            ,ih.INV_PATIENT_CHART_NBR         
+                            ,ih.OTHSPEC1                      
+                            ,ih.OTHSPEC2                      
+                            ,ih.INTBODYSITE                   
+                            ,ih.OTHILL2                       
+                            ,ih.OTHILL3                       
+                            ,ih.OTHNONSTER                    
+                            ,ih.OTHSEROTYPE                   
+                            ,ih.HINFAGE                       
+                            ,ih.ABCSINVLN                     
+                            ,ih.ABCSINVFN                     
+                            ,ih.ABCSINVEMAIL                  
+                            ,ih.ABCSINVTELE                   
+                            ,ih.ABCSINVEXT                    
+                            ,ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            FROM 
+                            BMIRD_CASE ih 
+                            inner join INVESTIGATION  i on ih.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+                            INNER JOIN CONDITION con WITH (NOLOCK) 
+                            ON con.CONDITION_KEY = ih.CONDITION_KEY
+                            LEFT OUTER JOIN LDF_GROUP lg WITH (NOLOCK) 
+                            ON lg.LDF_GROUP_KEY = ih.LDF_GROUP_KEY
+                            LEFT OUTER JOIN D_PATIENT dpat WITH (NOLOCK) 
+                            ON ih.PATIENT_KEY = dpat.PATIENT_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro1 WITH (NOLOCK) 
+                            ON ih.Investigator_key = dpro1.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro2 WITH (NOLOCK) 
+                            ON ih.Physician_key = dpro2.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro3 WITH (NOLOCK) 
+                            ON ih.Reporter_key = dpro3.PROVIDER_KEY
+                            LEFT OUTER JOIN D_ORGANIZATION dorg1 WITH (NOLOCK) 
+                            ON ih.Rpt_Src_Org_key = dorg1.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg2 WITH (NOLOCK) 
+                            ON ih.ADT_HSPTL_KEY = dorg2.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg3 WITH (NOLOCK) 
+                            ON ih.NURSING_HOME_KEY = dorg3.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg4 WITH (NOLOCK) 
+                            ON ih.DAYCARE_FACILITY_KEY = dorg4.Organization_key
+                            LEFT OUTER JOIN ANTIMICROBIAL atm WITH (NOLOCK) 
+                            ON atm.ANTIMICROBIAL_GRP_KEY = ih.ANTIMICROBIAL_GRP_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM BMIRD_CASE;',
-       		'INVESTIGATION_KEY',
+       		'CASE_UID',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		),
@@ -1646,16 +2554,45 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RDB',
        		'RDB_MODERN',
        		'WITH PaginatedResults AS (
-                                         SELECT DISTINCT F_CONTACT_RECORD_CASE.*,
-                                                ROW_NUMBER() OVER (ORDER BY F_CONTACT_RECORD_CASE.D_CONTACT_RECORD_KEY ASC) AS RowNum
-                                         FROM F_CONTACT_RECORD_CASE
-                                      )
-                                      SELECT *
-                                      FROM PaginatedResults
-                                      WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            select dc.LOCAL_ID as local_id
+                            ,org.ORGANIZATION_UID as organization_uid
+                            ,pv1.PROVIDER_UID as investigator_uid
+                            ,pv2.PROVIDER_UID  as dispositioned_by_uid
+                            ,pt1.PATIENT_UID as third_party_entity_uid
+                            ,pt2.PATIENT_UID  as pat_contact_uid --key
+                            ,pt3.PATIENT_UID  as subject_uid
+                            ,inv1.CASE_UID as third_party_case_uid
+                            ,inv2.CASE_UID as subject_case_uid
+                            ,inv3.CASE_UID as contact_case_uid
+                            ,ROW_NUMBER() OVER (ORDER BY nc.CONTACT_KEY ASC) AS RowNum
+                            from F_CONTACT_RECORD_CASE nc 
+                            INNER JOIN
+                                   D_CONTACT_RECORD dc with (nolock) on dc.D_CONTACT_RECORD_KEY = nc.D_CONTACT_RECORD_KEY
+                            INNER JOIN
+                                   D_ORGANIZATION org  with (nolock) on org.ORGANIZATION_KEY  = nc.CONTACT_EXPOSURE_SITE_KEY
+                            INNER JOIN
+                                   D_PROVIDER pv1  with (nolock) on pv1.PROVIDER_KEY  = nc.CONTACT_INVESTIGATOR_KEY
+                            INNER JOIN
+                                   D_PROVIDER pv2  with (nolock) on pv2.PROVIDER_KEY  = nc.DISPOSITIONED_BY_KEY
+                            INNER JOIN
+                                   D_PATIENT pt1  with (nolock) on pt1.PATIENT_KEY = nc.THIRD_PARTY_ENTITY_KEY
+                            INNER JOIN
+                                   D_PATIENT pt2  with (nolock) on pt2.PATIENT_KEY = nc.CONTACT_KEY
+                            INNER JOIN
+                                   D_PATIENT pt3  with (nolock) on pt3.PATIENT_KEY = nc.SUBJECT_KEY
+                            INNER JOIN
+                                   INVESTIGATION inv1  with (nolock) on inv1.INVESTIGATION_KEY = nc.THIRD_PARTY_INVESTIGATION_KEY
+                            INNER JOIN
+                                   INVESTIGATION inv2  with (nolock) on inv2.INVESTIGATION_KEY = nc.SUBJECT_INVESTIGATION_KEY
+                            INNER JOIN
+                                   INVESTIGATION inv3  with (nolock) on inv3.INVESTIGATION_KEY = nc.CONTACT_INVESTIGATION_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM F_CONTACT_RECORD_CASE;',
-       		'D_CONTACT_RECORD_KEY',
+       		'pat_contact_uid',
        		'RowNum, D_CONTACT_RECORD_KEY',
        		1
        		),
@@ -2360,7 +3297,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                                       WHERE RowNum BETWEEN :startRow AND :endRow;',
        		'SELECT COUNT(*)
                                       FROM D_CONTACT_RECORD;',
-       		'D_CONTACT_RECORD_KEY',
+       		'LOCAL_ID',
        		'RowNum, D_CONTACT_RECORD_KEY',
        		1
        		),
@@ -2868,3 +3805,62 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
        		'RowNum, INVESTIGATION_KEY',
        		1
        		)
+
+
+
+INSERT INTO Data_Compare_Config
+(
+    table_name, source_db, target_db, query, query_count, key_column_list, ignore_column_list, compare,
+    target_table_name, target_query, target_query_count
+)
+VALUES
+    (
+    'PublicHealthCaseFact', 'ODSE', 'ODSE',
+    'WITH PaginatedResults AS (
+        SELECT PublicHealthCaseFact.*,
+               ROW_NUMBER() OVER (ORDER BY PublicHealthCaseFact.public_health_case_uid ASC) AS RowNum
+        FROM PublicHealthCaseFact
+    )
+    SELECT *
+    FROM PaginatedResults
+    WHERE RowNum BETWEEN :startRow AND :endRow;',
+    'SELECT COUNT(*) FROM PublicHealthCaseFact;',
+    'public_health_case_uid',
+    'RowNum',
+    1,
+    'PublicHealthCaseFact_modern',
+    'WITH PaginatedResults AS (
+        SELECT PublicHealthCaseFact_modern.*,
+               ROW_NUMBER() OVER (ORDER BY PublicHealthCaseFact_modern.public_health_case_uid ASC) AS RowNum
+        FROM PublicHealthCaseFact_modern
+    )
+    SELECT *
+    FROM PaginatedResults
+    WHERE RowNum BETWEEN :startRow AND :endRow;',
+    'SELECT COUNT(*) FROM PublicHealthCaseFact_modern;'
+    ),
+    (
+        'SubjectRaceInfo', 'ODSE', 'ODSE',
+        'WITH PaginatedResults AS (
+            SELECT SubjectRaceInfo.*,
+                   ROW_NUMBER() OVER (ORDER BY SubjectRaceInfo.public_health_case_uid ASC) AS RowNum
+            FROM SubjectRaceInfo
+        )
+        SELECT *
+        FROM PaginatedResults
+        WHERE RowNum BETWEEN :startRow AND :endRow;',
+        'SELECT COUNT(*) FROM SubjectRaceInfo;',
+        'public_health_case_uid',
+        'RowNum',
+        1,
+        'SubjectRaceInfo_Modern',
+        'WITH PaginatedResults AS (
+            SELECT SubjectRaceInfo_Modern.*,
+                   ROW_NUMBER() OVER (ORDER BY SubjectRaceInfo_Modern.public_health_case_uid ASC) AS RowNum
+            FROM SubjectRaceInfo_Modern
+        )
+        SELECT *
+        FROM PaginatedResults
+        WHERE RowNum BETWEEN :startRow AND :endRow;',
+        'SELECT COUNT(*) FROM SubjectRaceInfo_Modern;'
+    );
