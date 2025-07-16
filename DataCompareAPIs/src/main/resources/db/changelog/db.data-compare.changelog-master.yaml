@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/000-nbs-data-internal-db-general-001.sql
+            splitStatements: false
+  - changeSet:
+      id: 1
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/tables/001-create-data-compare-config-001.sql
+            splitStatements: false
+  - changeSet:
+      id: 2
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/tables/002-create-data-compare-batch-001.sql
+            splitStatements: false
+  - changeSet:
+      id: 3
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/tables/003-create-data-compare-log-001.sql
+            splitStatements: false
+  - changeSet:
+      id: 4
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/tables/004-alter-data-compare-log-001.sql
+            splitStatements: false
+  - changeSet:
+      id: 5
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/routines/001-generate-data.sql
+            splitStatements: false

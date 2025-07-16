@@ -1,6 +1,7 @@
 package gov.cdc.datacompareapis.configuration;
 
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+import gov.cdc.datacompareapis.property.KafkaPropertiesProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,21 +18,18 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 public class KafkaConsumerConfig {
-    @Value("${spring.kafka.group-id}")
-    private String groupId = "";
+    private final KafkaPropertiesProvider kafkaPropertiesProvider;
 
-    @Value("${spring.kafka.bootstrap-servers}")
-    private String bootstrapServers = "";
-
-
-    public KafkaConsumerConfig() {}
+    public KafkaConsumerConfig(KafkaPropertiesProvider kafkaPropertiesProvider) {
+        this.kafkaPropertiesProvider = kafkaPropertiesProvider;
+    }
 
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory() {
         final Map<String, Object> config = new HashMap<>();
-        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        config.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaPropertiesProvider.getBootstrapServers());
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaPropertiesProvider.getGroupId());
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         return new DefaultKafkaConsumerFactory<>(config);

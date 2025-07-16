@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import gov.cdc.datacompareapis.configuration.TimestampAdapter;
 import gov.cdc.datacompareapis.exception.DataCompareException;
 import gov.cdc.datacompareapis.kafka.KafkaProducerService;
+import gov.cdc.datacompareapis.property.KafkaPropertiesProvider;
 import gov.cdc.datacompareapis.repository.dataCompare.DataCompareBatchRepository;
 import gov.cdc.datacompareapis.repository.dataCompare.DataCompareConfigRepository;
 import gov.cdc.datacompareapis.repository.dataCompare.DataCompareLogRepository;
@@ -44,16 +45,19 @@ public class DataPullerService implements IDataPullerService {
     private final JdbcTemplate rdbModernJdbcTemplate;
     private final JdbcTemplate odseJdbcTemplate;
     private final IS3DataService s3DataService;
+    private final KafkaPropertiesProvider kafkaPropertiesProvider;
     private long batchId ;
-    @Value("${kafka.topic.data-compare-topic}")
-    String processorTopicName = "";
+
 
     public DataPullerService(DataCompareConfigRepository dataCompareConfigRepository,
                              DataCompareLogRepository dataCompareLogRepository,
-                             KafkaProducerService kafkaProducerService, @Qualifier("rdbJdbcTemplate") JdbcTemplate rdbJdbcTemplate,
+                             KafkaProducerService kafkaProducerService,
+                             @Qualifier("rdbJdbcTemplate") JdbcTemplate rdbJdbcTemplate,
                              @Qualifier("rdbModernJdbcTemplate") JdbcTemplate rdbModernJdbcTemplate,
+                             KafkaPropertiesProvider kafkaPropertiesProvider,
                              @Qualifier("odseJdbcTemplate") JdbcTemplate odseJdbcTemplate,
-                             IS3DataService s3DataService , DataCompareBatchRepository dataCompareBatchRepository) {
+                             IS3DataService s3DataService ,
+                             DataCompareBatchRepository dataCompareBatchRepository) {
         this.dataCompareConfigRepository = dataCompareConfigRepository;
         this.dataCompareLogRepository = dataCompareLogRepository;
         this.kafkaProducerService = kafkaProducerService;
@@ -62,6 +66,7 @@ public class DataPullerService implements IDataPullerService {
         this.odseJdbcTemplate = odseJdbcTemplate;
         this.s3DataService = s3DataService;
         this.dataCompareBatchRepository = dataCompareBatchRepository;
+        this.kafkaPropertiesProvider = kafkaPropertiesProvider;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
@@ -200,7 +205,7 @@ public class DataPullerService implements IDataPullerService {
                     pullerEventModel.setLogIdRdbModern(logTarget.getDcLogId());
                     String pullerEventString = gson.toJson(pullerEventModel);
 
-                    kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
+                    kafkaProducerService.sendEventToProcessor(pullerEventString, kafkaPropertiesProvider.getProcessorTopicName());
                     logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
 
                     config.setRunNow(false);
@@ -274,7 +279,7 @@ public class DataPullerService implements IDataPullerService {
                     pullerEventModel.setLogIdOdseTarget(logTarget.getDcLogId());
                     String pullerEventString = gson.toJson(pullerEventModel);
 
-                    kafkaProducerService.sendEventToProcessor(pullerEventString, processorTopicName);
+                    kafkaProducerService.sendEventToProcessor(pullerEventString, kafkaPropertiesProvider.getProcessorTopicName());
                     logger.info("PULLER IS COMPLETED FOR {} and {}", config.getTableName(), config.getTargetTableName());
 
                     config.setRunNow(false);

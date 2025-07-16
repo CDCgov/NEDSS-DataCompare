@@ -1,4 +1,5 @@
 package gov.cdc.datacompareapis.configuration;
+import gov.cdc.datacompareapis.property.DbPropertiesProvider;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,26 +30,23 @@ import java.util.HashMap;
         }
 )
 public class RdbDataSourceConfig {
-    @Value("${spring.datasource.driverClassName}")
-    private String driverClassName;
+    private final DbPropertiesProvider dbPropertiesProvider;
 
     @Value("${spring.datasource.rdb.url}")
     private String dbUrl;
 
-    @Value("${spring.datasource.username}")
-    private String dbUserName;
-
-    @Value("${spring.datasource.password}")
-    private String dbUserPassword;
+    public RdbDataSourceConfig(DbPropertiesProvider dbPropertiesProvider) {
+        this.dbPropertiesProvider = dbPropertiesProvider;
+    }
 
     @Bean(name = "rdbDataSource")
     public DataSource rdbDataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
 
-        dataSourceBuilder.driverClassName(driverClassName);
+        dataSourceBuilder.driverClassName(dbPropertiesProvider.getDriverClassName());
         dataSourceBuilder.url(dbUrl);
-        dataSourceBuilder.username(dbUserName);
-        dataSourceBuilder.password(dbUserPassword);
+        dataSourceBuilder.username(dbPropertiesProvider.getDbUserName());
+        dataSourceBuilder.password(dbPropertiesProvider.getDbUserPassword());
 
         return dataSourceBuilder.build();
     }
