@@ -21,7 +21,7 @@ databaseChangeLog:
       runOnChange: true
       changes:
         - sqlFile:
-            path: db/data_internal/tables/002-create-data-compare-log-001.sql
+            path: db/data_internal/tables/002-create-data-compare-batch-001.sql
             splitStatements: false
   - changeSet:
       id: 3
@@ -29,7 +29,7 @@ databaseChangeLog:
       runOnChange: true
       changes:
         - sqlFile:
-            path: db/data_internal/tables/003-create-data-compare-batch-001.sql
+            path: db/data_internal/tables/003-create-data-compare-log-001.sql
             splitStatements: false
   - changeSet:
       id: 4

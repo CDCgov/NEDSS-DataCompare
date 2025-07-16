@@ -17,8 +17,10 @@ IF NOT EXISTS(
             run_by_user VARCHAR(100),
             rows_compared BIGINT,
             batch_id BIGINT,
-            FOREIGN KEY (batch_id) REFERENCES Data_Compare_Batch(batch_id),
-            FOREIGN KEY (config_id) REFERENCES Data_Compare_Config(config_id)
+            CONSTRAINT FK_DataCompareLog_Batch FOREIGN KEY (batch_id)
+                REFERENCES dbo.Data_Compare_Batch(batch_id) ON DELETE CASCADE,
+            CONSTRAINT FK_DataCompareLog_Config FOREIGN KEY (config_id)
+                REFERENCES dbo.Data_Compare_Config(config_id) ON DELETE CASCADE
         );
 
 

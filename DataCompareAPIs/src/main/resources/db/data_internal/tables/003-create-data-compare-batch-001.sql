@@ -1,8 +1,0 @@
-IF NOT EXISTS(
-    SELECT 'X'
-    FROM INFORMATION_SCHEMA.TABLES
-    WHERE TABLE_NAME = 'Data_Compare_Batch')
-    BEGIN
-
-
-    END
