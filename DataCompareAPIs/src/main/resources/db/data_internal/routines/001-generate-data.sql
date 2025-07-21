@@ -1913,210 +1913,209 @@ values
            'RDB',
            'RDB_MODERN',
            'with PaginatedResults as (
-                        select
-                        i.case_uid as case_uid
-                        ,lg.BUSINESS_OBJECT_UID as BUSINESS_OBJECT_UID
-                        ,dpat.PATIENT_UID as PATIENT_UID
-                        ,dpro1.provider_uid as investigator_id
-                        ,dpro2.provider_uid as physician_id
-                        ,dpro3.provider_uid as person_as_reporter_uid
-                        ,dorg1.organization_uid as organization_id
-                        ,dorg2.organization_uid as hospital_uid
-                        ,dorg3.organization_uid as chronic_care_fac_uid
-                        ,dorg4.organization_uid as daycare_fac_uid
-                        ,con.CONDITION_CD
-                        ,atm.ANTIMICROBIAL_AGENT_TESTED_IND
-                        ,atm.SUSCEPTABILITY_METHOD
-                        ,atm.S_I_R_U_RESULT
-                        ,atm.MIC_SIGN
-                        ,atm.MIC_VALUE
-                        ,ih.Inv_Assigned_dt_key
-                        ,ih.TREATMENT_HOSPITAL_KEY
-                        ,ih.TRANSFERED_IND
-                        ,ih.BIRTH_WEIGHT_IN_GRAMS
-                        ,ih.BIRTH_WEIGHT_POUNDS
-                        ,ih.WEIGHT_IN_POUNDS
-                        ,ih.WEIGHT_IN_OUNCES
-                        ,ih.WEIGHT_IN_KILOGRAM
-                        ,ih.WEIGHT_UNKNOWN
-                        ,ih.HEIGHT_IN_FEET
-                        ,ih.HEIGHT_IN_INCHES
-                        ,ih.HEIGHT_IN_CENTIMETERS
-                        ,ih.HEIGHT_UNKNOWN
-                        ,ih.OTH_STREP_PNEUMO1_CULT_SITES
-                        ,ih.OTH_STREP_PNEUMO2_CULT_SITES
-                        ,ih.IHC_SPECIMEN_1
-                        ,ih.IHC_SPECIMEN_2
-                        ,ih.IHC_SPECIMEN_3
-                        ,ih.SAMPLE_COLLECTION_DT
-                        ,ih.CONJ_MENING_VACC
-                        ,ih.TREATMENT_HOSPITAL_NM
-                        ,ih.OTH_TYPE_OF_INSURANCE
-                        ,ih.BIRTH_WEIGHT_OUNCES
-                        ,ih.PREGNANT_IND
-                        ,ih.OUTCOME_OF_FETUS
-                        ,ih.UNDER_1_MONTH_IND
-                        ,ih.GESTATIONAL_AGE
-                        ,ih.BACTERIAL_SPECIES_ISOLATED
-                        ,ih.FIRST_POSITIVE_CULTURE_DT
-                        ,ih.UNDERLYING_CONDITION_IND
-                        ,ih.PATIENT_YR_IN_COLLEGE
-                        ,ih.CULTURE_SEROTYPE
-                        ,ih.PATIENT_STATUS_IN_COLLEGE
-                        ,ih.PATIENT_CURR_LIVING_SITUATION
-                        ,ih.HIB_VACC_RECEIVED_IND
-                        ,ih.CULTURE_SEROGROUP
-                        ,ih.ATTENDING_COLLEGE_IND
-                        ,ih.OXACILLIN_ZONE_SIZE
-                        ,ih.OXACILLIN_INTERPRETATION
-                        ,ih.PNEUVACC_RECEIVED_IND
-                        ,ih.PNEUCONJ_RECEIVED_IND
-                        ,ih.FIRST_ADDITIONAL_SPECIMEN_DT
-                        ,ih.SECOND_ADDITIONAL_SPECIMEN_DT
-                        ,ih.PATIENT_HAD_SURGERY_IND
-                        ,ih.SURGERY_DT
-                        ,ih.PATIENT_HAVE_BABY_IND
-                        ,ih.BABY_DELIVERY_DT
-                        ,ih.IDENT_THRU_AUDIT_IND
-                        ,ih.SAME_PATHOGEN_RECURRENT_IND
-                        ,ih.OTHER_SPECIES_ISOLATE_SITE
-                        ,ih.OTHER_CASE_IDENT_METHOD
-                        ,ih.OTHER_HOUSING_OPTION
-                        ,ih.PATIENT_CURR_ATTEND_SCHOOL_NM
-                        ,ih.POLYSAC_MENINGOC_VACC_IND
-                        ,ih.FAMILY_MEDICAL_INSURANCE_TYPE
-                        ,ih.HIB_CONTACT_IN_LAST_2_MON_IND
-                        ,ih.TYPE_HIB_CONTACT_IN_LAST_2_MON
-                        ,ih.PRETERM_BIRTH_WK_NBR
-                        ,ih.IMMUNOSUPRESSION_HIV_STATUS
-                        ,ih.ACUTE_SERUM_AVAILABLE_IND
-                        ,ih.ACUTE_SERUM_AVAILABLE_DT
-                        ,ih.CONVALESNT_SERUM_AVAILABLE_IND
-                        ,ih.CONVALESNT_SERUM_AVAILABLE_DT
-                        ,ih.BIRTH_OUTSIDE_HSPTL_IND
-                        ,ih.BIRTH_OUTSIDE_HSPTL_LOCATION
-                        ,ih.BABY_HSPTL_DISCHARGE_DTTIME
-                        ,ih.BABY_SAME_HSPTL_READMIT_IND
-                        ,ih.BABY_SAME_HSPTL_READMIT_DTTIME
-                        ,ih.FRM_HOME_TO_DIF_HSPTL_IND
-                        ,ih.FRM_HOME_TO_DIF_HSPTL_DTTIME
-                        ,ih.MOTHER_LAST_NM
-                        ,ih.MOTHER_FIRST_NM
-                        ,ih.MOTHER_HOSPTL_ADMISSION_DTTIME
-                        ,ih.MOTHER_PATIENT_CHART_NBR
-                        ,ih.MOTHER_PENICILLIN_ALLERGY_IND
-                        ,ih.MEMBRANE_RUPTURE_DTTIME
-                        ,ih.MEMBRANE_RUPTURE_GE_18HRS_IND
-                        ,ih.RUPTURE_BEFORE_LABOR_ONSET
-                        ,ih.MEMBRANE_RUPTURE_TYPE
-                        ,ih.DELIVERY_TYPE
-                        ,ih.MOTHER_INTRAPARTUM_FEVER_IND
-                        ,ih.FIRST_INTRAPARTUM_FEVER_DTTIME
-                        ,ih.RECEIVED_PRENATAL_CARE_IND
-                        ,ih.PRENATAL_CARE_IN_LABOR_CHART
-                        ,ih.PRENATAL_CARE_VISIT_NBR
-                        ,ih.FIRST_PRENATAL_CARE_VISIT_DT
-                        ,ih.LAST_PRENATAL_CARE_VISIT_DT
-                        ,ih.LAST_PRENATAL_CARE_VISIT_EGA
-                        ,ih.GBS_BACTERIURIA_IN_PREGNANCY
-                        ,ih.PREVIOUS_BIRTH_WITH_GBS_IND
-                        ,ih.GBS_CULTURED_BEFORE_ADMISSION
-                        ,ih.GBS_1ST_CULTURE_DT
-                        ,ih.GBS_1ST_CULTURE_POSITIVE_IND
-                        ,ih.GBS_2ND_CULTURE_DT
-                        ,ih.GBS_2ND_CULTURE_POSITIVE_IND
-                        ,ih.GBS_AFTER_ADM_BEFORE_DELIVERY
-                        ,ih.AFTER_ADM_GBS_CULTURE_DT
-                        ,ih.GBS_CULTURE_DELIVERY_AVAILABLE
-                        ,ih.INTRAPARTUM_ANTIBIOTICS_GIVEN
-                        ,ih.FIRST_ANTIBIOTICS_GIVEN_DTTIME
-                        ,ih.INTRAPARTUMANTIBIOTICSINTERVAL
-                        ,ih.INTRAPARTUM_ANTIBIOTICS_REASON
-                        ,ih.BABY_BIRTH_TIME
-                        ,ih.NEISERRIA_2NDARY_CASE_IND
-                        ,ih.NEISERRIA_2ND_CASE_CONTRACT
-                        ,ih.OTHER_2NDARY_CASE_TYPE
-                        ,ih.NEISERRIA_RESIST_TO_RIFAMPIN
-                        ,ih.NEISERRIA_RESIST_TO_SULFA
-                        ,ih.FIRST_HSPTL_DISCHARGE_TIME
-                        ,ih.FIRST_HSPTL_READMISSION_TIME
-                        ,ih.SECOND_HSPTL_ADMISSION_TIME
-                        ,ih.ABCCASE
-                        ,ih.HSPTL_MATERNAL_ADMISSION_TIME
-                        ,ih.MEMBRANE_RUPTURE_TIME
-                        ,ih.INTRAPARTUM_FEVER_RECORD_TIME
-                        ,ih.ANTIBIOTICS_1ST_ADMIN_TIME
-                        ,ih.BMIRD_MULTI_VAL_GRP_KEY
-                        ,ih.OTHER_PRIOR_ILLNESS
-                        ,ih.OTHER_MALIGNANCY
-                        ,ih.ORGAN_TRANSPLANT
-                        ,ih.DAYCARE_IND
-                        ,ih.NURSING_HOME_IND
-                        ,ih.TYPES_OF_OTHER_INFECTION
-                        ,ih.BACTERIAL_OTHER_SPECIED
-                        ,ih.STERILE_SITE_OTHER
-                        ,ih.UNDERLYING_CONDITIONS_OTHER
-                        ,ih.CULTURE_SEROGROUP_OTHER
-                        ,ih.PERSISTENT_DISEASE_IND
-                        ,ih.GBS_CULTURE_POSITIVE_IND
-                        ,ih.BACTERIAL_OTHER_ISOLATED
-                        ,ih.FAMILY_MED_INSURANCE_TYPE_OTHE
-                        ,ih.PRIOR_STATE_CASE_ID
-                        ,ih.BIRTH_CNTRY_CD
-                        ,ih.INITIAL_HSPTL_NAME
-                        ,ih.BIRTH_HSPTL_NAME
-                        ,ih.FROM_HOME_HSPTL_NAME
-                        ,ih.CULTURE_IDENT_ORG_NAME
-                        ,ih.TRANSFER_FRM_HSPTL_NAME
-                        ,ih.CASE_REPORT_STATUS
-                        ,ih.TRANSFER_FRM_HSPTL_ID
-                        ,ih.BIRTH_HSPTL_ID
-                        ,ih.DIF_HSPTL_ID
-                        ,ih.ABC_STATE_CASE_ID
-                        ,ih.INV_PATIENT_CHART_NBR
-                        ,ih.OTHSPEC1
-                        ,ih.OTHSPEC2
-                        ,ih.INTBODYSITE
-                        ,ih.OTHILL2
-                        ,ih.OTHILL3
-                        ,ih.OTHNONSTER
-                        ,ih.OTHSEROTYPE
-                        ,ih.HINFAGE
-                        ,ih.ABCSINVLN
-                        ,ih.ABCSINVFN
-                        ,ih.ABCSINVEMAIL
-                        ,ih.ABCSINVTELE
-                        ,ih.ABCSINVEXT
-                        ,ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
-                        FROM
-                        BMIRD_CASE ih
-                        inner join INVESTIGATION  i on ih.INVESTIGATION_KEY = i.INVESTIGATION_KEY
-                        INNER JOIN CONDITION con WITH (NOLOCK)
-                        ON con.CONDITION_KEY = ih.CONDITION_KEY
-                        LEFT OUTER JOIN LDF_GROUP lg WITH (NOLOCK)
-                        ON lg.LDF_GROUP_KEY = ih.LDF_GROUP_KEY
-                        LEFT OUTER JOIN D_PATIENT dpat WITH (NOLOCK)
-                        ON ih.PATIENT_KEY = dpat.PATIENT_KEY
-                        LEFT OUTER JOIN D_PROVIDER dpro1 WITH (NOLOCK)
-                        ON ih.Investigator_key = dpro1.PROVIDER_KEY
-                        LEFT OUTER JOIN D_PROVIDER dpro2 WITH (NOLOCK)
-                        ON ih.Physician_key = dpro2.PROVIDER_KEY
-                        LEFT OUTER JOIN D_PROVIDER dpro3 WITH (NOLOCK)
-                        ON ih.Reporter_key = dpro3.PROVIDER_KEY
-                        LEFT OUTER JOIN D_ORGANIZATION dorg1 WITH (NOLOCK)
-                        ON ih.Rpt_Src_Org_key = dorg1.Organization_key
-                        LEFT OUTER JOIN D_ORGANIZATION dorg2 WITH (NOLOCK)
-                        ON ih.ADT_HSPTL_KEY = dorg2.Organization_key
-                        LEFT OUTER JOIN D_ORGANIZATION dorg3 WITH (NOLOCK)
-                        ON ih.NURSING_HOME_KEY = dorg3.Organization_key
-                        LEFT OUTER JOIN D_ORGANIZATION dorg4 WITH (NOLOCK)
-                        ON ih.DAYCARE_FACILITY_KEY = dorg4.Organization_key
-                        LEFT OUTER JOIN ANTIMICROBIAL atm WITH (NOLOCK)
-                        ON atm.ANTIMICROBIAL_GRP_KEY = ih.ANTIMICROBIAL_GRP_KEY
-                        )
-                        SELECT *
-                        FROM PaginatedResults
-                        WHERE RowNum BETWEEN :startRow AND :endRow;',
+                            select
+                            i.case_uid as case_uid
+                            ,lg.BUSINESS_OBJECT_UID as BUSINESS_OBJECT_UID
+                            ,dpat.PATIENT_UID as PATIENT_UID
+                            ,dpro1.provider_uid as investigator_id
+                            ,dpro2.provider_uid as physician_id
+                            ,dpro3.provider_uid as person_as_reporter_uid
+                            ,dorg1.organization_uid as organization_id
+                            ,dorg2.organization_uid as hospital_uid   
+                            ,dorg3.organization_uid as chronic_care_fac_uid
+                            ,dorg4.organization_uid as daycare_fac_uid
+                            ,con.CONDITION_CD   
+                            --,atm.ANTIMICROBIAL_AGENT_TESTED_IND 
+                            --,atm.SUSCEPTABILITY_METHOD
+                            --,atm.S_I_R_U_RESULT
+                            --,atm.MIC_SIGN
+                            --,atm.MIC_VALUE
+                            ,ih.Inv_Assigned_dt_key
+                            ,ih.TREATMENT_HOSPITAL_KEY 
+                            ,ih.TRANSFERED_IND                
+                            ,ih.BIRTH_WEIGHT_IN_GRAMS         
+                            ,ih.BIRTH_WEIGHT_POUNDS           
+                            ,ih.WEIGHT_IN_POUNDS              
+                            ,ih.WEIGHT_IN_OUNCES              
+                            ,ih.WEIGHT_IN_KILOGRAM            
+                            ,ih.WEIGHT_UNKNOWN                
+                            ,ih.HEIGHT_IN_FEET                
+                            ,ih.HEIGHT_IN_INCHES              
+                            ,ih.HEIGHT_IN_CENTIMETERS         
+                            ,ih.HEIGHT_UNKNOWN                
+                            ,ih.OTH_STREP_PNEUMO1_CULT_SITES  
+                            ,ih.OTH_STREP_PNEUMO2_CULT_SITES  
+                            ,ih.IHC_SPECIMEN_1                
+                            ,ih.IHC_SPECIMEN_2                
+                            ,ih.IHC_SPECIMEN_3                
+                            ,ih.SAMPLE_COLLECTION_DT          
+                            ,ih.CONJ_MENING_VACC              
+                            ,ih.TREATMENT_HOSPITAL_NM         
+                            ,ih.OTH_TYPE_OF_INSURANCE         
+                            ,ih.BIRTH_WEIGHT_OUNCES           
+                            ,ih.PREGNANT_IND                  
+                            ,ih.OUTCOME_OF_FETUS              
+                            ,ih.UNDER_1_MONTH_IND             
+                            ,ih.GESTATIONAL_AGE               
+                            ,ih.BACTERIAL_SPECIES_ISOLATED    
+                            ,ih.FIRST_POSITIVE_CULTURE_DT     
+                            ,ih.UNDERLYING_CONDITION_IND      
+                            ,ih.PATIENT_YR_IN_COLLEGE         
+                            ,ih.CULTURE_SEROTYPE              
+                            ,ih.PATIENT_STATUS_IN_COLLEGE     
+                            ,ih.PATIENT_CURR_LIVING_SITUATION 
+                            ,ih.HIB_VACC_RECEIVED_IND         
+                            ,ih.CULTURE_SEROGROUP             
+                            ,ih.ATTENDING_COLLEGE_IND         
+                            ,ih.OXACILLIN_ZONE_SIZE           
+                            ,ih.OXACILLIN_INTERPRETATION      
+                            ,ih.PNEUVACC_RECEIVED_IND         
+                            ,ih.PNEUCONJ_RECEIVED_IND         
+                            ,ih.FIRST_ADDITIONAL_SPECIMEN_DT  
+                            ,ih.SECOND_ADDITIONAL_SPECIMEN_DT 
+                            ,ih.PATIENT_HAD_SURGERY_IND       
+                            ,ih.SURGERY_DT                    
+                            ,ih.PATIENT_HAVE_BABY_IND         
+                            ,ih.BABY_DELIVERY_DT              
+                            ,ih.IDENT_THRU_AUDIT_IND          
+                            ,ih.SAME_PATHOGEN_RECURRENT_IND   
+                            ,ih.OTHER_SPECIES_ISOLATE_SITE    
+                            ,ih.OTHER_CASE_IDENT_METHOD       
+                            ,ih.OTHER_HOUSING_OPTION          
+                            ,ih.PATIENT_CURR_ATTEND_SCHOOL_NM 
+                            ,ih.POLYSAC_MENINGOC_VACC_IND     
+                            ,ih.FAMILY_MEDICAL_INSURANCE_TYPE 
+                            ,ih.HIB_CONTACT_IN_LAST_2_MON_IND 
+                            ,ih.TYPE_HIB_CONTACT_IN_LAST_2_MON
+                            ,ih.PRETERM_BIRTH_WK_NBR          
+                            ,ih.IMMUNOSUPRESSION_HIV_STATUS   
+                            ,ih.ACUTE_SERUM_AVAILABLE_IND     
+                            ,ih.ACUTE_SERUM_AVAILABLE_DT      
+                            ,ih.CONVALESNT_SERUM_AVAILABLE_IND
+                            ,ih.CONVALESNT_SERUM_AVAILABLE_DT 
+                            ,ih.BIRTH_OUTSIDE_HSPTL_IND       
+                            ,ih.BIRTH_OUTSIDE_HSPTL_LOCATION  
+                            ,ih.BABY_HSPTL_DISCHARGE_DTTIME   
+                            ,ih.BABY_SAME_HSPTL_READMIT_IND   
+                            ,ih.BABY_SAME_HSPTL_READMIT_DTTIME
+                            ,ih.FRM_HOME_TO_DIF_HSPTL_IND     
+                            ,ih.FRM_HOME_TO_DIF_HSPTL_DTTIME  
+                            ,ih.MOTHER_LAST_NM                
+                            ,ih.MOTHER_FIRST_NM               
+                            ,ih.MOTHER_HOSPTL_ADMISSION_DTTIME
+                            ,ih.MOTHER_PATIENT_CHART_NBR      
+                            ,ih.MOTHER_PENICILLIN_ALLERGY_IND 
+                            ,ih.MEMBRANE_RUPTURE_DTTIME       
+                            ,ih.MEMBRANE_RUPTURE_GE_18HRS_IND 
+                            ,ih.RUPTURE_BEFORE_LABOR_ONSET    
+                            ,ih.MEMBRANE_RUPTURE_TYPE         
+                            ,ih.DELIVERY_TYPE                 
+                            ,ih.MOTHER_INTRAPARTUM_FEVER_IND  
+                            ,ih.FIRST_INTRAPARTUM_FEVER_DTTIME
+                            ,ih.RECEIVED_PRENATAL_CARE_IND    
+                            ,ih.PRENATAL_CARE_IN_LABOR_CHART  
+                            ,ih.PRENATAL_CARE_VISIT_NBR       
+                            ,ih.FIRST_PRENATAL_CARE_VISIT_DT  
+                            ,ih.LAST_PRENATAL_CARE_VISIT_DT   
+                            ,ih.LAST_PRENATAL_CARE_VISIT_EGA  
+                            ,ih.GBS_BACTERIURIA_IN_PREGNANCY  
+                            ,ih.PREVIOUS_BIRTH_WITH_GBS_IND   
+                            ,ih.GBS_CULTURED_BEFORE_ADMISSION 
+                            ,ih.GBS_1ST_CULTURE_DT            
+                            ,ih.GBS_1ST_CULTURE_POSITIVE_IND  
+                            ,ih.GBS_2ND_CULTURE_DT            
+                            ,ih.GBS_2ND_CULTURE_POSITIVE_IND  
+                            ,ih.GBS_AFTER_ADM_BEFORE_DELIVERY 
+                            ,ih.AFTER_ADM_GBS_CULTURE_DT      
+                            ,ih.GBS_CULTURE_DELIVERY_AVAILABLE
+                            ,ih.INTRAPARTUM_ANTIBIOTICS_GIVEN 
+                            ,ih.FIRST_ANTIBIOTICS_GIVEN_DTTIME
+                            ,ih.INTRAPARTUMANTIBIOTICSINTERVAL
+                            ,ih.INTRAPARTUM_ANTIBIOTICS_REASON
+                            ,ih.BABY_BIRTH_TIME               
+                            ,ih.NEISERRIA_2NDARY_CASE_IND     
+                            ,ih.NEISERRIA_2ND_CASE_CONTRACT   
+                            ,ih.OTHER_2NDARY_CASE_TYPE        
+                            ,ih.NEISERRIA_RESIST_TO_RIFAMPIN  
+                            ,ih.NEISERRIA_RESIST_TO_SULFA     
+                            ,ih.FIRST_HSPTL_DISCHARGE_TIME    
+                            ,ih.FIRST_HSPTL_READMISSION_TIME  
+                            ,ih.SECOND_HSPTL_ADMISSION_TIME   
+                            ,ih.ABCCASE                       
+                            ,ih.HSPTL_MATERNAL_ADMISSION_TIME 
+                            ,ih.MEMBRANE_RUPTURE_TIME         
+                            ,ih.INTRAPARTUM_FEVER_RECORD_TIME 
+                            ,ih.ANTIBIOTICS_1ST_ADMIN_TIME         
+                            ,ih.OTHER_PRIOR_ILLNESS           
+                            ,ih.OTHER_MALIGNANCY              
+                            ,ih.ORGAN_TRANSPLANT              
+                            ,ih.DAYCARE_IND                   
+                            ,ih.NURSING_HOME_IND              
+                            ,ih.TYPES_OF_OTHER_INFECTION      
+                            ,ih.BACTERIAL_OTHER_SPECIED       
+                            ,ih.STERILE_SITE_OTHER            
+                            ,ih.UNDERLYING_CONDITIONS_OTHER   
+                            ,ih.CULTURE_SEROGROUP_OTHER       
+                            ,ih.PERSISTENT_DISEASE_IND        
+                            ,ih.GBS_CULTURE_POSITIVE_IND      
+                            ,ih.BACTERIAL_OTHER_ISOLATED      
+                            ,ih.FAMILY_MED_INSURANCE_TYPE_OTHE
+                            ,ih.PRIOR_STATE_CASE_ID           
+                            ,ih.BIRTH_CNTRY_CD                
+                            ,ih.INITIAL_HSPTL_NAME            
+                            ,ih.BIRTH_HSPTL_NAME              
+                            ,ih.FROM_HOME_HSPTL_NAME          
+                            ,ih.CULTURE_IDENT_ORG_NAME        
+                            ,ih.TRANSFER_FRM_HSPTL_NAME       
+                            ,ih.CASE_REPORT_STATUS            
+                            ,ih.TRANSFER_FRM_HSPTL_ID         
+                            ,ih.BIRTH_HSPTL_ID                
+                            ,ih.DIF_HSPTL_ID                  
+                            ,ih.ABC_STATE_CASE_ID             
+                            ,ih.INV_PATIENT_CHART_NBR         
+                            ,ih.OTHSPEC1                      
+                            ,ih.OTHSPEC2                      
+                            ,ih.INTBODYSITE                   
+                            ,ih.OTHILL2                       
+                            ,ih.OTHILL3                       
+                            ,ih.OTHNONSTER                    
+                            ,ih.OTHSEROTYPE                   
+                            ,ih.HINFAGE                       
+                            ,ih.ABCSINVLN                     
+                            ,ih.ABCSINVFN                     
+                            ,ih.ABCSINVEMAIL                  
+                            ,ih.ABCSINVTELE                   
+                            ,ih.ABCSINVEXT                    
+                            ,ROW_NUMBER() OVER (ORDER BY i.case_uid ASC) AS RowNum
+                            FROM 
+                            BMIRD_CASE ih 
+                            inner join INVESTIGATION  i on ih.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+                            INNER JOIN CONDITION con WITH (NOLOCK) 
+                            ON con.CONDITION_KEY = ih.CONDITION_KEY
+                            LEFT OUTER JOIN LDF_GROUP lg WITH (NOLOCK) 
+                            ON lg.LDF_GROUP_KEY = ih.LDF_GROUP_KEY
+                            LEFT OUTER JOIN D_PATIENT dpat WITH (NOLOCK) 
+                            ON ih.PATIENT_KEY = dpat.PATIENT_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro1 WITH (NOLOCK) 
+                            ON ih.Investigator_key = dpro1.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro2 WITH (NOLOCK) 
+                            ON ih.Physician_key = dpro2.PROVIDER_KEY
+                            LEFT OUTER JOIN D_PROVIDER dpro3 WITH (NOLOCK) 
+                            ON ih.Reporter_key = dpro3.PROVIDER_KEY
+                            LEFT OUTER JOIN D_ORGANIZATION dorg1 WITH (NOLOCK) 
+                            ON ih.Rpt_Src_Org_key = dorg1.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg2 WITH (NOLOCK) 
+                            ON ih.ADT_HSPTL_KEY = dorg2.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg3 WITH (NOLOCK) 
+                            ON ih.NURSING_HOME_KEY = dorg3.Organization_key
+                            LEFT OUTER JOIN D_ORGANIZATION dorg4 WITH (NOLOCK) 
+                            ON ih.DAYCARE_FACILITY_KEY = dorg4.Organization_key
+                            --LEFT OUTER JOIN ANTIMICROBIAL atm WITH (NOLOCK) 
+                            --    ON atm.ANTIMICROBIAL_GRP_KEY = ih.ANTIMICROBIAL_GRP_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM BMIRD_CASE;',
            'CASE_UID',
