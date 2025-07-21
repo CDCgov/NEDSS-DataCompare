@@ -1918,11 +1918,11 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                             ,dorg3.organization_uid as chronic_care_fac_uid
                             ,dorg4.organization_uid as daycare_fac_uid
                             ,con.CONDITION_CD   
-                            ,atm.ANTIMICROBIAL_AGENT_TESTED_IND 
-                            ,atm.SUSCEPTABILITY_METHOD
-                            ,atm.S_I_R_U_RESULT
-                            ,atm.MIC_SIGN
-                            ,atm.MIC_VALUE
+                            --,atm.ANTIMICROBIAL_AGENT_TESTED_IND 
+                            --,atm.SUSCEPTABILITY_METHOD
+                            --,atm.S_I_R_U_RESULT
+                            --,atm.MIC_SIGN
+                            --,atm.MIC_VALUE
                             ,ih.Inv_Assigned_dt_key
                             ,ih.TREATMENT_HOSPITAL_KEY 
                             ,ih.TRANSFERED_IND                
@@ -2038,8 +2038,7 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                             ,ih.HSPTL_MATERNAL_ADMISSION_TIME 
                             ,ih.MEMBRANE_RUPTURE_TIME         
                             ,ih.INTRAPARTUM_FEVER_RECORD_TIME 
-                            ,ih.ANTIBIOTICS_1ST_ADMIN_TIME    
-                            ,ih.BMIRD_MULTI_VAL_GRP_KEY       
+                            ,ih.ANTIBIOTICS_1ST_ADMIN_TIME         
                             ,ih.OTHER_PRIOR_ILLNESS           
                             ,ih.OTHER_MALIGNANCY              
                             ,ih.ORGAN_TRANSPLANT              
@@ -2104,8 +2103,8 @@ values ('D_PATIENT', 'RDB', 'RDB_MODERN',
                             ON ih.NURSING_HOME_KEY = dorg3.Organization_key
                             LEFT OUTER JOIN D_ORGANIZATION dorg4 WITH (NOLOCK) 
                             ON ih.DAYCARE_FACILITY_KEY = dorg4.Organization_key
-                            LEFT OUTER JOIN ANTIMICROBIAL atm WITH (NOLOCK) 
-                            ON atm.ANTIMICROBIAL_GRP_KEY = ih.ANTIMICROBIAL_GRP_KEY
+                            --LEFT OUTER JOIN ANTIMICROBIAL atm WITH (NOLOCK) 
+                            --    ON atm.ANTIMICROBIAL_GRP_KEY = ih.ANTIMICROBIAL_GRP_KEY
                             )
                             SELECT *
                             FROM PaginatedResults
