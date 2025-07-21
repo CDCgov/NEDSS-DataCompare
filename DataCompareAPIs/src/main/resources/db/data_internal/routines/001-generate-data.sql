@@ -818,7 +818,7 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                      SELECT DISTINCT LAB_TEST.*,
-                                            ROW_NUMBER() OVER (ORDER BY LAB_TEST.LAB_TEST_KEY ASC) AS RowNum
+                                         ROW_NUMBER() OVER (ORDER BY LAB_TEST.LAB_TEST_UID ASC) AS RowNum
                                      FROM LAB_TEST
                                   )
                                   SELECT *
@@ -826,7 +826,7 @@ values
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LAB_TEST;',
-           'LAB_TEST_KEY',
+           'LAB_TEST_UID',
            'RowNum, LAB_TEST_KEY',
            1
        ),
@@ -836,7 +836,7 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                      SELECT DISTINCT LAB_RPT_USER_COMMENT.*,
-                                            ROW_NUMBER() OVER (ORDER BY LAB_RPT_USER_COMMENT.LAB_TEST_KEY ASC) AS RowNum
+                                            ROW_NUMBER() OVER (ORDER BY LAB_RPT_USER_COMMENT.LAB_TEST_UID ASC) AS RowNum
                                      FROM LAB_RPT_USER_COMMENT
                                   )
                                   SELECT *
@@ -844,7 +844,7 @@ values
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LAB_RPT_USER_COMMENT;',
-           'LAB_TEST_KEY',
+           'LAB_TEST_UID',
            'RowNum, LAB_TEST_KEY',
            1
        ),
@@ -854,7 +854,7 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                      SELECT DISTINCT MORBIDITY_REPORT  .*,
-                                            ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT.MORB_RPT_KEY ASC) AS RowNum
+                                            ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT.MORB_RPT_UID ASC) AS RowNum
                                      FROM MORBIDITY_REPORT
                                   )
                                   SELECT *
@@ -862,7 +862,7 @@ values
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM MORBIDITY_REPORT ;',
-           'MORB_RPT_KEY',
+           'MORB_RPT_UID',
            'RowNum, MORB_RPT_KEY',
            1
        ),
@@ -870,18 +870,41 @@ values
            'MORBIDITY_REPORT_EVENT',
            'RDB',
            'RDB_MODERN',
-           'WITH PaginatedResults AS (
-                                     SELECT DISTINCT MORBIDITY_REPORT_EVENT.*,
-                                            ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT_EVENT.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM MORBIDITY_REPORT_EVENT
-                                  )
-                                  SELECT *
-                                  FROM PaginatedResults
-                                  WHERE RowNum BETWEEN :startRow AND :endRow;',
+           'WITH PaginatedResults AS ( ----no mapping for Nursing_Home_Key
+                                  SELECT DISTINCT MORB_RPT_UID,
+										DORG1.ORGANIZATION_UID AS HEALTH_CARE_UID,
+										DORG2.ORGANIZATION_UID AS MORB_RPT_SRC_ORG_UID,
+										DORG3.ORGANIZATION_UID AS HSPTL_UID,
+										DT1.DATE_MM_DD_YYYY AS MORB_RPT_CREATE_DT,
+										DT2.DATE_MM_DD_YYYY AS HSPTL_DISCHARGE_DT,
+										DT3.DATE_MM_DD_YYYY AS ILLNESS_ONSET_DT,
+										DT4.DATE_MM_DD_YYYY AS MORB_RPT_DT,
+										CD.CONDITION_DESC,
+										PT.PATIENT_UID,
+										DPRO1.PROVIDER_UID AS PHYSICIAN_UID,
+										DPRO2.PROVIDER_UID AS REPORTER_UID,
+										LG.BUSINESS_OBJECT_UID,
+										MORBIDITY_REPORT_EVENT.*,
+                                        ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT_EVENT.MORB_RPT_KEY ASC) AS RowNum
+                                  FROM MORBIDITY_REPORT_EVENT
+								  INNER JOIN MORBIDITY_REPORT ON MORBIDITY_REPORT.MORB_RPT_KEY = MORBIDITY_REPORT_EVENT.MORB_RPT_KEY
+								  LEFT JOIN INVESTIGATION ON INVESTIGATION.INVESTIGATION_KEY = MORBIDITY_REPORT_EVENT.INVESTIGATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG1 WITH(NOLOCK) ON MORBIDITY_REPORT_EVENT.HEALTH_CARE_KEY = DORG1.ORGANIZATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG2 WITH(NOLOCK) ON MORBIDITY_REPORT_EVENT.MORB_RPT_SRC_ORG_KEY = DORG2.ORGANIZATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG3 WITH(NOLOCK) ON MORBIDITY_REPORT_EVENT.HSPTL_KEY = DORG3.ORGANIZATION_KEY
+								  LEFT JOIN RDB_DATE DT1 WITH(NOLOCK) ON DT1.DATE_KEY = MORBIDITY_REPORT_EVENT.MORB_RPT_CREATE_DT_KEY
+                                  LEFT JOIN RDB_DATE DT2 WITH(NOLOCK) ON DT2.DATE_KEY = MORBIDITY_REPORT_EVENT.HSPTL_DISCHARGE_DT_KEY
+								  LEFT JOIN RDB_DATE DT3 WITH(NOLOCK) ON DT3.DATE_KEY = MORBIDITY_REPORT_EVENT.ILLNESS_ONSET_DT_KEY
+								  LEFT JOIN RDB_DATE DT4 WITH(NOLOCK) ON DT4.DATE_KEY = MORBIDITY_REPORT_EVENT.MORB_RPT_DT_KEY
+ 								  LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = MORBIDITY_REPORT_EVENT.CONDITION_KEY
+								  LEFT JOIN D_PATIENT PT ON PT.PATIENT_KEY = MORBIDITY_REPORT_EVENT.PATIENT_KEY
+								  LEFT JOIN D_PROVIDER DPRO1 WITH(NOLOCK) ON MORBIDITY_REPORT_EVENT.PHYSICIAN_KEY  = DPRO1.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO2 WITH(NOLOCK) ON MORBIDITY_REPORT_EVENT.REPORTER_KEY  = DPRO2.PROVIDER_KEY
+								  LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = MORBIDITY_REPORT_EVENT.LDF_GROUP_KEY',
            'SELECT COUNT(*)
                                   FROM MORBIDITY_REPORT_EVENT;',
-           'MORB_RPT_KEY',
-           'RowNum, MORB_RPT_KEY',
+           'MORB_RPT_UID',
+           'RowNum,MORB_RPT_KEY,INVESTIGATION_KEY,HEALTH_CARE_KEY,MORB_RPT_SRC_ORG_KEY,HSPTL_KEY,MORB_RPT_CREATE_DT_KEY,HSPTL_DISCHARGE_DT_KEY,ILLNESS_ONSET_DT_KE,MORB_RPT_DT_KEY,CONDITION_KEY,PATIENT_KEY,PHYSICIAN_KEY,REPORTER_KEY,LDF_GROUP_KEY',
            1
        ),
        (
@@ -890,7 +913,7 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                      SELECT DISTINCT MORB_RPT_USER_COMMENT.*,
-                                            ROW_NUMBER() OVER (ORDER BY MORB_RPT_USER_COMMENT.MORB_RPT_KEY ASC) AS RowNum
+                                            ROW_NUMBER() OVER (ORDER BY MORB_RPT_USER_COMMENT.MORB_RPT_UID ASC) AS RowNum
                                      FROM MORB_RPT_USER_COMMENT
                                   )
                                   SELECT *
@@ -898,7 +921,7 @@ values
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM MORB_RPT_USER_COMMENT;',
-           'MORB_RPT_KEY',
+           'MORB_RPT_UID',
            'RowNum, MORB_RPT_KEY',
            1
        ),
@@ -1053,17 +1076,46 @@ values
            'D_INTERVIEW',
            'RDB',
            'RDB_MODERN',
-           'WITH PaginatedResults AS (
-                                     SELECT DISTINCT D_INTERVIEW.*,
-                                            ROW_NUMBER() OVER (ORDER BY D_INTERVIEW.D_INTERVIEW_KEY ASC) AS RowNum
-                                     FROM D_INTERVIEW
-                                  )
-                                  SELECT *
-                                  FROM PaginatedResults
-                                  WHERE RowNum BETWEEN :startRow AND :endRow;',
+           'DECLARE @sql NVARCHAR(MAX)
+                    DECLARE @startRow INT = :startRow
+                    DECLARE @endRow INT = :endRow
+                    IF EXISTS (SELECT 1 FROM sys.objects WHERE name = ''NRT_INTERVIEW_KEY'' AND type = ''U'')
+                    BEGIN
+                        SET @sql =
+                           '';WITH PaginatedResults AS (
+                                SELECT
+                                    K.INTERVIEW_UID,
+                                    D.*,
+                                    ROW_NUMBER() OVER (ORDER BY K.INTERVIEW_UID) AS RowNum
+                                FROM D_INTERVIEW D
+                                INNER JOIN NRT_INTERVIEW_KEY K ON D.D_INTERVIEW_KEY = K.D_INTERVIEW_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN @startRow AND @endRow''
+
+                    END
+                    ELSE
+                    BEGIN
+                        SET @sql = ''
+                            ;WITH PaginatedResults AS (
+                                SELECT
+                                    L.INTERVIEW_UID,
+                                    D.*,
+                                    ROW_NUMBER() OVER (ORDER BY L.INTERVIEW_UID) AS RowNum
+                                FROM D_INTERVIEW D
+                                INNER JOIN L_INTERVIEW L ON D.D_INTERVIEW_KEY = L.D_INTERVIEW_KEY
+                            )
+                            SELECT *
+                            FROM PaginatedResults
+                            WHERE RowNum BETWEEN @startRow AND @endRow
+                        ''
+                    END
+                    EXEC sp_executesql @sql, N''@startRow INT, @endRow INT'', @startRow=@startRow, @endRow=@endRow;
+                    ',
            'SELECT COUNT(*)
                                   FROM D_INTERVIEW;',
-           'D_INTERVIEW_KEY',
+           'INTERVIEW_UID',
            'RowNum, D_INTERVIEW_KEY',
            1
        ),
@@ -1636,7 +1688,7 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                      SELECT DISTINCT CONDITION.*,
-                                            ROW_NUMBER() OVER (ORDER BY CONDITION.CONDITION_KEY ASC) AS RowNum
+                                            ROW_NUMBER() OVER (ORDER BY CONDITION.CONDITION_CD ASC) AS RowNum
                                      FROM CONDITION
                                   )
                                   SELECT *
@@ -1644,7 +1696,7 @@ values
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM CONDITION;',
-           'CONDITION_KEY',
+           'CONDITION_CD',
            'RowNum, CONDITION_KEY',
            1
        ),
@@ -2182,17 +2234,35 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT TREATMENT_EVENT.*,
-                                            ROW_NUMBER() OVER (ORDER BY TREATMENT_EVENT.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM TREATMENT_EVENT
+                                  SELECT DISTINCT TREATMENT.TREATMENT_UID,
+                                  	INVESTIGATION.CASE_UID,
+									DORG1.ORGANIZATION_UID AS TREATMENT_PROVIDING_ORG_UID,
+									DT1.DATE_MM_DD_YYYY AS TREATMENT_DT,
+									CD.CONDITION_DESC,
+									PT.PATIENT_UID,
+									DPRO1.PROVIDER_UID AS TREATMENT_PHYSICIAN_UID,
+									MORBIDITY_REPORT.MORB_RPT_UID,
+									LG.BUSINESS_OBJECT_UID,
+                                    TREATMENT_EVENT.*,
+                                         ROW_NUMBER() OVER (ORDER BY TREATMENT.TREATMENT_UID ASC) AS RowNum
+                                  FROM TREATMENT_EVENT
+                                  INNER JOIN TREATMENT ON TREATMENT.TREATMENT_KEY = TREATMENT_EVENT.TREATMENT_KEY
+                                  LEFT JOIN INVESTIGATION ON INVESTIGATION.INVESTIGATION_KEY = TREATMENT_EVENT.INVESTIGATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG1 WITH(NOLOCK) ON TREATMENT_EVENT.TREATMENT_PROVIDING_ORG_KEY = DORG1.ORGANIZATION_KEY
+								  LEFT JOIN RDB_DATE DT1 WITH(NOLOCK) ON DT1.DATE_KEY = TREATMENT_EVENT.TREATMENT_DT_KEY
+ 								  LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = TREATMENT_EVENT.CONDITION_KEY
+								  LEFT JOIN D_PATIENT PT ON PT.PATIENT_KEY = TREATMENT_EVENT.PATIENT_KEY
+								  LEFT JOIN D_PROVIDER DPRO1 WITH(NOLOCK) ON TREATMENT_EVENT.TREATMENT_PHYSICIAN_KEY  = DPRO1.PROVIDER_KEY
+								  LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = TREATMENT_EVENT.LDF_GROUP_KEY
+								  LEFT JOIN MORBIDITY_REPORT ON MORBIDITY_REPORT.MORB_RPT_KEY = TREATMENT_EVENT.MORB_RPT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM TREATMENT_EVENT;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'TREATMENT_UID',
+           'RowNum,TREATMENT_KEY,INVESTIGATION_KEY,TREATMENT_PROVIDING_ORG_KEY,TREATMENT_DT_KEY,CONDITION_KEY,PATIENT_KEY,TREATMENT_PHYSICIAN_KEY,LDF_GROUP_KEY,MORB_RPT_KEY',
            1
        ),
        (
@@ -2327,7 +2397,7 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                      SELECT DISTINCT HEP100.*,
-                                            ROW_NUMBER() OVER (ORDER BY HEP100.INVESTIGATION_KEY ASC) AS RowNum
+                                            ROW_NUMBER() OVER (ORDER BY HEP100.CASE_UID ASC) AS RowNum
                                      FROM HEP100
                                   )
                                   SELECT *
@@ -2335,8 +2405,8 @@ values
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM HEP100;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, REFRESH_DATETIME',
            1
        ),
        (
@@ -2344,16 +2414,18 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT BMIRD_STREP_PNEUMO_DATAMART.*,
-                                            ROW_NUMBER() OVER (ORDER BY BMIRD_STREP_PNEUMO_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM BMIRD_STREP_PNEUMO_DATAMART
+                                      SELECT DISTINCT INVESTIGATION.CASE_UID,
+                                  		BMIRD_STREP_PNEUMO_DATAMART.*,
+                                         ROW_NUMBER() OVER (ORDER BY INVESTIGATION.CASE_UID ASC) AS RowNum
+                                  FROM BMIRD_STREP_PNEUMO_DATAMART
+                                  INNER JOIN INVESTIGATION ON INVESTIGATION.INVESTIGATION_KEY = BMIRD_STREP_PNEUMO_DATAMART.INVESTIGATION_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM BMIRD_STREP_PNEUMO_DATAMART;',
-           'INVESTIGATION_KEY',
+           'CASE_UID',
            'RowNum, INVESTIGATION_KEY',
            1
        ),
@@ -2380,17 +2452,38 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT RUBELLA_CASE.*,
-                                            ROW_NUMBER() OVER (ORDER BY RUBELLA_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM RUBELLA_CASE
+                                     SELECT DISTINCT
+                                  	  I.CASE_UID
+									, CD.CONDITION_CD
+									, PT.PATIENT_UID
+									, DPRO1.PROVIDER_UID AS INVESTIGATOR_UID
+									, DPRO2.PROVIDER_UID AS PHYSICIAN_UID
+									, DPRO3.PROVIDER_UID AS REPORTER_UID
+									, DORG1.ORGANIZATION_UID AS ORGANIZATION_UID
+									, DORG2.ORGANIZATION_UID AS HOSPITAL_UID
+									, DT.DATE_MM_DD_YYYY AS INV_ASSIGNED_DT
+									, LG.BUSINESS_OBJECT_UID
+                                 	, RC.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM RUBELLA_CASE RC
+                                  INNER JOIN INVESTIGATION I ON RC.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								  LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = RC.CONDITION_KEY
+								  LEFT JOIN D_PATIENT PT ON PT.PATIENT_KEY = RC.PATIENT_KEY
+								  LEFT JOIN D_PROVIDER DPRO1 WITH(NOLOCK) ON RC.INVESTIGATOR_KEY  = DPRO1.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO2 WITH(NOLOCK) ON RC.PHYSICIAN_KEY  = DPRO2.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO3 WITH(NOLOCK) ON RC.REPORTER_KEY  = DPRO3.PROVIDER_KEY
+								  LEFT JOIN D_ORGANIZATION DORG1 WITH(NOLOCK) ON RC.RPT_SRC_ORG_KEY = DORG1.ORGANIZATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG2 WITH(NOLOCK) ON RC.ADT_HSPTL_KEY = DORG2.ORGANIZATION_KEY
+								  LEFT JOIN RDB_DATE DT WITH(NOLOCK) ON DT.DATE_KEY = RC.INV_ASSIGNED_DT_KEY
+								  LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = RC.LDF_GROUP_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM RUBELLA_CASE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum,INVESTIGATION_KEY,CONDITION_KEY,PATIENT_KEY,INVESTIGATOR_KEY,PHYSICIAN_KEY,REPORTER_KEY,RPT_SRC_ORG_KEY,ADT_HSPTL_KEY,INV_ASSIGNED_DT_KEY',
            1
        ),
        (
@@ -2398,17 +2491,38 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT PERTUSSIS_CASE.*,
-                                            ROW_NUMBER() OVER (ORDER BY PERTUSSIS_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM PERTUSSIS_CASE
+                                      SELECT DISTINCT
+	                                  	  I.CASE_UID
+										, CD.CONDITION_CD
+										, PT.PATIENT_UID
+										, DPRO1.PROVIDER_UID AS INVESTIGATOR_UID
+										, DPRO2.PROVIDER_UID AS PHYSICIAN_UID
+										, DPRO3.PROVIDER_UID AS REPORTER_UID
+										, DORG1.ORGANIZATION_UID AS ORGANIZATION_UID
+										, DORG2.ORGANIZATION_UID AS HOSPITAL_UID
+										, DT.DATE_MM_DD_YYYY AS INV_ASSIGNED_DT
+										, LG.BUSINESS_OBJECT_UID
+                                  		, PC.*,
+                                         ROW_NUMBER() OVER (ORDER BY  I.CASE_UID ASC) AS RowNum
+                                  FROM PERTUSSIS_CASE PC
+                                  INNER JOIN INVESTIGATION I ON PC.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								  LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = PC.CONDITION_KEY
+								  LEFT JOIN D_PATIENT PT ON PT.PATIENT_KEY = PC.PATIENT_KEY
+								  LEFT JOIN D_PROVIDER DPRO1 WITH(NOLOCK) ON PC.INVESTIGATOR_KEY  = DPRO1.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO2 WITH(NOLOCK) ON PC.PHYSICIAN_KEY  = DPRO2.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO3 WITH(NOLOCK) ON PC.REPORTER_KEY  = DPRO3.PROVIDER_KEY
+								  LEFT JOIN D_ORGANIZATION DORG1 WITH(NOLOCK) ON PC.RPT_SRC_ORG_KEY = DORG1.ORGANIZATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG2 WITH(NOLOCK) ON PC.ADT_HSPTL_KEY = DORG2.ORGANIZATION_KEY
+								  LEFT JOIN RDB_DATE DT WITH(NOLOCK) ON DT.DATE_KEY = PC.INV_ASSIGNED_DT_KEY
+								  LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = PC.LDF_GROUP_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM PERTUSSIS_CASE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum,INVESTIGATION_KEY,CONDITION_KEY,PATIENT_KEY,INVESTIGATOR_KEY,PHYSICIAN_KEY,REPORTER_KEY,RPT_SRC_ORG_KEY,ADT_HSPTL_KEY,INV_ASSIGNED_DT_KEY',
            1
        ),
        (
@@ -2416,17 +2530,38 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT HEPATITIS_CASE.*,
-                                            ROW_NUMBER() OVER (ORDER BY HEPATITIS_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM HEPATITIS_CASE
+                                      SELECT DISTINCT
+	                                  	  I.CASE_UID
+										, CD.CONDITION_CD
+										, PT.PATIENT_UID
+										, DPRO1.PROVIDER_UID AS INVESTIGATOR_UID
+										, DPRO2.PROVIDER_UID AS PHYSICIAN_UID
+										, DPRO3.PROVIDER_UID AS REPORTER_UID
+										, DORG1.ORGANIZATION_UID AS ORGANIZATION_UID
+										, DORG2.ORGANIZATION_UID AS HOSPITAL_UID
+										, DT.DATE_MM_DD_YYYY AS INV_ASSIGNED_DT
+										, LG.BUSINESS_OBJECT_UID
+                                  		, PC.*,
+                                         ROW_NUMBER() OVER (ORDER BY  I.CASE_UID ASC) AS RowNum
+                                  FROM HEPATITIS_CASE PC
+                                  INNER JOIN INVESTIGATION I ON PC.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								  LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = PC.CONDITION_KEY
+								  LEFT JOIN D_PATIENT PT ON PT.PATIENT_KEY = PC.PATIENT_KEY
+								  LEFT JOIN D_PROVIDER DPRO1 WITH(NOLOCK) ON PC.INVESTIGATOR_KEY  = DPRO1.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO2 WITH(NOLOCK) ON PC.PHYSICIAN_KEY  = DPRO2.PROVIDER_KEY
+								  LEFT JOIN D_PROVIDER DPRO3 WITH(NOLOCK) ON PC.REPORTER_KEY  = DPRO3.PROVIDER_KEY
+								  LEFT JOIN D_ORGANIZATION DORG1 WITH(NOLOCK) ON PC.RPT_SRC_ORG_KEY = DORG1.ORGANIZATION_KEY
+								  LEFT JOIN D_ORGANIZATION DORG2 WITH(NOLOCK) ON PC.ADT_HSPTL_KEY = DORG2.ORGANIZATION_KEY
+								  LEFT JOIN RDB_DATE DT WITH(NOLOCK) ON DT.DATE_KEY = PC.INV_ASSIGNED_DT_KEY
+								  LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = PC.LDF_GROUP_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM HEPATITIS_CASE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum,INVESTIGATION_KEY,CONDITION_KEY,PATIENT_KEY,INVESTIGATOR_KEY,PHYSICIAN_KEY,REPORTER_KEY,RPT_SRC_ORG_KEY,ADT_HSPTL_KEY,INV_ASSIGNED_DT_KEY',
            1
        ),
        (
@@ -2488,9 +2623,13 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT PERTUSSIS_SUSPECTED_SOURCE_FLD.*,
-                                            ROW_NUMBER() OVER (ORDER BY PERTUSSIS_SUSPECTED_SOURCE_FLD.PERTUSSIS_SUSPECT_SRC_FLD_KEY ASC) AS RowNum
+                                     SELECT I.CASE_UID,
+                                              PERTUSSIS_SUSPECTED_SOURCE_FLD.*,
+                                              ROW_NUMBER() OVER (ORDER BY  PERTUSSIS_SUSPECTED_SOURCE_FLD.PERTUSSIS_SUSPECT_SRC_FLD_KEY) AS RowNum
                                      FROM PERTUSSIS_SUSPECTED_SOURCE_FLD
+                                     INNER JOIN PERTUSSIS_SUSPECTED_SOURCE_GRP ON PERTUSSIS_SUSPECTED_SOURCE_FLD.PERTUSSIS_SUSPECT_SRC_GRP_KEY  = PERTUSSIS_SUSPECTED_SOURCE_GRP.PERTUSSIS_SUSPECT_SRC_GRP_KEY
+                                     INNER JOIN PERTUSSIS_CASE ON PERTUSSIS_CASE.PERTUSSIS_SUSPECT_SRC_GRP_KEY = PERTUSSIS_SUSPECTED_SOURCE_GRP.PERTUSSIS_SUSPECT_SRC_GRP_KEY
+                                     INNER JOIN INVESTIGATION I ON PERTUSSIS_CASE.INVESTIGATION_KEY = I.INVESTIGATION_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
@@ -2985,17 +3124,28 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                                     SELECT DISTINCT SUMMARY_REPORT_CASE.*,
-                                                            ROW_NUMBER() OVER (ORDER BY SUMMARY_REPORT_CASE.INVESTIGATION_KEY ASC) AS RowNum
-                                                     FROM SUMMARY_REPORT_CASE
+                                                   SELECT DISTINCT CONVERT(VARCHAR,INVESTIGATION.CASE_UID)+''_''+CONVERT(VARCHAR,SUM_RPT_CASE_COUNT) AS COMPOSITE_KEY,
+                                                        INVESTIGATION.CASE_UID,
+                                                        DT1.DATE_MM_DD_YYYY AS NOTIFICATION_SEND_DT,
+                                                        DT2.DATE_MM_DD_YYYY AS LAST_UPDATE_DT,
+                                                        CD.CONDITION_DESC,
+                                                        LG.BUSINESS_OBJECT_UID,
+                                                        SUMMARY_REPORT_CASE.*,
+                                                         ROW_NUMBER() OVER (ORDER BY SUMMARY_REPORT_CASE.INVESTIGATION_KEY ASC) AS RowNum
+                                                  FROM SUMMARY_REPORT_CASE
+                                                  INNER JOIN INVESTIGATION ON INVESTIGATION.INVESTIGATION_KEY = SUMMARY_REPORT_CASE.INVESTIGATION_KEY
+                                                  LEFT JOIN RDB_DATE DT1 WITH(NOLOCK) ON DT1.DATE_KEY = SUMMARY_REPORT_CASE.NOTIFICATION_SEND_DT_KEY
+                                                  LEFT JOIN RDB_DATE DT2 WITH(NOLOCK) ON DT2.DATE_KEY = SUMMARY_REPORT_CASE.LAST_UPDATE_DT_KEY
+                                                  LEFT JOIN CONDITION CD ON CD.CONDITION_KEY = SUMMARY_REPORT_CASE.CONDITION_KEY
+                                                  LEFT JOIN LDF_GROUP LG WITH(NOLOCK) ON LG.LDF_GROUP_KEY = SUMMARY_REPORT_CASE.LDF_GROUP_KEY
                                                   )
                                                   SELECT *
                                                   FROM PaginatedResults
                                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                                   FROM SUMMARY_REPORT_CASE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'COMPOSITE_KEY',
+           'RowNum,INVESTIGATION_KEY,NOTIFICATION_SEND_DT_KEY,LAST_UPDATE_DT_KEY,CONDITION_KEY,LDF_GROUP_KEY',
            1
        ),
        (
@@ -3057,16 +3207,17 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT VAR_DATAMART.*,
-                                            ROW_NUMBER() OVER (ORDER BY VAR_DATAMART.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM VAR_DATAMART
+                                     SELECT DISTINCT I.CASE_UID, V.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM VAR_DATAMART V
+                                  INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = V.INVESTIGATION_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM VAR_DATAMART;',
-           'INVESTIGATION_KEY',
+           'CASE_UID',
            'RowNum, INVESTIGATION_KEY',
            1
        ),
@@ -3114,17 +3265,22 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT LDF_MUMPS.*,
-                                            ROW_NUMBER() OVER (ORDER BY LDF_MUMPS.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM LDF_MUMPS
+                                  SELECT DISTINCT
+                                  		 I.CASE_UID,
+                                  		 P.PATIENT_UID,
+                                  		 L.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM LDF_MUMPS L
+                                  INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = L.INVESTIGATION_KEY
+                                  INNER JOIN D_PATIENT P ON P.PATIENT_KEY = L.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LDF_MUMPS;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY''',
            1
        ),
        (
@@ -3132,17 +3288,22 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT LDF_TETANUS.*,
-                                            ROW_NUMBER() OVER (ORDER BY LDF_TETANUS.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM LDF_TETANUS
+                                  SELECT DISTINCT
+                                  		 I.CASE_UID,
+                                  		 P.PATIENT_UID,
+                                  		 L.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM LDF_TETANUS L
+                                  INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = L.INVESTIGATION_KEY
+                                  INNER JOIN D_PATIENT P ON P.PATIENT_KEY = L.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LDF_TETANUS;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3150,17 +3311,22 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT LDF_VACCINE_PREVENT_DISEASES.*,
-                                            ROW_NUMBER() OVER (ORDER BY LDF_VACCINE_PREVENT_DISEASES.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM LDF_VACCINE_PREVENT_DISEASES
+                                     SELECT DISTINCT
+                                  		 I.CASE_UID,
+                                  		 P.PATIENT_UID,
+                                  		 L.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM LDF_VACCINE_PREVENT_DISEASES L
+                                  INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = L.INVESTIGATION_KEY
+                                  INNER JOIN D_PATIENT P ON P.PATIENT_KEY = L.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LDF_VACCINE_PREVENT_DISEASES;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3168,17 +3334,22 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT LDF_GENERIC.*,
-                                            ROW_NUMBER() OVER (ORDER BY LDF_GENERIC.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM LDF_GENERIC
+                                  SELECT DISTINCT
+                                  		 I.CASE_UID,
+                                  		 P.PATIENT_UID,
+                                  		 L.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM LDF_GENERIC L
+                                  INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = L.INVESTIGATION_KEY
+                                  INNER JOIN D_PATIENT P ON P.PATIENT_KEY = L.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LDF_GENERIC;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3348,17 +3519,19 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT DM_INV_CONG_SYPHILIS.*,
-                                            ROW_NUMBER() OVER (ORDER BY DM_INV_CONG_SYPHILIS.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM DM_INV_CONG_SYPHILIS
+                                  SELECT DISTINCT I.CASE_UID, D.PATIENT_UID, DM_INV_CONG_SYPHILIS.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM DM_INV_CONG_SYPHILIS
+                                  INNER JOIN INVESTIGATION I ON DM_INV_CONG_SYPHILIS.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								  INNER JOIN D_PATIENT D ON D.PATIENT_KEY = DM_INV_CONG_SYPHILIS.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM DM_INV_CONG_SYPHILIS;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3366,17 +3539,19 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT DM_INV_CP_CRE.*,
-                                            ROW_NUMBER() OVER (ORDER BY DM_INV_CP_CRE.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM DM_INV_CP_CRE
+                                  SELECT DISTINCT I.CASE_UID, D.PATIENT_UID, DM_INV_CP_CRE.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                  FROM DM_INV_CP_CRE
+                                  INNER JOIN INVESTIGATION I ON DM_INV_CP_CRE.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								  INNER JOIN D_PATIENT D ON D.PATIENT_KEY = DM_INV_CP_CRE.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM DM_INV_CP_CRE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3384,17 +3559,19 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT DM_INV_GENERIC_V2.*,
-                                            ROW_NUMBER() OVER (ORDER BY DM_INV_GENERIC_V2.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM DM_INV_GENERIC_V2
+                                   SELECT DISTINCT I.CASE_UID, D.PATIENT_UID, DM_INV_GENERIC_V2.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                   FROM DM_INV_GENERIC_V2
+                                   INNER JOIN INVESTIGATION I ON DM_INV_GENERIC_V2.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								   INNER JOIN D_PATIENT D ON D.PATIENT_KEY = DM_INV_GENERIC_V2.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM DM_INV_GENERIC_V2;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3420,17 +3597,19 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT DM_INV_HEPATITIS_B_C_ACUTE.*,
-                                            ROW_NUMBER() OVER (ORDER BY DM_INV_HEPATITIS_B_C_ACUTE.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM DM_INV_HEPATITIS_B_C_ACUTE
+                                   SELECT DISTINCT I.CASE_UID, D.PATIENT_UID, DM_INV_HEPATITIS_B_C_ACUTE.*,
+                                         ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+                                   FROM DM_INV_HEPATITIS_B_C_ACUTE
+                                   INNER JOIN INVESTIGATION I ON DM_INV_HEPATITIS_B_C_ACUTE.INVESTIGATION_KEY = I.INVESTIGATION_KEY
+								   INNER JOIN D_PATIENT D ON D.PATIENT_KEY = DM_INV_HEPATITIS_B_C_ACUTE.PATIENT_KEY
                                   )
                                   SELECT *
                                   FROM PaginatedResults
                                   WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM DM_INV_HEPATITIS_B_C_ACUTE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3628,7 +3807,7 @@ values
            'SELECT COUNT(*)
      FROM Covid_Case_Datamart;',
            'COVID_CASE_DATAMART_KEY',
-           'RowNum, COVID_CASE_DATAMART_KEY',
+           'RowNum',
            1
        ),
        (
@@ -3646,7 +3825,7 @@ values
            'SELECT COUNT(*)
       FROM Covid_lab_datamart;',
            'Covid_lab_datamart_KEY',
-           'RowNum, Covid_lab_datamart_KEY',
+           'RowNum',
            1
        ),
        (
@@ -3664,7 +3843,7 @@ values
            'SELECT COUNT(*)
      FROM Covid_Vaccination_datamart;',
            'Covid_Vaccination_datamart_KEY',
-           'RowNum, Covid_Vaccination_datamart_KEY',
+           'RowNum',
            1
        ),
        (
