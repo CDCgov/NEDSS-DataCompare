@@ -47,3 +47,19 @@ databaseChangeLog:
         - sqlFile:
             path: db/data_internal/routines/001-generate-data.sql
             splitStatements: false
+  - changeSet:
+      id: 6
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/routines/002-generate-data.sql
+            splitStatements: false
+  - changeSet:
+      id: 7
+      author: liquibase
+      runOnChange: true
+      changes:
+        - sqlFile:
+            path: db/data_internal/tables/005-alter-data-compare-config-001.sql
+            splitStatements: false
