@@ -554,18 +554,18 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-               SELECT DISTINCT HEPATITIS_DATAMART.*,
-                      CONCAT(inv_local_id, pat_local_id, patient_uid, case_uid) AS CONCAT_KEY,
-                      ROW_NUMBER() OVER (ORDER BY CONCAT(inv_local_id, pat_local_id, patient_uid, case_uid) ASC) AS RowNum
-               FROM HEPATITIS_DATAMART
-           )
-           SELECT *
-           FROM PaginatedResults
-           WHERE RowNum BETWEEN :startRow AND :endRow;',
-           'SELECT COUNT(DISTINCT CONCAT(inv_local_id, pat_local_id, patient_uid, case_uid))
+                SELECT DISTINCT d.case_uid AS CASE_UID,
+                        ROW_NUMBER() OVER (ORDER BY i.case_uid) AS RowNum
+                FROM HEPATITIS_DATAMART d
+                    inner join INVESTIGATION i on d.INVESTIGATION_KEY = i.INVESTIGATION_KEY
+                )
+                SELECT *
+                FROM PaginatedResults
+                WHERE RowNum BETWEEN :startRow AND :endRow;',
+           'SELECT COUNT(*)
            FROM HEPATITIS_DATAMART;',
-           'CONCAT_KEY',
-           'RowNum, REFRESH_DATETIME',
+           'CASE_UID',
+           'RowNum, REFRESH_DATETIME, INVESTIGATION_KEY',
            1
        ),
        (
