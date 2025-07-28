@@ -1,4 +1,4 @@
-delete from Data_Compare_Config;
+delete from Data_Compare_Config where source_db = 'RDB' AND target_db = 'RDB_MODERN';
 
 insert into Data_Compare_Config
 (table_name, source_db, target_db, query, query_count, key_column_list, ignore_column_list, compare)

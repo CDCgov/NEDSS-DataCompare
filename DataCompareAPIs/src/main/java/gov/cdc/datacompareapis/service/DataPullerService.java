@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -90,6 +91,19 @@ public class DataPullerService implements IDataPullerService {
         logger.info("PULLER IS COMPLETED FOR ALL TABLE");
     }
 
+    @Async("defaultAsyncExecutor")
+    public void pullDataForDataIngestionValidation(long nbsInterfaceUid1, long nbsInterfaceUid2) throws DataCompareException {
+        batchId = createBatchId();
+
+        var dataConfig = getDataConfig()
+                .stream()
+                .filter(x -> x.getSourceDb().equalsIgnoreCase("NBS_ODSE_LEGACY"))
+                .sorted(Comparator.comparing(DataCompareConfig::getTableName))
+                .toList();
+
+        pullDataLogicForDataIngestion(nbsInterfaceUid1, nbsInterfaceUid2, dataConfig);
+    }
+
     protected void pullDataAllTable(int pullLimit, List<DataCompareConfig>  configs) {
         for(DataCompareConfig config : configs) {
             if (config.getCompare()) {
@@ -98,9 +112,10 @@ public class DataPullerService implements IDataPullerService {
         }
     }
 
+
     protected void pullDataRunNow(int pullLimit, List<DataCompareConfig>  configs) {
         for(DataCompareConfig config : configs) {
-            if (config.getCompare() && config.getRunNow()) {
+            if (config.getCompare() && config.getRunNow() && !config.getSourceDb().equalsIgnoreCase("NBS_ODSE_LEGACY")) {
                 pullDataLogic(pullLimit, config);
             }
         }
@@ -120,6 +135,92 @@ public class DataPullerService implements IDataPullerService {
 
     }
 
+    protected void pullDataLogicForDataIngestion(long nbsInterfaceUid1, long nbsInterfaceUid2, List<DataCompareConfig> configs ) throws DataCompareException {
+        /*
+        * 2 set of compare config
+        * source: NBS_ODSE_LEGACY
+        * target: NBS_ODSE_RTI
+        * */
+        String nbsQuery = "select observation_uid from NBS_MSGOUTE.dbo.nbs_interface where nbs_interface_uid = :nbsUid;";
+        String nbs1 = nbsQuery.replace(":nbsUid", String.valueOf(nbsInterfaceUid1));
+        String nbs2 = nbsQuery.replace(":nbsUid", String.valueOf(nbsInterfaceUid2));
+
+        var nbs1Result = executeQueryForData(nbs1, "NBS_MSGOUTE");
+        var nbs2Result = executeQueryForData(nbs2, "NBS_MSGOUTE");
+        Map<String, Object> row1 = nbs1Result.getFirst();
+        Map<String, Object> row2 = nbs2Result.getFirst();
+
+        long obsUid1 = ((Number) row1.get("observation_uid")).longValue();
+        long obsUid2 = ((Number) row2.get("observation_uid")).longValue();
+
+        for(DataCompareConfig config : configs) {
+            if (config.getCompare()) {
+                pullDataLogicForELR(obsUid1, obsUid2, config);
+            }
+        }
+
+    }
+
+    protected void pullDataLogicForELR(long obsUid1, long obsUid2, DataCompareConfig config) throws DataCompareException {
+        var currentTime = getCurrentTimeStamp();
+        DataCompareLog dataCompareLogSource = dataCompareDefaultLogBuilder(config, currentTime, "Inprogress", config.getSourceDb());
+        DataCompareLog dataCompareLogTarget = dataCompareDefaultLogBuilder(config, currentTime, "Inprogress", config.getTargetDb());
+        boolean errorDuringPullingDataSource = false;
+        String stackTraceSource = null;
+        boolean errorDuringPullingDataTarget = false;
+        String stackTraceTarget = null;
+
+        // LEGACY ELR
+        String query = preparingELRQuery(config.getQuery(), obsUid1);
+        List<Map<String, Object>> returnData = executeQueryForData(query, config.getSourceDb());
+        String rawJsonData = gson.toJson(returnData);
+        s3DataService.persistToS3MultiPart(config.getSourceDb(),rawJsonData, config.getTableName(), currentTime, 0);
+
+        // RTI ELR
+        query = preparingELRQuery(config.getQuery(), obsUid2);
+        returnData = executeQueryForData(query, config.getTargetDb());
+        rawJsonData = gson.toJson(returnData);
+        s3DataService.persistToS3MultiPart(config.getTargetDb(),rawJsonData, config.getTableName(), currentTime, 0);
+
+        // PERSIST LOG HERE
+        // Then Return the Id
+        dataCompareLogSource.setStatusDesc(stackTraceSource);
+        var logSource = dataCompareLogRepository.save(dataCompareLogSource);
+
+        dataCompareLogTarget.setStatusDesc(stackTraceTarget);
+        var logTarget = dataCompareLogRepository.save(dataCompareLogTarget);
+
+
+        // No Error then continue, otherwise stop at record the log
+        if (!errorDuringPullingDataSource || !errorDuringPullingDataTarget) {
+            PullerEventModel pullerEventModel = new PullerEventModel();
+            pullerEventModel.setSourceFileName(config.getTableName());
+            pullerEventModel.setFirstLayerRdbFolderName(config.getSourceDb());
+            pullerEventModel.setFirstLayerRdbModernFolderName(config.getTargetDb());
+            pullerEventModel.setSecondLayerFolderName(config.getTableName());
+            pullerEventModel.setKeyColumn(config.getKeyColumns());
+            pullerEventModel.setIgnoreColumns(config.getIgnoreColumns());
+            String formattedTimestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime);
+            pullerEventModel.setThirdLayerFolderName(formattedTimestamp);
+            pullerEventModel.setRdbMaxIndex(1);
+            pullerEventModel.setRdbModernMaxIndex(1);
+            pullerEventModel.setLogIdRdb(logSource.getDcLogId());
+            pullerEventModel.setLogIdRdbModern(logTarget.getDcLogId());
+            String pullerEventString = gson.toJson(pullerEventModel);
+
+            kafkaProducerService.sendEventToProcessor(pullerEventString, kafkaPropertiesProvider.getProcessorTopicName());
+            logger.info("PULLER IS COMPLETED FOR {}", config.getTableName());
+
+            config.setRunNow(false);
+            dataCompareConfigRepository.save(config);
+        }
+        else {
+            logSource.setStatus("Error");
+            logTarget.setStatus("Error");
+            dataCompareLogRepository.save(logSource);
+            dataCompareLogRepository.save(logTarget);
+        }
+    }
 
     protected void pullDataLogic(int pullLimit, DataCompareConfig config ) {
         var currentTime = getCurrentTimeStamp();
@@ -298,14 +399,23 @@ public class DataPullerService implements IDataPullerService {
         return query.replaceAll(":startRow", startRow.toString()).replaceAll(":endRow", endRow.toString());
     }
 
+    protected String preparingELRQuery(String query, long observationUid) {
+        return query.replaceAll(":observationUid", String.valueOf(observationUid));
+    }
+
+
     protected List<Map<String, Object>> executeQueryForData(String query, String sourceDb) throws DataCompareException {
         if (sourceDb.equalsIgnoreCase("RDB")) {
             return rdbJdbcTemplate.queryForList(query);
         } else if (sourceDb.equalsIgnoreCase("RDB_MODERN")) {
             return rdbModernJdbcTemplate.queryForList(query);
-        } else if (sourceDb.equalsIgnoreCase("NBS_ODSE")) {
+        } else if (sourceDb.equalsIgnoreCase("NBS_ODSE")
+                || (sourceDb.equalsIgnoreCase("NBS_ODSE_LEGACY") || sourceDb.equalsIgnoreCase("NBS_ODSE_RTI"))
+                || sourceDb.equalsIgnoreCase("NBS_MSGOUTE")
+        ) {
             return odseJdbcTemplate.queryForList(query);
-        } else {
+        }
+        else {
             throw new DataCompareException("DB IS NOT SUPPORTED: " + sourceDb);
         }
     }
@@ -314,6 +424,7 @@ public class DataPullerService implements IDataPullerService {
     private List<DataCompareConfig> getDataConfig() {
         return dataCompareConfigRepository.findAll();
     }
+
 
 
 

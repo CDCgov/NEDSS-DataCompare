@@ -54,6 +54,33 @@ public class DataCompareController {
         throw new DataCompareException("Invalid Header");
     }
 
+    @Operation(
+            summary = "Initiating the data comparing process",
+            description = "Fetches data from relevant tables then outputs data into JSON and kicks off lower stream process for data comparison.",
+            parameters = {
+                    @Parameter(in = ParameterIn.QUERY,
+                            name = "runNowMode",
+                            description = "Boolean flag to initiate the run immediately",
+                            schema = @Schema(type = "boolean", defaultValue = "false")),
+                    @Parameter(in = ParameterIn.QUERY,
+                            name = "nbsInterfaceUid1",
+                            description = "First NBS interface UID",
+                            schema = @Schema(type = "number", defaultValue = "0")),
+                    @Parameter(in = ParameterIn.QUERY,
+                            name = "nbsInterfaceUid2",
+                            description = "Second NBS interface UID",
+                            schema = @Schema(type = "number", defaultValue = "0"))
+            }
+    )
+    @GetMapping(path = "/api/data-compare-elr")
+    public ResponseEntity<String> dataCompareELR(
+            @RequestParam(name = "nbsInterfaceUid1", defaultValue = "0") long nbsInterfaceUid1,
+            @RequestParam(name = "nbsInterfaceUid2", defaultValue = "0") long nbsInterfaceUid2
+    ) throws DataCompareException {
+
+        dataPullerService.pullDataForDataIngestionValidation(nbsInterfaceUid1, nbsInterfaceUid2);
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
 
     @Hidden
     @PostMapping(path = "/api/data-compare/health-check")

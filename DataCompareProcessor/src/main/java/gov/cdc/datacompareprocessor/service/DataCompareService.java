@@ -81,7 +81,11 @@ public class DataCompareService implements IDataCompareService {
         DataCompareLog logTarget = new DataCompareLog();
 
 
-        if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
+        if (
+                ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+                ||
+                ("NBS_ODSE_LEGACY".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "NBS_ODSE_RTI".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+        ) {
             Optional<DataCompareLog> logResultRdb = dataCompareLogRepository.findById(pullerEventModel.getLogIdRdb());
             if (logResultRdb.isPresent()) {
                 logSource = logResultRdb.get();
@@ -111,7 +115,10 @@ public class DataCompareService implements IDataCompareService {
             for (int i = 0; i < maxIndex; i++) {
                 String sourcePath = "";
                 String targetPath = "";
-                if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
+                if (("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+                ||
+                        ("NBS_ODSE_LEGACY".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "NBS_ODSE_RTI".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+                ) {
                     sourcePath = pullerEventModel.getFirstLayerRdbFolderName()
                             + "/" + pullerEventModel.getSecondLayerFolderName()
                             + "/" + pullerEventModel.getThirdLayerFolderName()
@@ -169,13 +176,24 @@ public class DataCompareService implements IDataCompareService {
 
             var stringValue = gson.toJson(differModels);
 
-            if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
-                s3DataPullerService.uploadDataToS3(
-                        pullerEventModel.getFirstLayerRdbModernFolderName(),
-                        pullerEventModel.getSecondLayerFolderName(),
-                        pullerEventModel.getThirdLayerFolderName(),
-                        "DIFFERENCE",
-                        "differences.json", stringValue);
+            if (("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+            ||
+                    ("NBS_ODSE_LEGACY".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "NBS_ODSE_RTI".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+            ) {
+                if (stringValue.equalsIgnoreCase("[]") &&
+                        ("NBS_ODSE_LEGACY".equals(pullerEventModel.getFirstLayerRdbFolderName()) &&
+                                "NBS_ODSE_RTI".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))) {
+                    logger.info("EMPTY CASE HIT");
+                }
+                else {
+                    s3DataPullerService.uploadDataToS3(
+                            pullerEventModel.getFirstLayerRdbModernFolderName(),
+                            pullerEventModel.getSecondLayerFolderName(),
+                            pullerEventModel.getThirdLayerFolderName(),
+                            "DIFFERENCE",
+                            "differences.json", stringValue);
+                }
+
             }
 
             if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
@@ -207,7 +225,11 @@ public class DataCompareService implements IDataCompareService {
         logSource.setEndDateTime(currentTime);
         logTarget.setEndDateTime(currentTime);
 
-        if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
+        if (
+                ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+        ||
+                        ("NBS_ODSE_LEGACY".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "NBS_ODSE_RTI".equals(pullerEventModel.getFirstLayerRdbModernFolderName()))
+        ) {
             var rdbPath = pullerEventModel.getFirstLayerRdbFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
             var rdbModernPath = pullerEventModel.getFirstLayerRdbModernFolderName() + "/" + pullerEventModel.getSecondLayerFolderName() + "/" + pullerEventModel.getThirdLayerFolderName();
             logSource.setFileLocation(rdbPath);
