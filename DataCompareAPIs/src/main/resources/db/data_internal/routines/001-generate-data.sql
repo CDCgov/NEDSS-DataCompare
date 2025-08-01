@@ -2230,7 +2230,7 @@ values
            'SELECT COUNT(*)
                                   FROM MEASLES_CASE;',
            'CASE_UID',
-           'RowNum,INVESTIGATION_KEY,CONDITION_KEY,PATIENT_KEY,INVESTIGATOR_KEY,PHYSICIAN_KEY,REPORTER_KEY,RPT_SRC_ORG_KEY,ADT_HSPTL_KEY,INV_ASSIGNED_DT_KEY',
+           'RowNum,INVESTIGATION_KEY,CONDITION_KEY,PATIENT_KEY,INVESTIGATOR_KEY,PHYSICIAN_KEY,REPORTER_KEY,RPT_SRC_ORG_KEY,ADT_HSPTL_KEY,INV_ASSIGNED_DT_KEY,LDF_GROUP_KEY',
            1
        ),
        (
@@ -3877,7 +3877,7 @@ values
       WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
       FROM Covid_lab_datamart;',
-           'Covid_lab_datamart_KEY',
+           'COVID_LAB_DATAMART_KEY',
            'RowNum',
            1
        ),
