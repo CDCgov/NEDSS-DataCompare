@@ -2475,10 +2475,12 @@ values
            'RDB_MODERN',
            'WITH PaginatedResults AS (
                                   SELECT DISTINCT MORBIDITY_REPORT.MORB_RPT_UID,
+								  INVESTIGATION.CASE_UID,
                                   MORBIDITY_REPORT_DATAMART.*,
                                          ROW_NUMBER() OVER (ORDER BY MORBIDITY_REPORT.MORB_RPT_UID ASC) AS RowNum
                                   FROM MORBIDITY_REPORT_DATAMART
                                   INNER JOIN MORBIDITY_REPORT ON MORBIDITY_REPORT.MORB_RPT_KEY = MORBIDITY_REPORT_DATAMART.MORBIDITY_REPORT_KEY
+								  LEFT JOIN INVESTIGATION ON INVESTIGATION.INVESTIGATION_KEY = MORBIDITY_REPORT_DATAMART.INVESTIGATION_KEY
                                )
                                SELECT *
                                FROM PaginatedResults
@@ -2486,7 +2488,7 @@ values
            'SELECT COUNT(*)
                                   FROM MORBIDITY_REPORT_DATAMART;',
            'MORB_RPT_UID',
-           'RowNum, MORBIDITY_REPORT_KEY',
+           'RowNum, MORBIDITY_REPORT_KEY, INVESTIGATION_KEY',
            1
        ),
        (
