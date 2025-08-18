@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import gov.cdc.datacompareprocessor.configuration.TimestampAdapter;
-import gov.cdc.datacompareprocessor.kafka.KafkaProducerService;
 import gov.cdc.datacompareprocessor.repository.dataCompare.DataCompareLogRepository;
 import gov.cdc.datacompareprocessor.repository.dataCompare.model.DataCompareLog;
 import gov.cdc.datacompareprocessor.service.interfaces.IDataCompareService;
@@ -15,12 +14,15 @@ import gov.cdc.datacompareprocessor.service.model.DifferentModel;
 import gov.cdc.datacompareprocessor.service.model.PullerEventModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Predicate;
 
 import static gov.cdc.datacompareprocessor.share.StackTraceUtil.getStackTraceAsString;
@@ -34,8 +36,8 @@ public class DataCompareService implements IDataCompareService {
     private String bucketName;
     private final IS3DataPullerService s3DataPullerService;
     private final Gson gson;
-
     private final DataCompareLogRepository dataCompareLogRepository;
+    private final Executor comparisonTaskExecutor;
 
     // Potentially can store these unmatched in S3
     private static final Map<String, JsonObject> unmatchedRecordsSource = new HashMap<>();
@@ -43,9 +45,11 @@ public class DataCompareService implements IDataCompareService {
     private static Set<String> sourceIdData = new HashSet<>();
     private static Set<String> targetIdData = new HashSet<>();
     public DataCompareService(IS3DataPullerService s3DataPullerService,
-                              DataCompareLogRepository dataCompareLogRepository) {
+                              DataCompareLogRepository dataCompareLogRepository,
+                              @Qualifier("comparisonTaskExecutor") Executor comparisonTaskExecutor) {
         this.s3DataPullerService = s3DataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
+        this.comparisonTaskExecutor = comparisonTaskExecutor;
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
@@ -55,6 +59,9 @@ public class DataCompareService implements IDataCompareService {
     }
 
     public void processingData(PullerEventModel pullerEventModel) {
+        long totalStartTime = System.currentTimeMillis();
+        logger.info("Starting data comparison for table: {}", pullerEventModel.getSourceFileName());
+        
         unmatchedRecordsSource.clear();
         unmatchedRecordsTarget.clear();
         sourceIdData.clear();
@@ -107,58 +114,111 @@ public class DataCompareService implements IDataCompareService {
 
         boolean error = false;
         int index = 0;
+        long fileComparisonStartTime = System.currentTimeMillis();
+        logger.info("Starting file-by-file comparison for {} files", maxIndex);
+        
         try {
-            for (int i = 0; i < maxIndex; i++) {
-                String sourcePath = "";
-                String targetPath = "";
-                if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
-                    sourcePath = pullerEventModel.getFirstLayerRdbFolderName()
-                            + "/" + pullerEventModel.getSecondLayerFolderName()
-                            + "/" + pullerEventModel.getThirdLayerFolderName()
-                            + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
-                    targetPath  = pullerEventModel.getFirstLayerRdbModernFolderName()
-                            + "/" + pullerEventModel.getSecondLayerFolderName()
-                            + "/" + pullerEventModel.getThirdLayerFolderName()
-                            + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
+            final PullerEventModel finalPullerEventModel = pullerEventModel;
+            final String finalMaxIndexSource = maxIndexSource;
+
+            int batchSize = 8;
+            logger.info("Processing {} files in batches of {}", maxIndex, batchSize);
+            
+            for (int batchStart = 0; batchStart < maxIndex; batchStart += batchSize) {
+                int batchEnd = Math.min(batchStart + batchSize, maxIndex);
+                logger.debug("Processing batch: files {} to {}", batchStart, batchEnd - 1);
+                
+                List<CompletableFuture<List<DifferentModel>>> batchTasks = new ArrayList<>();
+                
+                for (int i = batchStart; i < batchEnd; i++) {
+                    final int fileIndex = i;
+                    
+                    CompletableFuture<List<DifferentModel>> task = CompletableFuture.supplyAsync(() -> {
+                        long fileStartTime = System.currentTimeMillis();
+                        
+                        try {
+                            String sourcePath = "";
+                            String targetPath = "";
+                            if ("RDB".equals(finalPullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(finalPullerEventModel.getFirstLayerRdbModernFolderName())) {
+                                sourcePath = finalPullerEventModel.getFirstLayerRdbFolderName()
+                                        + "/" + finalPullerEventModel.getSecondLayerFolderName()
+                                        + "/" + finalPullerEventModel.getThirdLayerFolderName()
+                                        + "/" + finalPullerEventModel.getSourceFileName() + "_" + fileIndex + ".json";
+                                targetPath  = finalPullerEventModel.getFirstLayerRdbModernFolderName()
+                                        + "/" + finalPullerEventModel.getSecondLayerFolderName()
+                                        + "/" + finalPullerEventModel.getThirdLayerFolderName()
+                                        + "/" + finalPullerEventModel.getSourceFileName() + "_" + fileIndex + ".json";
+                            }
+
+                            if ("NBS_ODSE".equals(finalPullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(finalPullerEventModel.getFirstLayerOdseTargetFolderName())) {
+                                sourcePath = finalPullerEventModel.getFirstLayerOdseSourceFolderName()
+                                    + "/" + finalPullerEventModel.getSourceFileName()
+                                    + "/" + finalPullerEventModel.getThirdLayerFolderName()
+                                    + "/" + finalPullerEventModel.getSourceFileName() + "_" + fileIndex + ".json";
+                                targetPath  = finalPullerEventModel.getFirstLayerOdseTargetFolderName()
+                                    + "/" + finalPullerEventModel.getTargetFileName()
+                                    + "/" + finalPullerEventModel.getThirdLayerFolderName()
+                                    + "/" + finalPullerEventModel.getTargetFileName() + "_" + fileIndex + ".json";
+                            }
+
+                            List<String> ignoreCols = convertStringToList(finalPullerEventModel.getIgnoreColumns());
+
+                            List<String> differFileNames = new ArrayList<>();
+                            differFileNames.add(
+                                    compareJsonFiles(sourcePath, targetPath, finalPullerEventModel, finalPullerEventModel.getKeyColumn(), fileIndex, ignoreCols, finalMaxIndexSource)
+                            );
+
+                            List<DifferentModel> fileResults = new ArrayList<>();
+                            for (String differFileName : differFileNames) {
+                                JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
+                                Type listType = new TypeToken<List<DifferentModel>>() {
+                                }.getType();
+                                List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
+                                fileResults.addAll(modelList);
+                            }
+
+                            long fileEndTime = System.currentTimeMillis();
+                            logger.debug("Completed comparison for file {} in {}ms", fileIndex, fileEndTime - fileStartTime);
+                            
+                            return fileResults;
+                            
+                        } catch (Exception e) {
+                            logger.error("Error processing file {}: {}", fileIndex, e.getMessage());
+                            return new ArrayList<DifferentModel>(); // Return empty list on error
+                        }
+                    }, comparisonTaskExecutor);
+                    
+                    batchTasks.add(task);
                 }
-
-                if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
-                    sourcePath = pullerEventModel.getFirstLayerOdseSourceFolderName()
-                        + "/" + pullerEventModel.getSourceFileName()
-                        + "/" + pullerEventModel.getThirdLayerFolderName()
-                        + "/" + pullerEventModel.getSourceFileName() + "_" + i + ".json";
-                    targetPath  = pullerEventModel.getFirstLayerOdseTargetFolderName()
-                        + "/" + pullerEventModel.getTargetFileName()
-                        + "/" + pullerEventModel.getThirdLayerFolderName()
-                        + "/" + pullerEventModel.getTargetFileName() + "_" + i + ".json";
+                
+                logger.debug("Waiting for batch of {} tasks to complete...", batchTasks.size());
+                for (CompletableFuture<List<DifferentModel>> task : batchTasks) {
+                    try {
+                        List<DifferentModel> result = task.get();
+                        differModels.addAll(result);
+                    } catch (Exception e) {
+                        logger.error("Error waiting for batch task: {}", e.getMessage());
+                    }
                 }
-
-                List<String> ignoreCols = convertStringToList(pullerEventModel.getIgnoreColumns());
-
-                List<String> differFileNames = new ArrayList<>();
-                differFileNames.add(
-                        compareJsonFiles(sourcePath, targetPath, pullerEventModel, pullerEventModel.getKeyColumn(), i, ignoreCols, maxIndexSource)
-                );
-
-                for (String differFileName : differFileNames) {
-                    JsonElement jsonElement = s3DataPullerService.readJsonFromS3(differFileName);
-                    Type listType = new TypeToken<List<DifferentModel>>() {
-                    }.getType();
-                    List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
-                    differModels.addAll(
-                            modelList
-                    );
-                }
-
-                index = i;
+                
+                logger.debug("Completed batch: files {} to {}", batchStart, batchEnd - 1);
+                index = batchEnd - 1;
             }
 
+            long fileComparisonEndTime = System.currentTimeMillis();
+            logger.info("Completed file-by-file comparison in {}ms. Processing remaining data...", 
+                       fileComparisonEndTime - fileComparisonStartTime);
+
+            long remainingStartTime = System.currentTimeMillis();
             var ignoreColList =  convertStringToList(pullerEventModel.getIgnoreColumns());
             var modelList = compareJsonFilesOnRemaining( pullerEventModel.getKeyColumn(), ignoreColList);
             differModels.addAll(modelList);
 
             var remainList = processingRemainingData( ignoreColList,  pullerEventModel.getKeyColumn(), pullerEventModel.getSourceFileName());
             differModels.addAll(remainList);
+            
+            long remainingEndTime = System.currentTimeMillis();
+            logger.info("Completed remaining data processing in {}ms", remainingEndTime - remainingStartTime);
 
             Predicate<DifferentModel> sourcePredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in SOURCE_TABLE");
             Predicate<DifferentModel> targetPredicate = r -> r.getMissingColumn() != null && r.getMissingColumn().contains("is not exist in TARGET_TABLE");
@@ -191,7 +251,7 @@ public class DataCompareService implements IDataCompareService {
         catch (Exception e)
         {
             error = true;
-            logger.info("ERROR: {}", e.getMessage());
+            logger.error("Error during data comparison: {}", e.getMessage());
             stackTraceSource = getStackTraceAsString(e);
             stackTraceTarget = getStackTraceAsString(e);
             logSource.setStatusDesc(stackTraceSource);
@@ -228,6 +288,10 @@ public class DataCompareService implements IDataCompareService {
 
         dataCompareLogRepository.save(logSource);
         dataCompareLogRepository.save(logTarget);
+        
+        long totalEndTime = System.currentTimeMillis();
+        logger.info("Data comparison completed for table: {} in {}ms. Total differences found: {}", 
+                   pullerEventModel.getSourceFileName(), totalEndTime - totalStartTime, differModels.size());
     }
 
     private void processFirstFound(List<DifferentModel> records, Predicate<DifferentModel> predicate) {
@@ -290,7 +354,7 @@ public class DataCompareService implements IDataCompareService {
 
         // Store max value and source in the map
         result.put("maxValue", maxValue);
-//        result.put("source", source.equals(pullerEventModel.getFirstLayerRdbFolderName()) ? 1 : 2); // 1 for rdbMax, 2 for rdbModernMax
+
         if(source.equals(pullerEventModel.getFirstLayerRdbFolderName())) {
             result.put("source", 1);
         }
@@ -417,13 +481,6 @@ public class DataCompareService implements IDataCompareService {
                                 missingColBuilder.setLength(0);
                                 missingColBuilder.append(key).append(" is not exist in TARGET_TABLE").trimToSize();
                                 missingColList.add(missingColBuilder.toString());
-
-//
-//                                diffBuilder.setLength(0);
-//                                diffBuilder.append(key).append(": ")
-//                                        .append("[RDB_VALUE: ").append(valueRdb).append("], ")
-//                                        .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
-//                                differList.add(diffBuilder.toString());
                             }
 
                         }
@@ -529,12 +586,6 @@ public class DataCompareService implements IDataCompareService {
                                 missingColBuilder.setLength(0);
                                 missingColBuilder.append(key).append(" is not exist in SOURCE_TABLE").trimToSize();
                                 missingColList.add(missingColBuilder.toString());
-
-//                                diffBuilder.setLength(0);
-//                                diffBuilder.append(key).append(": ")
-//                                        .append("[RDB_VALUE: COLUMN NOT EXIST")
-//                                        .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
-//                                differList.add(diffBuilder.toString());
                             }
 
                         }
@@ -679,15 +730,9 @@ public class DataCompareService implements IDataCompareService {
 
                     }
                     else {
-//                        diffBuilder.setLength(0);
-//                        diffBuilder.append(key).append(": ")
-//                                .append("[RDB_VALUE: ").append(valueRdb).append("], ")
-//                                .append("[RDB_MODERN_VALUE: COLUMN NOT EXIST]").trimToSize();
-//                        differList.add(diffBuilder.toString());
                         missingColBuilder.setLength(0);
                         missingColBuilder.append(key).append(" is not exist in TARGET_TABLE").trimToSize();
                         missingColList.add(missingColBuilder.toString());
-
                     }
 
                 }
@@ -700,13 +745,6 @@ public class DataCompareService implements IDataCompareService {
                     if (ignoreCols.contains(key)) {
                         continue;
                     }
-
-//                    JsonElement valueRdbModern = recordRdbModern.get(key);
-//                    diffBuilder.setLength(0);
-//                    diffBuilder.append(key).append(": ")
-//                            .append("[RDB_VALUE: COLUMN NOT EXIST]")
-//                            .append("[RDB_MODERN_VALUE: ").append(valueRdbModern).append("]").trimToSize();
-//                    differList.add(diffBuilder.toString());
 
                     missingColBuilder.setLength(0);
                     missingColBuilder.append(key).append(" is not exist in SOURCE_TABLE").trimToSize();

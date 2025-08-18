@@ -45,6 +45,16 @@ aws:
 kafka:
   topic:
     data-compare-topic: data_comparing
+
+app:
+  async:
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 25
+    chunk-core-pool-size: 4
+    chunk-max-pool-size: 8
+    chunk-queue-capacity: 50
+
 ---
 spring:
   config:
@@ -60,7 +70,12 @@ spring:
   datasource:
     hikari:
       connection-timeout: 60000
-      maximum-pool-size: 10
+      maximum-pool-size: 20
+      minimum-idle: 10
+      idle-timeout: 300000
+      keepalive-time: 240000
+      validation-timeout: 5000
+      max-lifetime: 1200000
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: ${NBS_DBUSER}
     password: ${NBS_DBPASSWORD}

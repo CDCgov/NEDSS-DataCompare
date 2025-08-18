@@ -15,7 +15,17 @@ public class TimestampAdapter {
 
     // Serializer: Convert Timestamp to JSON
     public static JsonSerializer<Timestamp> getTimestampSerializer() {
-        return (src, typeOfSrc, context) -> new JsonPrimitive(dateFormat.format(src));
+        return (src, typeOfSrc, context) -> {
+            if (src == null) {
+                return null;
+            }
+            try {
+                String formattedDate = dateFormat.format(src);
+                return new JsonPrimitive(formattedDate);
+            } catch (Exception e) {                
+                return new JsonPrimitive(src.toString());
+            }
+        };
     }
 
     // Deserializer: Convert JSON to Timestamp
