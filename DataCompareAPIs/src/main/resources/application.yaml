@@ -70,12 +70,7 @@ spring:
   datasource:
     hikari:
       connection-timeout: 60000
-      maximum-pool-size: 20
-      minimum-idle: 10
-      idle-timeout: 300000
-      keepalive-time: 240000
-      validation-timeout: 5000
-      max-lifetime: 1200000
+      maximum-pool-size: 10
     driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
     username: ${NBS_DBUSER}
     password: ${NBS_DBPASSWORD}
