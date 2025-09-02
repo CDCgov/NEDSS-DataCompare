@@ -45,6 +45,16 @@ aws:
 kafka:
   topic:
     data-compare-topic: data_comparing
+
+app:
+  async:
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 25
+    chunk-core-pool-size: 4
+    chunk-max-pool-size: 8
+    chunk-queue-capacity: 50
+
 ---
 spring:
   config:

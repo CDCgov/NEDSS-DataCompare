@@ -47,6 +47,11 @@ kafka:
   topic:
     data-compare-topic: data_comparing
 
+app:
+  async:
+    comparison-core-pool-size: 4
+    comparison-max-pool-size: 8
+    comparison-queue-capacity: 25
 
 ---
 spring:
