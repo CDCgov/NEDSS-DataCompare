@@ -39,6 +39,9 @@ dependencies {
     implementation 'org.springframework.kafka:spring-kafka:3.0.12'
     implementation 'org.apache.kafka:kafka-clients:3.6.0'
     implementation group: 'software.amazon.awssdk', name: 'sts', version: '2.27.22'
+    implementation platform("com.azure:azure-sdk-bom:1.2.37")
+    implementation "com.azure:azure-identity"
+    implementation "com.azure:azure-storage-blob"
     implementation 'org.liquibase:liquibase-core:4.31.1'
     runtimeOnly 'com.nimbusds:oauth2-oidc-sdk:11.8'
 

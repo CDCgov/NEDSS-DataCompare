@@ -1,7 +1,7 @@
 package gov.cdc.datacompareapis.service;
 
 import gov.cdc.datacompareapis.exception.DataCompareException;
-import gov.cdc.datacompareapis.service.interfaces.IS3DataService;
+import gov.cdc.datacompareapis.service.interfaces.IStorageDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-import software.amazon.awssdk.services.sts.StsClient;
-import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -27,8 +25,8 @@ import java.util.List;
 
 import static gov.cdc.datacompareapis.constant.ConstantValue.LOG_SUCCESS;
 
-@Service
-public class S3DataService implements IS3DataService {
+@Service("awsS3")
+public class S3DataService implements IStorageDataService {
     private static Logger logger = LoggerFactory.getLogger(S3DataService.class);
 
     @Value("${aws.s3.bucket-name}")
@@ -81,7 +79,7 @@ public class S3DataService implements IS3DataService {
      * S3 location naming
      * DOMAIN/TABLE/TIMESTAMP/TABLE_INDEX
      * */
-    public String persistToS3MultiPart(String domain, String records, String fileName, Timestamp persistingTimestamp, int index) {
+    public String persistMultiPart(String domain, String records, String fileName, Timestamp persistingTimestamp, int index) {
         String log = LOG_SUCCESS;
         try {
             if (records.equalsIgnoreCase("[]") || records.isEmpty()) {
