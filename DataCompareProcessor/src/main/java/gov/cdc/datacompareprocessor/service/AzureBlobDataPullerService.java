@@ -1,6 +1,9 @@
 package gov.cdc.datacompareprocessor.service;
 
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -17,12 +20,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 
 @Service("azureBlob")
 public class AzureBlobDataPullerService implements IStorageDataPullerService {
-    private static Logger logger = LoggerFactory.getLogger(AzureBlobDataPullerService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AzureBlobDataPullerService.class);
 
     @Value("${azure.blob.storage-account-name}")
     private String storageAccountName;
@@ -30,13 +34,13 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
     @Value("${azure.blob.container-name}")
     private String containerName;
 
-    @Value("${azure.blob.connection-string}")
+    @Value("${azure.blob.connection-string:}")
     private String connectionString;
 
-    @Value("${azure.blob.sas-token}")
+    @Value("${azure.blob.sas-token:}")
     private String sasToken;
 
-    @Value("${azure.blob.managed-identity.enabled}")
+    @Value("${azure.blob.managed-identity.enabled:false}")
     private boolean managedIdentityEnabled;
 
     private final BlobServiceClient blobServiceClient;
@@ -45,35 +49,36 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
     @Autowired
     public AzureBlobDataPullerService(
             @Value("${azure.blob.storage-account-name}") String storageAccountName,
-            @Value("${azure.blob.connection-string}") String connectionString,
-            @Value("${azure.blob.sas-token}") String sasToken,
-            @Value("${azure.blob.managed-identity.enabled}") boolean managedIdentityEnabled
+            @Value("${azure.blob.connection-string:}") String connectionString,
+            @Value("${azure.blob.sas-token:}") String sasToken,
+            @Value("${azure.blob.managed-identity.enabled:false}") boolean managedIdentityEnabled
     ) throws DataProcessorException {
         this.storageAccountName = storageAccountName;
         this.connectionString = connectionString;
         this.sasToken = sasToken;
         this.managedIdentityEnabled = managedIdentityEnabled;
 
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder();
+
         if (managedIdentityEnabled) {
             logger.info("Creating Azure Blob Data Puller Service with Managed Identity enabled");
-            // Use Managed Identity for authentication
-            this.blobServiceClient = new BlobServiceClientBuilder()
-                    .endpoint(String.format("https://%s.blob.core.windows.net", storageAccountName))
-                    .buildClient();
-        } else if (!connectionString.isEmpty()) {
+            // MSI / DefaultAzureCredential (supports az login locally, and MSI on Azure)
+            TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+            builder.endpoint(String.format("https://%s.blob.core.windows.net", storageAccountName))
+                    .credential(credential);
+        } else if (StringUtils.hasText(connectionString)) {
             logger.info("Creating Azure Blob Data Puller Service with connection string");
-            this.blobServiceClient = new BlobServiceClientBuilder()
-                    .connectionString(connectionString)
-                    .buildClient();
-        } else if (!sasToken.isEmpty()) {
+            builder.connectionString(connectionString);
+        } else if (StringUtils.hasText(sasToken)) {
             logger.info("Creating Azure Blob Data Puller Service with SAS token");
-            this.blobServiceClient = new BlobServiceClientBuilder()
-                    .endpoint(String.format("https://%s.blob.core.windows.net", storageAccountName))
-                    .sasToken(sasToken)
-                    .buildClient();
+            String token = sasToken.startsWith("?") ? sasToken.substring(1) : sasToken;
+            builder.endpoint(String.format("https://%s.blob.core.windows.net", storageAccountName))
+                    .credential(new AzureSasCredential(token));
         } else {
             throw new DataProcessorException("No Valid Azure Blob Storage authentication method found");
         }
+
+        this.blobServiceClient = builder.buildClient();
 
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
@@ -91,6 +96,7 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
                 .serializeNulls()
                 .create();
     }
+
 
     public JsonElement readJsonFromStorage(String fileName) {
         try {
