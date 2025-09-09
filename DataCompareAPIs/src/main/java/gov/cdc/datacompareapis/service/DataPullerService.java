@@ -48,7 +48,7 @@ public class DataPullerService implements IDataPullerService {
     private final JdbcTemplate rdbJdbcTemplate;
     private final JdbcTemplate rdbModernJdbcTemplate;
     private final JdbcTemplate odseJdbcTemplate;
-    private final IStorageDataService s3DataService;
+    private final IStorageDataService storageDataService;
     private final KafkaPropertiesProvider kafkaPropertiesProvider;
     private final Executor chunkTaskExecutor;
     private long batchId;
@@ -62,7 +62,7 @@ public class DataPullerService implements IDataPullerService {
                              @Qualifier("rdbModernJdbcTemplate") JdbcTemplate rdbModernJdbcTemplate,
                              KafkaPropertiesProvider kafkaPropertiesProvider,
                              @Qualifier("odseJdbcTemplate") JdbcTemplate odseJdbcTemplate,
-                             @Qualifier("awsS3") IStorageDataService s3DataService ,
+                           //  @Qualifier("awsS3") IStorageDataService s3DataService ,
                              DataCompareBatchRepository dataCompareBatchRepository,
                              @Qualifier("chunkTaskExecutor") Executor chunkTaskExecutor) {
         this.dataCompareConfigRepository = dataCompareConfigRepository;
@@ -71,7 +71,7 @@ public class DataPullerService implements IDataPullerService {
         this.rdbJdbcTemplate = rdbJdbcTemplate;
         this.rdbModernJdbcTemplate = rdbModernJdbcTemplate;
         this.odseJdbcTemplate = odseJdbcTemplate;
-        this.s3DataService = s3DataService;
+        this.storageDataService = storageDataService;
         this.dataCompareBatchRepository = dataCompareBatchRepository;
         this.kafkaPropertiesProvider = kafkaPropertiesProvider;
         this.chunkTaskExecutor = chunkTaskExecutor;
@@ -380,7 +380,7 @@ public class DataPullerService implements IDataPullerService {
                                    new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime), 
                                    config.getTableName(), pageIndex);
                         
-                        String uploadResult = s3DataService.persistMultiPart(dbType, rawJsonData,
+                        String uploadResult = storageDataService.persistMultiPart(dbType, rawJsonData,
                                                                                 config.getTableName(), currentTime, pageIndex);
                         
                         if (!uploadResult.equals(LOG_SUCCESS)) {
@@ -469,7 +469,7 @@ public class DataPullerService implements IDataPullerService {
                                    new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime), 
                                    tableName, pageIndex);
                         
-                        String uploadResult = s3DataService.persistMultiPart(dbType, rawJsonData,
+                        String uploadResult = storageDataService.persistMultiPart(dbType, rawJsonData,
                                                                                 tableName, currentTime, pageIndex);
                         
                         if (!uploadResult.equals(LOG_SUCCESS)) {
