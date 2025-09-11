@@ -62,8 +62,7 @@ public class DataPullerService implements IDataPullerService {
                              @Qualifier("rdbModernJdbcTemplate") JdbcTemplate rdbModernJdbcTemplate,
                              KafkaPropertiesProvider kafkaPropertiesProvider,
                              @Qualifier("odseJdbcTemplate") JdbcTemplate odseJdbcTemplate,
-                           //  @Qualifier("awsS3") IStorageDataService s3DataService ,
-                             DataCompareBatchRepository dataCompareBatchRepository,
+                             DataCompareBatchRepository dataCompareBatchRepository, IStorageDataService storageDataService,
                              @Qualifier("chunkTaskExecutor") Executor chunkTaskExecutor) {
         this.dataCompareConfigRepository = dataCompareConfigRepository;
         this.dataCompareLogRepository = dataCompareLogRepository;
@@ -71,10 +70,16 @@ public class DataPullerService implements IDataPullerService {
         this.rdbJdbcTemplate = rdbJdbcTemplate;
         this.rdbModernJdbcTemplate = rdbModernJdbcTemplate;
         this.odseJdbcTemplate = odseJdbcTemplate;
-        this.storageDataService = storageDataService;
         this.dataCompareBatchRepository = dataCompareBatchRepository;
         this.kafkaPropertiesProvider = kafkaPropertiesProvider;
+        this.storageDataService = storageDataService;
         this.chunkTaskExecutor = chunkTaskExecutor;
+        
+        // Log which storage service is being used
+        logger.info("=== DATA PULLER SERVICE INITIALIZATION ===");
+        logger.info("Injected storage service: {}", storageDataService.getClass().getSimpleName());
+        logger.info("Storage service implementation: {}", storageDataService.getClass().getName());
+        logger.info("=== END DATA PULLER SERVICE INITIALIZATION ===");
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())

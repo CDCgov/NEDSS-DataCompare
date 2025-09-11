@@ -19,12 +19,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 
 @Service("azureBlob")
+@ConditionalOnProperty(name = "cloud.provider", havingValue = "AZURE", matchIfMissing = false)
 public class AzureBlobDataPullerService implements IStorageDataPullerService {
     private static final Logger logger = LoggerFactory.getLogger(AzureBlobDataPullerService.class);
 
@@ -99,6 +101,7 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
 
 
     public JsonElement readJsonFromStorage(String fileName) {
+        logger.debug("AzureBlobDataPullerService: Reading JSON from Azure Blob - fileName: {}", fileName);
         try {
             // Get container client
             BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(containerName);
@@ -111,6 +114,7 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
             String jsonData = binaryData.toString();
 
             // Parse JSON string to JsonElement
+            logger.debug("AzureBlobDataPullerService: Successfully read {} bytes from Azure Blob", jsonData.length());
             return JsonParser.parseString(jsonData);
         } catch (Exception e) {
             logger.error("Azure Blob Read Error: {}, {}", fileName, e.getMessage());
@@ -120,6 +124,7 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
 
     public String uploadDataToStorage(String folder1, String folder2, String folder3, String folder4, String fileName, String data) {
         String blobName = String.format("%s/%s/%s/%s/%s", folder1, folder2, folder3, folder4, fileName);
+        logger.debug("AzureBlobDataPullerService: Uploading data to Azure Blob - blobName: {}, data size: {} bytes", blobName, data.length());
 
         try {
             // Get container client
@@ -132,7 +137,7 @@ public class AzureBlobDataPullerService implements IStorageDataPullerService {
             BinaryData binaryData = BinaryData.fromString(data);
             blobClient.upload(binaryData, true);
 
-            logger.info("Successfully uploaded data to Azure Blob Storage: {}", blobName);
+            logger.debug("AzureBlobDataPullerService: Successfully uploaded data to Azure Blob Storage: {}", blobName);
         } catch (Exception e) {
             logger.error("Azure Blob Write Error: {}, {}", blobName, e.getMessage());
         }

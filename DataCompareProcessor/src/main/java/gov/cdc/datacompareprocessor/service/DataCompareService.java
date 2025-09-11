@@ -50,6 +50,13 @@ public class DataCompareService implements IDataCompareService {
         this.storageDataPullerService = storageDataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
         this.comparisonTaskExecutor = comparisonTaskExecutor;
+        
+        // Log which storage service is being used
+        logger.info("=== DATA COMPARE SERVICE INITIALIZATION ===");
+        logger.info("Injected storage service: {}", storageDataPullerService.getClass().getSimpleName());
+        logger.info("Storage service implementation: {}", storageDataPullerService.getClass().getName());
+        logger.info("=== END DATA COMPARE SERVICE INITIALIZATION ===");
+        
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
