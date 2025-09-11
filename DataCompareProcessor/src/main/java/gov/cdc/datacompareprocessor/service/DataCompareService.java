@@ -34,7 +34,7 @@ public class DataCompareService implements IDataCompareService {
     private static final Logger logger = LoggerFactory.getLogger(DataCompareService.class); //NOSONAR
     @Value("${aws.s3.bucket-name}")
     private String bucketName;
-    private final IStorageDataPullerService s3DataPullerService;
+    private final IStorageDataPullerService storageDataPullerService;
     private final Gson gson;
     private final DataCompareLogRepository dataCompareLogRepository;
     private final Executor comparisonTaskExecutor;
@@ -44,10 +44,10 @@ public class DataCompareService implements IDataCompareService {
     private static final Map<String, JsonObject> unmatchedRecordsTarget = new HashMap<>();
     private static Set<String> sourceIdData = new HashSet<>();
     private static Set<String> targetIdData = new HashSet<>();
-    public DataCompareService(@Qualifier("awsS3") IStorageDataPullerService s3DataPullerService,
+    public DataCompareService(IStorageDataPullerService storageDataPullerService,
                               DataCompareLogRepository dataCompareLogRepository,
                               @Qualifier("comparisonTaskExecutor") Executor comparisonTaskExecutor) {
-        this.s3DataPullerService = s3DataPullerService;
+        this.storageDataPullerService = storageDataPullerService;
         this.dataCompareLogRepository = dataCompareLogRepository;
         this.comparisonTaskExecutor = comparisonTaskExecutor;
         this.gson = new GsonBuilder()
@@ -170,7 +170,7 @@ public class DataCompareService implements IDataCompareService {
 
                             List<DifferentModel> fileResults = new ArrayList<>();
                             for (String differFileName : differFileNames) {
-                                JsonElement jsonElement = s3DataPullerService.readJsonFromStorage(differFileName);
+                                JsonElement jsonElement = storageDataPullerService.readJsonFromStorage(differFileName);
                                 Type listType = new TypeToken<List<DifferentModel>>() {
                                 }.getType();
                                 List<DifferentModel> modelList = gson.fromJson(jsonElement, listType);
@@ -230,7 +230,7 @@ public class DataCompareService implements IDataCompareService {
             var stringValue = gson.toJson(differModels);
 
             if ("RDB".equals(pullerEventModel.getFirstLayerRdbFolderName()) && "RDB_MODERN".equals(pullerEventModel.getFirstLayerRdbModernFolderName())) {
-                s3DataPullerService.uploadDataToStorage(
+                storageDataPullerService.uploadDataToStorage(
                         pullerEventModel.getFirstLayerRdbModernFolderName(),
                         pullerEventModel.getSecondLayerFolderName(),
                         pullerEventModel.getThirdLayerFolderName(),
@@ -239,7 +239,7 @@ public class DataCompareService implements IDataCompareService {
             }
 
             if ("NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseSourceFolderName()) && "NBS_ODSE".equals(pullerEventModel.getFirstLayerOdseTargetFolderName())) {
-                s3DataPullerService.uploadDataToStorage(
+                storageDataPullerService.uploadDataToStorage(
                         pullerEventModel.getFirstLayerOdseTargetFolderName(),
                         pullerEventModel.getSecondLayerFolderName(),
                         pullerEventModel.getThirdLayerFolderName(),
@@ -818,7 +818,7 @@ public class DataCompareService implements IDataCompareService {
 
         var stringValue = gson.toJson(differentModels);
         // Persist the differences to S3
-        return s3DataPullerService.uploadDataToStorage(
+        return storageDataPullerService.uploadDataToStorage(
                 pullerEventModel.getFirstLayerRdbModernFolderName(),
                 pullerEventModel.getSecondLayerFolderName(),
                 pullerEventModel.getThirdLayerFolderName(),
@@ -826,7 +826,7 @@ public class DataCompareService implements IDataCompareService {
                 "differences_" + index + ".json", stringValue);
     }
     protected Map<String, JsonObject> loadJsonAsMapFromS3(String fileName, String uniqueIdField) {
-        JsonElement jsonElement = s3DataPullerService.readJsonFromStorage(fileName);
+        JsonElement jsonElement = storageDataPullerService.readJsonFromStorage(fileName);
         Map<String, JsonObject> recordMap = new HashMap<>();
 
         try {
