@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import static gov.cdc.datacompareapis.constant.ConstantValue.LOG_SUCCESS;
 
 @Service("azureBlob")
+@ConditionalOnProperty(name = "cloud.provider", havingValue = "AZURE", matchIfMissing = false)
 public class AzureBlobDataService implements IStorageDataService {
     private static final Logger logger = LoggerFactory.getLogger(AzureBlobDataService.class);
 
@@ -87,6 +89,8 @@ public class AzureBlobDataService implements IStorageDataService {
      * DOMAIN/TABLE/TIMESTAMP/TABLE_INDEX
      */
     public String persistMultiPart(String domain, String records, String fileName, Timestamp persistingTimestamp, int index) {
+        logger.debug("AzureBlobDataService: Persisting data to Azure Blob - domain: {}, fileName: {}, index: {}, data size: {} bytes", 
+                    domain, fileName, index, records.length());
         String log = LOG_SUCCESS;
         try {
             if (records.equalsIgnoreCase("[]") || records.isEmpty()) {
@@ -107,9 +111,9 @@ public class AzureBlobDataService implements IStorageDataService {
             BinaryData binaryData = BinaryData.fromString(records);
             blobClient.upload(binaryData, true);
 
-            logger.info("Successfully uploaded data to Azure Blob Storage: {}", blobName);
+            logger.debug("AzureBlobDataService: Successfully persisted data to Azure Blob Storage: {}", blobName);
         } catch (Exception e) {
-            logger.error("Error persisting data to Azure Blob Storage: {}", e.getMessage(), e);
+            logger.error("AzureBlobDataService: Error persisting data to Azure Blob Storage: {}", e.getMessage(), e);
             log = e.getMessage();
         }
         return log;

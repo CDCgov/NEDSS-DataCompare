@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
@@ -26,6 +27,7 @@ import java.util.List;
 import static gov.cdc.datacompareapis.constant.ConstantValue.LOG_SUCCESS;
 
 @Service("awsS3")
+@ConditionalOnProperty(name = "cloud.provider", havingValue = "AWS", matchIfMissing = true)
 public class S3DataService implements IStorageDataService {
     private static Logger logger = LoggerFactory.getLogger(S3DataService.class);
 
@@ -80,6 +82,8 @@ public class S3DataService implements IStorageDataService {
      * DOMAIN/TABLE/TIMESTAMP/TABLE_INDEX
      * */
     public String persistMultiPart(String domain, String records, String fileName, Timestamp persistingTimestamp, int index) {
+        logger.debug("S3DataService: Persisting data to S3 - domain: {}, fileName: {}, index: {}, data size: {} bytes", 
+                    domain, fileName, index, records.length());
         String log = LOG_SUCCESS;
         try {
             if (records.equalsIgnoreCase("[]") || records.isEmpty()) {
@@ -123,10 +127,11 @@ public class S3DataService implements IStorageDataService {
             }
 
             completeMultipartUpload(uploadId, s3Key, completedParts);
+            logger.debug("S3DataService: Successfully persisted data to S3 - s3Key: {}", s3Key);
         }
         catch (Exception e)
         {
-            logger.info(e.getMessage());
+            logger.error("S3DataService: Error persisting data to S3: {}", e.getMessage());
             log = e.getMessage();
         }
         return log;
