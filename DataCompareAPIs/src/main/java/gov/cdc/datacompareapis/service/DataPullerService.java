@@ -13,7 +13,7 @@ import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareBatch;
 import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareConfig;
 import gov.cdc.datacompareapis.repository.dataCompare.model.DataCompareLog;
 import gov.cdc.datacompareapis.service.interfaces.IDataPullerService;
-import gov.cdc.datacompareapis.service.interfaces.IS3DataService;
+import gov.cdc.datacompareapis.service.interfaces.IStorageDataService;
 import gov.cdc.datacompareapis.service.model.PullerEventModel;
 
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class DataPullerService implements IDataPullerService {
     private final JdbcTemplate rdbJdbcTemplate;
     private final JdbcTemplate rdbModernJdbcTemplate;
     private final JdbcTemplate odseJdbcTemplate;
-    private final IS3DataService s3DataService;
+    private final IStorageDataService storageDataService;
     private final KafkaPropertiesProvider kafkaPropertiesProvider;
     private final Executor chunkTaskExecutor;
     private long batchId;
@@ -62,8 +62,7 @@ public class DataPullerService implements IDataPullerService {
                              @Qualifier("rdbModernJdbcTemplate") JdbcTemplate rdbModernJdbcTemplate,
                              KafkaPropertiesProvider kafkaPropertiesProvider,
                              @Qualifier("odseJdbcTemplate") JdbcTemplate odseJdbcTemplate,
-                             IS3DataService s3DataService ,
-                             DataCompareBatchRepository dataCompareBatchRepository,
+                             DataCompareBatchRepository dataCompareBatchRepository, IStorageDataService storageDataService,
                              @Qualifier("chunkTaskExecutor") Executor chunkTaskExecutor) {
         this.dataCompareConfigRepository = dataCompareConfigRepository;
         this.dataCompareLogRepository = dataCompareLogRepository;
@@ -71,10 +70,16 @@ public class DataPullerService implements IDataPullerService {
         this.rdbJdbcTemplate = rdbJdbcTemplate;
         this.rdbModernJdbcTemplate = rdbModernJdbcTemplate;
         this.odseJdbcTemplate = odseJdbcTemplate;
-        this.s3DataService = s3DataService;
         this.dataCompareBatchRepository = dataCompareBatchRepository;
         this.kafkaPropertiesProvider = kafkaPropertiesProvider;
+        this.storageDataService = storageDataService;
         this.chunkTaskExecutor = chunkTaskExecutor;
+        
+        // Log which storage service is being used
+        logger.info("=== DATA PULLER SERVICE INITIALIZATION ===");
+        logger.info("Injected storage service: {}", storageDataService.getClass().getSimpleName());
+        logger.info("Storage service implementation: {}", storageDataService.getClass().getName());
+        logger.info("=== END DATA PULLER SERVICE INITIALIZATION ===");
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampSerializer())
                 .registerTypeAdapter(Timestamp.class, TimestampAdapter.getTimestampDeserializer())
@@ -380,7 +385,7 @@ public class DataPullerService implements IDataPullerService {
                                    new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime), 
                                    config.getTableName(), pageIndex);
                         
-                        String uploadResult = s3DataService.persistToS3MultiPart(dbType, rawJsonData, 
+                        String uploadResult = storageDataService.persistMultiPart(dbType, rawJsonData,
                                                                                 config.getTableName(), currentTime, pageIndex);
                         
                         if (!uploadResult.equals(LOG_SUCCESS)) {
@@ -469,7 +474,7 @@ public class DataPullerService implements IDataPullerService {
                                    new SimpleDateFormat("yyyyMMddHHmmss").format(currentTime), 
                                    tableName, pageIndex);
                         
-                        String uploadResult = s3DataService.persistToS3MultiPart(dbType, rawJsonData, 
+                        String uploadResult = storageDataService.persistMultiPart(dbType, rawJsonData,
                                                                                 tableName, currentTime, pageIndex);
                         
                         if (!uploadResult.equals(LOG_SUCCESS)) {
