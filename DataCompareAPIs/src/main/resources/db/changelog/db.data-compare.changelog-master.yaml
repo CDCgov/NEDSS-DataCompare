@@ -53,7 +53,7 @@ databaseChangeLog:
       runOnChange: true
       changes:
         - sqlFile:
-            path: db/data_internal/routines/002-generate-data.sql
+            path: db/data_internal/tables/005-alter-data-compare-config-001.sql
             splitStatements: false
   - changeSet:
       id: 7
@@ -61,5 +61,5 @@ databaseChangeLog:
       runOnChange: true
       changes:
         - sqlFile:
-            path: db/data_internal/tables/005-alter-data-compare-config-001.sql
+            path: db/data_internal/routines/002-generate-data.sql
             splitStatements: false

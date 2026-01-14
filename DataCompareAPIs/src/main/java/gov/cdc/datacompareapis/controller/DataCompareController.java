@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import static gov.cdc.datacompareapis.shared.NumberHelper.isInteger;
 
 @RestController
-@SecurityRequirement(name = "bearer-key")
+//@SecurityRequirement(name = "bearer-key")
 @Tag(name = "Data Compare", description = "Data Exchange API")
 public class DataCompareController {
 
