@@ -11,7 +11,7 @@ on:
 jobs:
   call-build-microservice-container-workflow:
     name: Build Container
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@ph/APP-145-push-to-ecr
     with:
       microservice_name: nbs7-data-compare-api-service
       dockerfile_relative_path: -f ./DataCompareAPIs/Dockerfile .
@@ -22,7 +22,7 @@ jobs:
 
   call-build-data-compare-processor-microservice-container-workflow:
     name: Build Container
-    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@main
+    uses: CDCgov/NEDSS-Workflows/.github/workflows/Build-gradle-microservice-container.yaml@ph/APP-145-push-to-ecr
     with:
       microservice_name: nbs7-data-compare-processor-service
       dockerfile_relative_path: -f ./DataCompareProcessor/Dockerfile .
