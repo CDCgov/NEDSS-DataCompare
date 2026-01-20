@@ -43,6 +43,8 @@ aws:
   s3:
     bucket-name: ${S3_BUCKET_NAME:NA}
     region: ${S3_REGION:NA}
+    endpoint: ${S3_ENDPOINT:NA}
+    path-style-access: ${S3_PATH_STYLE:false}
 kafka:
   topic:
     data-compare-topic: data_comparing

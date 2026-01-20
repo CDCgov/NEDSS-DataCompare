@@ -9,13 +9,20 @@ services:
     depends_on:
       - di-keycloak
       - kafka
+      - minio
     environment:
-      NBS_DBPASSWORD:
-      NBS_DBSERVER:
+      NBS_DBPASSWORD: PASSWORD
+      NBS_DBSERVER: IPADDRESS
       NBS_DBUSER: db_deploy_admin
       NND_AUTH_URI: http://localhost:8080/realms/NBS
       DC_AUTH_URI:  http://localhost:8100/realms/NBS
       KAFKA_BOOTSTRAP_SERVER: kafka:29092
+      AWS_KEY_ID: USERNAME
+      AWS_ACCESS_KEY: PASSWORD
+      S3_BUCKET_NAME: local-bucket
+      S3_ENDPOINT: http://minio:9000
+      S3_PATH_STYLE: "true"
+      AWS_IAM: "false"
     networks:
       - datacompare
 
@@ -29,13 +36,20 @@ services:
     depends_on:
       - di-keycloak
       - kafka
+      - minio
     environment:
-      NBS_DBPASSWORD:
-      NBS_DBSERVER:
+      NBS_DBPASSWORD: PASSWORD
+      NBS_DBSERVER: IPADDRESS
       NBS_DBUSER: db_deploy_admin
       NND_AUTH_URI: http://localhost:8080/realms/NBS
       DC_AUTH_URI: http://localhost:8100/realms/NBS
       KAFKA_BOOTSTRAP_SERVER: kafka:29092
+      AWS_KEY_ID: USERNAME
+      AWS_ACCESS_KEY: PASSWORD
+      S3_BUCKET_NAME: local-bucket
+      S3_ENDPOINT: http://minio:9000
+      S3_PATH_STYLE: "true"
+      AWS_IAM: "false"
     networks:
       - datacompare
 
@@ -86,6 +100,26 @@ services:
     networks:
       - datacompare
 
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-07-23T15-54-02Z # Use a specific release tag
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: USERNAME
+      MINIO_ROOT_PASSWORD: PASSWORD
+      # MINIO_DEFAULT_BUCKETS: bucket1,bucket2
+    command: ["server", "--console-address", ":9001", "/data"]
+    restart: unless-stopped
+    networks:
+      - datacompare
+
+volumes:
+  minio_data:
+    driver: local
 
 networks:
   datacompare:

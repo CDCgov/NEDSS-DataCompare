@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -21,12 +22,14 @@ import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.sts.StsClient;
 import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider;
 
+import java.net.URI;
 import java.sql.Timestamp;
 
 @Service
@@ -45,7 +48,9 @@ public class S3DataPullerService implements IS3DataPullerService {
             @Value("${aws.auth.static.key_id}") String keyId,
             @Value("${aws.auth.static.access_key}") String accessKey,
             @Value("${aws.auth.static.token}") String token,
+            @Value("${aws.s3.endpoint}") String endpoint,
             @Value("${aws.s3.region}") String region,
+            @Value("${aws.s3.path-style-access}") boolean pathStyleAccess,
             @Value("${aws.auth.profile.profile_name}") String profile,
             @Value("${aws.auth.iam.enabled}") boolean iamEnable
     ) throws DataProcessorException
@@ -60,9 +65,13 @@ public class S3DataPullerService implements IS3DataPullerService {
         }
         else if (!keyId.isEmpty() && !accessKey.isEmpty() && !token.isEmpty()) {
             this.s3Client = S3Client.builder()
+                    .endpointOverride(URI.create(endpoint))
                     .region(Region.of(region))
                     .credentialsProvider(StaticCredentialsProvider.create(
-                            AwsSessionCredentials.create(keyId, accessKey, token)))
+                            AwsBasicCredentials.create(keyId, accessKey)))
+                    .serviceConfiguration(S3Configuration.builder()
+                        .pathStyleAccessEnabled(pathStyleAccess)
+                        .build())
                     .build();
         } else if (!profile.isEmpty()) {
             // Use profile credentials from ~/.aws/credentials
