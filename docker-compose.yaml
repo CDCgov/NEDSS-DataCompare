@@ -44,8 +44,8 @@ services:
       NND_AUTH_URI: http://localhost:8080/realms/NBS
       DC_AUTH_URI: http://localhost:8100/realms/NBS
       KAFKA_BOOTSTRAP_SERVER: kafka:29092
-      AWS_KEY_ID: USERNAME
-      AWS_ACCESS_KEY: PASSWORD
+      AWS_KEY_ID: localrootuser
+      AWS_ACCESS_KEY: localpass
       S3_BUCKET_NAME: local-bucket
       S3_ENDPOINT: http://minio:9000
       S3_PATH_STYLE: "true"
