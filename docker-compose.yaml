@@ -11,14 +11,14 @@ services:
       - kafka
       - minio
     environment:
-      NBS_DBPASSWORD: PASSWORD
-      NBS_DBSERVER: IPADDRESS
-      NBS_DBUSER: db_deploy_admin
+      NBS_DBPASSWORD: ${DB_PASSWORD}
+      NBS_DBSERVER: ${DB_SERVER}
+      NBS_DBUSER: ${DB_USER}
       NND_AUTH_URI: http://localhost:8080/realms/NBS
       DC_AUTH_URI:  http://localhost:8100/realms/NBS
       KAFKA_BOOTSTRAP_SERVER: kafka:29092
-      AWS_KEY_ID: USERNAME
-      AWS_ACCESS_KEY: PASSWORD
+      AWS_KEY_ID: localrootuser
+      AWS_ACCESS_KEY: localpass
       S3_BUCKET_NAME: local-bucket
       S3_ENDPOINT: http://minio:9000
       S3_PATH_STYLE: "true"
@@ -38,9 +38,9 @@ services:
       - kafka
       - minio
     environment:
-      NBS_DBPASSWORD: PASSWORD
-      NBS_DBSERVER: IPADDRESS
-      NBS_DBUSER: db_deploy_admin
+      NBS_DBPASSWORD: ${DB_PASSWORD}
+      NBS_DBSERVER: ${DB_SERVER}
+      NBS_DBUSER: ${DB_USER}
       NND_AUTH_URI: http://localhost:8080/realms/NBS
       DC_AUTH_URI: http://localhost:8100/realms/NBS
       KAFKA_BOOTSTRAP_SERVER: kafka:29092
@@ -109,9 +109,8 @@ services:
     volumes:
       - minio_data:/data
     environment:
-      MINIO_ROOT_USER: USERNAME
-      MINIO_ROOT_PASSWORD: PASSWORD
-      # MINIO_DEFAULT_BUCKETS: bucket1,bucket2
+      MINIO_ROOT_USER: localrootuser
+      MINIO_ROOT_PASSWORD: localpass
     command: ["server", "--console-address", ":9001", "/data"]
     restart: unless-stopped
     networks:
