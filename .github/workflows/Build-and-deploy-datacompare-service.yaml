@@ -5,6 +5,7 @@ on:
       - main
       - master
       - rel-**
+      - test-deploy
     paths-ignore:
       - "docker-compose.yml"
       - "**.md"
