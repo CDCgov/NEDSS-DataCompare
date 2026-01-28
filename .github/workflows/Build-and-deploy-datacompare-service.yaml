@@ -5,6 +5,7 @@ on:
       - main
       - master
       - rel-**
+      - meh/local-setup-wip
     paths-ignore:
       - "docker-compose.yml"
       - "**.md"
