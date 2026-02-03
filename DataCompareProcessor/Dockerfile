@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM amazoncorretto:21 as builder
+FROM amazoncorretto:25 as builder
 
 # Set up the project directory
 WORKDIR /usr/src/datacompareprocessor
@@ -17,7 +17,7 @@ COPY DataCompareProcessor DataCompareProcessor
 RUN ./gradlew :DataCompareProcessor:buildNeeded -x test --no-daemon
 
 # Stage 2: Create the runtime image
-FROM amazoncorretto:21
+FROM amazoncorretto:25
 
 # Copy the built JAR file from the builder stage
 COPY --from=builder /usr/src/datacompareprocessor/DataCompareProcessor/build/libs/DataCompareProcessor*.jar /data-compare-processor-service.jar
