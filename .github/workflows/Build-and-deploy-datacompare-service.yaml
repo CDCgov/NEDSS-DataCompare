@@ -5,7 +5,7 @@ on:
       - main
       - master
       - rel-**
-      - meh/local-setup-wip
+      - ph/dev-setup
     paths-ignore:
       - "docker-compose.yml"
       - "**.md"
