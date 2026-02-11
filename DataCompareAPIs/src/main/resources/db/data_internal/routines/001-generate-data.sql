@@ -3077,17 +3077,22 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                      SELECT DISTINCT LDF_HEPATITIS.*,
-                                             ROW_NUMBER() OVER (ORDER BY LDF_HEPATITIS.INVESTIGATION_KEY ASC) AS RowNum
-                                      FROM LDF_HEPATITIS
-                               )
-                               SELECT *
-                               FROM PaginatedResults
-                               WHERE RowNum BETWEEN :startRow AND :endRow;',
+              SELECT DISTINCT
+                     I.CASE_UID,
+                     P.PATIENT_UID,
+                     L.*,
+                     ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+              FROM LDF_HEPATITIS L
+              INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = L.INVESTIGATION_KEY
+              INNER JOIN D_PATIENT P ON P.PATIENT_KEY = L.PATIENT_KEY
+              )
+              SELECT *
+              FROM PaginatedResults
+              WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                                                  FROM LDF_HEPATITIS;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3288,20 +3293,22 @@ values
            'RDB',
            'RDB_MODERN',
            'WITH PaginatedResults AS (
-                                     SELECT DISTINCT LDF_FOODBORNE.*,
-                                            ROW_NUMBER() OVER (ORDER BY LDF_FOODBORNE.INVESTIGATION_KEY ASC) AS RowNum
-                                     FROM LDF_FOODBORNE
-                                  )
-                                  SELECT *
-                                  FROM PaginatedResults
-                                  WHERE RowNum BETWEEN :startRow AND :endRow;',
+              SELECT DISTINCT
+                     I.CASE_UID,
+                     P.PATIENT_UID,
+                     L.*,
+                     ROW_NUMBER() OVER (ORDER BY I.CASE_UID ASC) AS RowNum
+              FROM LDF_FOODBORNE L
+              INNER JOIN INVESTIGATION I ON I.INVESTIGATION_KEY = L.INVESTIGATION_KEY
+              INNER JOIN D_PATIENT P ON P.PATIENT_KEY = L.PATIENT_KEY
+              )
+              SELECT *
+              FROM PaginatedResults
+              WHERE RowNum BETWEEN :startRow AND :endRow;',
            'SELECT COUNT(*)
                                   FROM LDF_FOODBORNE;',
-           'INVESTIGATION_KEY',
-           'RowNum, INVESTIGATION_KEY, L_11310430LDF_SANDIEGO, L_11310752newfield_2_5_1_2_3_,
-           L_11310760LDF_added_after_tes, L_11311018Confirmation_method, L_11311305newdemofield123,
-           L_11311544retestbug, L_11485487retest_bug2, L_11485535may16field, L_11485561LDF_added_after_tes,
-           L_11310430LDF_SANDIEGO, L_11311544_retestbug, L_11485561_LDF_added_after)te',
+           'CASE_UID',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
@@ -3324,7 +3331,7 @@ values
            'SELECT COUNT(*)
                                   FROM LDF_MUMPS;',
            'CASE_UID',
-           'RowNum, INVESTIGATION_KEY, PATIENT_KEY''',
+           'RowNum, INVESTIGATION_KEY, PATIENT_KEY',
            1
        ),
        (
