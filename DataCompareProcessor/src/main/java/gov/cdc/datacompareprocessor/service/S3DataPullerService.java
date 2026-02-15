@@ -6,12 +6,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import gov.cdc.datacompareprocessor.configuration.TimestampAdapter;
 import gov.cdc.datacompareprocessor.exception.DataProcessorException;
-import gov.cdc.datacompareprocessor.service.interfaces.IS3DataPullerService;
+import gov.cdc.datacompareprocessor.service.interfaces.IStorageDataPullerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
@@ -24,13 +24,12 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.sts.StsClient;
-import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider;
 
 import java.sql.Timestamp;
 
-@Service
-public class S3DataPullerService implements IS3DataPullerService {
+@Service("awsS3")
+@ConditionalOnProperty(name = "cloud.provider", havingValue = "AWS", matchIfMissing = true)
+public class S3DataPullerService implements IStorageDataPullerService {
     private static Logger logger = LoggerFactory.getLogger(S3DataPullerService.class);
 
     @Value("${aws.s3.bucket-name}")
@@ -91,7 +90,8 @@ public class S3DataPullerService implements IS3DataPullerService {
                 .create();
     }
 
-    public JsonElement readJsonFromS3(String fileName)  {
+    public JsonElement readJsonFromStorage(String fileName)  {
+        logger.debug("S3DataPullerService: Reading JSON from S3 - fileName: {}", fileName);
         try {
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(bucketName)
@@ -103,15 +103,17 @@ public class S3DataPullerService implements IS3DataPullerService {
             String jsonData = objectBytes.asUtf8String();
 
             // Parse JSON string to JsonElement
+            logger.debug("S3DataPullerService: Successfully read {} bytes from S3", jsonData.length());
             return JsonParser.parseString(jsonData);
         } catch (Exception e) {
-            logger.info("S3 Read Error: {}, {}",fileName, e.getMessage());
+            logger.error("S3 Read Error: {}, {}",fileName, e.getMessage());
         }
         return JsonParser.parseString("");
     }
 
-    public String uploadDataToS3(String folder1, String folder2, String folder3, String folder4, String fileName, String data) {
+    public String uploadDataToStorage(String folder1, String folder2, String folder3, String folder4, String fileName, String data) {
         String s3Key = String.format("%s/%s/%s/%s/%s", folder1, folder2, folder3, folder4, fileName);
+        logger.debug("S3DataPullerService: Uploading data to S3 - key: {}, data size: {} bytes", s3Key, data.length());
 
         try {
             // Build the S3 key by combining folder1, folder2, and fileName
@@ -123,9 +125,10 @@ public class S3DataPullerService implements IS3DataPullerService {
 
             // Upload the data as a String
             s3Client.putObject(putObjectRequest, RequestBody.fromString(data));
+            logger.debug("S3DataPullerService: Successfully uploaded data to S3 - key: {}", s3Key);
 
         } catch (Exception e) {
-            logger.info("S3 Write Error: {}, {}", s3Key,e.getMessage());
+            logger.error("S3 Write Error: {}, {}", s3Key,e.getMessage());
         }
         return s3Key;
 
