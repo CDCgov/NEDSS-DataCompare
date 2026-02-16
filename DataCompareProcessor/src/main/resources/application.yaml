@@ -43,6 +43,15 @@ aws:
   s3:
     bucket-name: ${S3_BUCKET_NAME:NA}
     region: ${S3_REGION:NA}
+
+azure:
+  blob:
+    storage-account-name: ${AZURE_STORAGE_ACCOUNT_NAME:NA}
+    container-name: ${AZURE_CONTAINER_NAME:NA}
+    connection-string: ${AZURE_CONNECTION_STRING:NA}
+    sas-token: ${AZURE_SAS_TOKEN:NA}
+    managed-identity:
+      enabled: ${AZURE_MANAGED_IDENTITY:false}
 kafka:
   topic:
     data-compare-topic: data_comparing
