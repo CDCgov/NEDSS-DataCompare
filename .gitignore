@@ -38,6 +38,7 @@ out/
 
 ### Prototype Generated Files ###
 python-data-validator-prototype/.DS_Store
+python-data-validator-prototype/screenshots/.DS_Store
 python-data-validator-prototype/**venv/
 venv/
 python-data-validator-prototype/results/**/*.json
