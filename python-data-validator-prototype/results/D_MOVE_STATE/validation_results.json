@@ -6,7 +6,18 @@
   "results_by_uid_column": {
     "TB_PAM_UID": {
       "uid_column": "TB_PAM_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10467331,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     }
   }
 }

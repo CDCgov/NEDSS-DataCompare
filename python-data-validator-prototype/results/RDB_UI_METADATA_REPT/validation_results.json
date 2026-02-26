@@ -12,9 +12,8 @@
           "comparison": {
             "rdb_count": 5,
             "rdb_modern_count": 5,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -23,9 +22,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -34,9 +32,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         }

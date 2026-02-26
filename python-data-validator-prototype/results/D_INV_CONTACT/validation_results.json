@@ -12,94 +12,81 @@
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         },
         {
-          "uid_value": "3241",
+          "uid_value": "3251",
           "comparison": {
-            "rdb_count": 0,
+            "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": false,
-            "discrepant_records": [
+            "record_counts_match": true,
+            "column_differences": [
               {
                 "record_index": 0,
-                "type": "record_in_rdb_modern_only",
-                "rdb_modern_record": {
-                  "D_INV_CONTACT_KEY": 3.0,
-                  "nbs_case_answer_uid": "3241",
-                  "CTT_RPT_FIRST_NDLSHARE_EXP_DT": null,
-                  "CTT_RPT_FIRST_SEX_EXP_DT": null,
-                  "CTT_RPT_LAST_NDLSHARE_EXP_DT": null,
-                  "CTT_RPT_LAST_SEX_EXP_DT": null,
-                  "CTT_RPT_ELICIT_INTERNET_INFO": null,
-                  "CTT_RPT_MET_OP_INTERNET": null,
-                  "CTT_RPT_RELATIONSHIP_TO_OP": "Associate",
-                  "CTT_RPT_SPOUSE_OF_OP": null,
-                  "CTT_MOTHER_INFANT_LINK_ID_1": null,
-                  "CTT_MOTHER_INFANT_LINK_ID_2": null,
-                  "CTT_MOTHER_INFANT_LINK_ID_3": null,
-                  "CTT_RPT_NDLSHARE_EXP_FREQ": null,
-                  "CTT_RPT_SEX_EXP_FREQ": null,
-                  "CTT_SOURCE_CASE_ID": null,
-                  "CTT_NUM_CONTACTS_EXPOSED": null,
-                  "CTT_CONTACT_TYPE": null,
-                  "CTT_CONTACT_TYPE_OTH": null,
-                  "CTT_ID_THRU_CONTACT_TRACE": null
-                }
+                "column_differences": [
+                  {
+                    "column": "D_INV_CONTACT_KEY",
+                    "rdb_value": 5.0,
+                    "rdb_modern_value": 4.0
+                  }
+                ]
               }
             ],
-            "record_count_mismatch": {
-              "rdb_count": 0,
-              "rdb_modern_count": 1
-            },
-            "discrepant_count": 1,
             "has_differences": true
           }
         },
         {
-          "uid_value": "3249",
+          "uid_value": "3289",
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "D_INV_CONTACT_KEY",
+                    "rdb_value": 7.0,
+                    "rdb_modern_value": 5.0
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": "3805",
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 1,
-            "match": false,
-            "discrepant_records": [
-              {
-                "record_index": 0,
-                "type": "record_in_rdb_modern_only",
-                "rdb_modern_record": {
-                  "D_INV_CONTACT_KEY": 4.0,
-                  "nbs_case_answer_uid": "3249",
-                  "CTT_RPT_FIRST_NDLSHARE_EXP_DT": null,
-                  "CTT_RPT_FIRST_SEX_EXP_DT": null,
-                  "CTT_RPT_LAST_NDLSHARE_EXP_DT": null,
-                  "CTT_RPT_LAST_SEX_EXP_DT": null,
-                  "CTT_RPT_ELICIT_INTERNET_INFO": null,
-                  "CTT_RPT_MET_OP_INTERNET": null,
-                  "CTT_RPT_RELATIONSHIP_TO_OP": "Other adult",
-                  "CTT_RPT_SPOUSE_OF_OP": null,
-                  "CTT_MOTHER_INFANT_LINK_ID_1": null,
-                  "CTT_MOTHER_INFANT_LINK_ID_2": null,
-                  "CTT_MOTHER_INFANT_LINK_ID_3": null,
-                  "CTT_RPT_NDLSHARE_EXP_FREQ": null,
-                  "CTT_RPT_SEX_EXP_FREQ": null,
-                  "CTT_SOURCE_CASE_ID": null,
-                  "CTT_NUM_CONTACTS_EXPOSED": null,
-                  "CTT_CONTACT_TYPE": null,
-                  "CTT_CONTACT_TYPE_OTH": null,
-                  "CTT_ID_THRU_CONTACT_TRACE": null
-                }
-              }
-            ],
-            "record_count_mismatch": {
-              "rdb_count": 0,
-              "rdb_modern_count": 1
-            },
-            "discrepant_count": 1,
-            "has_differences": true
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": "4209",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": "4212",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
           }
         }
       ]

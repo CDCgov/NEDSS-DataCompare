@@ -10,23 +10,78 @@
   "results_by_uid_column": {
     "CASE_UID": {
       "uid_column": "CASE_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": "22309506",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "INVESTIGATOR_UID": {
       "uid_column": "INVESTIGATOR_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": "10003013",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PATIENT_UID": {
       "uid_column": "PATIENT_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": "22309503",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHYSICIAN_UID": {
       "uid_column": "PHYSICIAN_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": "10003010",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "REPORTING_SOURCE_UID": {
       "uid_column": "REPORTING_SOURCE_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": "10003019",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     }
   }
 }

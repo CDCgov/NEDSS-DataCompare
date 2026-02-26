@@ -12,9 +12,8 @@
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -23,195 +22,773 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
         {
-          "uid_value": 10009470,
+          "uid_value": 10074300,
           "comparison": {
-            "rdb_count": 0,
+            "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": false,
-            "discrepant_records": [
+            "record_counts_match": true,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10401301,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
               {
                 "record_index": 0,
-                "type": "record_in_rdb_modern_only",
-                "rdb_modern_record": {
-                  "INVESTIGATION_KEY": 3,
-                  "CASE_OID": 1300400016,
-                  "CASE_UID": 10009470,
-                  "INV_LOCAL_ID": "CAS10001003GA01",
-                  "INV_SHARE_IND": "T",
-                  "OUTBREAK_NAME": null,
-                  "INVESTIGATION_STATUS": "Open",
-                  "INV_CASE_STATUS": null,
-                  "CASE_TYPE": "I",
-                  "INV_COMMENTS": null,
-                  "JURISDICTION_CD": "130004",
-                  "JURISDICTION_NM": "Cobb County",
-                  "EARLIEST_RPT_TO_PHD_DT": null,
-                  "ILLNESS_ONSET_DT": null,
-                  "ILLNESS_END_DT": null,
-                  "INV_RPT_DT": null,
-                  "INV_START_DT": "2026-02-17 00:00:00",
-                  "RPT_SRC_CD_DESC": null,
-                  "EARLIEST_RPT_TO_CNTY_DT": null,
-                  "EARLIEST_RPT_TO_STATE_DT": null,
-                  "CASE_RPT_MMWR_WK": "7",
-                  "CASE_RPT_MMWR_YR": "2026",
-                  "DISEASE_IMPORTED_IND": null,
-                  "IMPORT_FRM_CNTRY": null,
-                  "IMPORT_FRM_STATE": null,
-                  "IMPORT_FRM_CNTY": null,
-                  "IMPORT_FRM_CITY": null,
-                  "EARLIEST_RPT_TO_CDC_DT": null,
-                  "RPT_SRC_CD": null,
-                  "IMPORT_FRM_CNTRY_CD": null,
-                  "IMPORT_FRM_STATE_CD": null,
-                  "IMPORT_FRM_CNTY_CD": null,
-                  "IMPORT_FRM_CITY_CD": null,
-                  "DIAGNOSIS_DT": null,
-                  "HSPTL_ADMISSION_DT": null,
-                  "HSPTL_DISCHARGE_DT": null,
-                  "HSPTL_DURATION_DAYS": null,
-                  "OUTBREAK_IND": null,
-                  "HSPTLIZD_IND": null,
-                  "INV_STATE_CASE_ID": null,
-                  "CITY_COUNTY_CASE_NBR": null,
-                  "TRANSMISSION_MODE": null,
-                  "RECORD_STATUS_CD": "ACTIVE",
-                  "PATIENT_PREGNANT_IND": null,
-                  "DIE_FRM_THIS_ILLNESS_IND": null,
-                  "DAYCARE_ASSOCIATION_IND": null,
-                  "FOOD_HANDLR_IND": null,
-                  "INVESTIGATION_DEATH_DATE": null,
-                  "PATIENT_AGE_AT_ONSET": null,
-                  "PATIENT_AGE_AT_ONSET_UNIT": null,
-                  "INV_ASSIGNED_DT": null,
-                  "DETECTION_METHOD_DESC_TXT": null,
-                  "ILLNESS_DURATION": null,
-                  "ILLNESS_DURATION_UNIT": null,
-                  "CONTACT_INV_COMMENTS": null,
-                  "CONTACT_INV_PRIORITY": null,
-                  "CONTACT_INFECTIOUS_FROM_DATE": null,
-                  "CONTACT_INFECTIOUS_TO_DATE": null,
-                  "CONTACT_INV_STATUS": null,
-                  "INV_CLOSE_DT": null,
-                  "PROGRAM_AREA_DESCRIPTION": "HIV",
-                  "ADD_TIME": "2026-02-19 13:25:41.630000",
-                  "LAST_CHG_TIME": "2026-02-19 13:28:35.117000",
-                  "INVESTIGATION_ADDED_BY": "Kent, Ariella",
-                  "INVESTIGATION_LAST_UPDATED_BY": "Kent, Ariella",
-                  "REFERRAL_BASIS": "A1 - Associate 1",
-                  "CURR_PROCESS_STATE": "Field Follow-up",
-                  "INV_PRIORITY_CD": null,
-                  "COINFECTION_ID": "COIN1003XX01",
-                  "LEGACY_CASE_ID": null,
-                  "OUTBREAK_NAME_DESC": null
-                }
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 8,
+                    "rdb_modern_value": 4
+                  }
+                ]
               }
             ],
-            "record_count_mismatch": {
-              "rdb_count": 0,
-              "rdb_modern_count": 1
-            },
-            "discrepant_count": 1,
             "has_differences": true
           }
         },
         {
-          "uid_value": 10009475,
+          "uid_value": 10467311,
           "comparison": {
-            "rdb_count": 0,
+            "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": false,
-            "discrepant_records": [
+            "record_counts_match": true,
+            "column_differences": [
               {
                 "record_index": 0,
-                "type": "record_in_rdb_modern_only",
-                "rdb_modern_record": {
-                  "INVESTIGATION_KEY": 4,
-                  "CASE_OID": 1300400015,
-                  "CASE_UID": 10009475,
-                  "INV_LOCAL_ID": "CAS10001004GA01",
-                  "INV_SHARE_IND": "T",
-                  "OUTBREAK_NAME": null,
-                  "INVESTIGATION_STATUS": "Closed",
-                  "INV_CASE_STATUS": null,
-                  "CASE_TYPE": "I",
-                  "INV_COMMENTS": null,
-                  "JURISDICTION_CD": "130004",
-                  "JURISDICTION_NM": "Cobb County",
-                  "EARLIEST_RPT_TO_PHD_DT": null,
-                  "ILLNESS_ONSET_DT": null,
-                  "ILLNESS_END_DT": null,
-                  "INV_RPT_DT": null,
-                  "INV_START_DT": "2023-02-08 00:00:00",
-                  "RPT_SRC_CD_DESC": null,
-                  "EARLIEST_RPT_TO_CNTY_DT": null,
-                  "EARLIEST_RPT_TO_STATE_DT": null,
-                  "CASE_RPT_MMWR_WK": "7",
-                  "CASE_RPT_MMWR_YR": "2026",
-                  "DISEASE_IMPORTED_IND": null,
-                  "IMPORT_FRM_CNTRY": null,
-                  "IMPORT_FRM_STATE": null,
-                  "IMPORT_FRM_CNTY": null,
-                  "IMPORT_FRM_CITY": null,
-                  "EARLIEST_RPT_TO_CDC_DT": null,
-                  "RPT_SRC_CD": null,
-                  "IMPORT_FRM_CNTRY_CD": null,
-                  "IMPORT_FRM_STATE_CD": null,
-                  "IMPORT_FRM_CNTY_CD": null,
-                  "IMPORT_FRM_CITY_CD": null,
-                  "DIAGNOSIS_DT": null,
-                  "HSPTL_ADMISSION_DT": null,
-                  "HSPTL_DISCHARGE_DT": null,
-                  "HSPTL_DURATION_DAYS": null,
-                  "OUTBREAK_IND": null,
-                  "HSPTLIZD_IND": null,
-                  "INV_STATE_CASE_ID": null,
-                  "CITY_COUNTY_CASE_NBR": null,
-                  "TRANSMISSION_MODE": null,
-                  "RECORD_STATUS_CD": "ACTIVE",
-                  "PATIENT_PREGNANT_IND": null,
-                  "DIE_FRM_THIS_ILLNESS_IND": null,
-                  "DAYCARE_ASSOCIATION_IND": null,
-                  "FOOD_HANDLR_IND": null,
-                  "INVESTIGATION_DEATH_DATE": null,
-                  "PATIENT_AGE_AT_ONSET": null,
-                  "PATIENT_AGE_AT_ONSET_UNIT": null,
-                  "INV_ASSIGNED_DT": null,
-                  "DETECTION_METHOD_DESC_TXT": null,
-                  "ILLNESS_DURATION": null,
-                  "ILLNESS_DURATION_UNIT": null,
-                  "CONTACT_INV_COMMENTS": null,
-                  "CONTACT_INV_PRIORITY": null,
-                  "CONTACT_INFECTIOUS_FROM_DATE": null,
-                  "CONTACT_INFECTIOUS_TO_DATE": null,
-                  "CONTACT_INV_STATUS": null,
-                  "INV_CLOSE_DT": "2023-05-17 00:00:00",
-                  "PROGRAM_AREA_DESCRIPTION": "STD",
-                  "ADD_TIME": "2026-02-19 13:31:38.387000",
-                  "LAST_CHG_TIME": "2026-02-19 13:31:38.387000",
-                  "INVESTIGATION_ADDED_BY": "Kent, Ariella",
-                  "INVESTIGATION_LAST_UPDATED_BY": "Kent, Ariella",
-                  "REFERRAL_BASIS": "A2 - Associate 2",
-                  "CURR_PROCESS_STATE": "No Follow-up",
-                  "INV_PRIORITY_CD": null,
-                  "COINFECTION_ID": "COIN1004XX01",
-                  "LEGACY_CASE_ID": null,
-                  "OUTBREAK_NAME_DESC": null
-                }
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 9,
+                    "rdb_modern_value": 5
+                  }
+                ]
               }
             ],
-            "record_count_mismatch": {
-              "rdb_count": 0,
-              "rdb_modern_count": 1
-            },
-            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10467331,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 10,
+                    "rdb_modern_value": 6
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10729302,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 11,
+                    "rdb_modern_value": 7
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10729314,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "HSPTL_ADMISSION_DT",
+                    "rdb_value": "2025-12-08 00:00:00",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "HSPTL_DISCHARGE_DT",
+                    "rdb_value": "2025-12-09 00:00:00",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "HSPTL_DURATION_DAYS",
+                    "rdb_value": "1",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 12,
+                    "rdb_modern_value": 8
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10729320,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 13,
+                    "rdb_modern_value": 9
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10795307,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 14,
+                    "rdb_modern_value": 10
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10795312,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 15,
+                    "rdb_modern_value": 11
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10796327,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 16,
+                    "rdb_modern_value": 12
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10863355,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 17,
+                    "rdb_modern_value": 13
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 16129323,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 18,
+                    "rdb_modern_value": 15
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 21915339,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 20,
+                    "rdb_modern_value": 14
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 21981327,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 21,
+                    "rdb_modern_value": 16
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 21981338,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 22,
+                    "rdb_modern_value": 17
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 21981356,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 23,
+                    "rdb_modern_value": 18
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22307336,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 24,
+                    "rdb_modern_value": 19
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22307342,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 25,
+                    "rdb_modern_value": 20
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22307349,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 26,
+                    "rdb_modern_value": 21
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308381,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 27,
+                    "rdb_modern_value": 22
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308399,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 28,
+                    "rdb_modern_value": 23
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308428,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 29,
+                    "rdb_modern_value": 24
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308443,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 30,
+                    "rdb_modern_value": 25
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308448,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 31,
+                    "rdb_modern_value": 26
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309420,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "DIE_FRM_THIS_ILLNESS_IND",
+                    "rdb_value": "No",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 32,
+                    "rdb_modern_value": 27
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309438,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 33,
+                    "rdb_modern_value": 28
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309456,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 34,
+                    "rdb_modern_value": 29
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309479,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 35,
+                    "rdb_modern_value": 30
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309486,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 36,
+                    "rdb_modern_value": 31
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309496,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 37,
+                    "rdb_modern_value": 32
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309506,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 38,
+                    "rdb_modern_value": 33
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22309521,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 39,
+                    "rdb_modern_value": 34
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22310353,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 40,
+                    "rdb_modern_value": 35
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22311358,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 41,
+                    "rdb_modern_value": 36
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22312369,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 42,
+                    "rdb_modern_value": 37
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22312374,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "INVESTIGATION_KEY",
+                    "rdb_value": 43,
+                    "rdb_modern_value": 38
+                  }
+                ]
+              }
+            ],
             "has_differences": true
           }
         }

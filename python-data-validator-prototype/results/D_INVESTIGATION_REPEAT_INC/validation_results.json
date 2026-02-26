@@ -14,33 +14,13 @@
       "uid_column": "PAGE_CASE_UID",
       "uid_values": [
         {
-          "uid_value": 10009475,
+          "uid_value": 22309506,
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 1,
-            "match": false,
-            "discrepant_records": [
-              {
-                "record_index": 0,
-                "type": "record_in_rdb_modern_only",
-                "rdb_modern_record": {
-                  "PAGE_CASE_UID": 10009475,
-                  "BLOCK_NM": "BLOCK_1",
-                  "ANSWER_GROUP_SEQ_NBR": 1,
-                  "INVESTIGATION_FORM_CD_date": null,
-                  "SURV_NOTE": "Ariella Kent~02/19/2026 8:31~~bad",
-                  "INVESTIGATION_FORM_CD_coded": null,
-                  "INVESTIGATION_FORM_CD_numeric": null,
-                  "D_INVESTIGATION_REPEAT_KEY": 1.0
-                }
-              }
-            ],
-            "record_count_mismatch": {
-              "rdb_count": 0,
-              "rdb_modern_count": 1
-            },
-            "discrepant_count": 1,
-            "has_differences": true
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
           }
         }
       ]

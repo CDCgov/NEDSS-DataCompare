@@ -6,7 +6,38 @@
   "results_by_uid_column": {
     "REPORTING_FACILITY_UID": {
       "uid_column": "REPORTING_FACILITY_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003001,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 6,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003007,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003019,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     }
   }
 }

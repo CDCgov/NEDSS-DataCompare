@@ -1,11 +1,11 @@
 {
   "database": {
     "driver": "ODBC Driver 17 for SQL Server",
-    "server": "localhost",
-    "port": 3433,
+    "server": "10.1.3.0",
+    "port": 1433,
     "database": "RDB_MODERN",
-    "username": "sa",
-    "password": "PizzaIsGood33!",
+    "username": "db_deploy_admin",
+    "password": "aGqUwTS963C7",
     "authentication": "sql"
   },
   "sqlalchemy": {
@@ -18,7 +18,7 @@
   },
   "connection_options": {
     "TrustServerCertificate": "yes",
-    "Encrypt": "no",
+    "Encrypt": "yes",
     "Connection Timeout": 30
   }
 }

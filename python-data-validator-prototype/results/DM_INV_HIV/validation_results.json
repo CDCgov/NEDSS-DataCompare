@@ -24,39 +24,148 @@
   "results_by_uid_column": {
     "CA_SPVR_UID": {
       "uid_column": "CA_SPVR_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "FUP_INV_UID": {
       "uid_column": "FUP_INV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "FUP_ORG_UID": {
       "uid_column": "FUP_ORG_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "FUP_PRV_UID": {
       "uid_column": "FUP_PRV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "FUP_SPVR_UID": {
       "uid_column": "FUP_SPVR_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10863363,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "HSP_UID": {
       "uid_column": "HSP_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "IFUP_ASG_UID": {
       "uid_column": "IFUP_ASG_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "IFUP_INV_UID": {
       "uid_column": "IFUP_INV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "INIT_IXS_UID": {
       "uid_column": "INIT_IXS_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "ORGANIZATION_UID": {
       "uid_column": "ORGANIZATION_UID",
@@ -64,23 +173,78 @@
     },
     "PHC_CLS_UID": {
       "uid_column": "PHC_CLS_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHC_DSP_UID": {
       "uid_column": "PHC_DSP_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHC_INV_UID": {
       "uid_column": "PHC_INV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHC_IXS_UID": {
       "uid_column": "PHC_IXS_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHYS_UID": {
       "uid_column": "PHYS_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PROVIDER_UID": {
       "uid_column": "PROVIDER_UID",
@@ -88,15 +252,48 @@
     },
     "REPORTING_FACILITY_UID": {
       "uid_column": "REPORTING_FACILITY_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "RPT_PRV_UID": {
       "uid_column": "RPT_PRV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "SURV_INV_UID": {
       "uid_column": "SURV_INV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     }
   }
 }

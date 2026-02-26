@@ -1,5 +1,6 @@
 import json
 import logging
+import shutil
 from pathlib import Path
 from typing import Dict, List, Any
 from sqlalchemy import text, create_engine, inspect
@@ -105,80 +106,35 @@ class TableRecordValidator:
     
     def _compare_records(self, rdb_records: List[Dict], rdb_modern_records: List[Dict]) -> Dict[str, Any]:
         """
-        Compare records from both databases, column by column.
+        Compare records from both databases to check for differences.
         
         Args:
             rdb_records: Records from RDB
             rdb_modern_records: Records from RDB_MODERN
             
         Returns:
-            Comparison result dictionary with only discrepant records
+            Comparison result dictionary with summary information
         """
         comparison = {
             'rdb_count': len(rdb_records),
             'rdb_modern_count': len(rdb_modern_records),
-            'match': len(rdb_records) == len(rdb_modern_records) and len(rdb_records) > 0,
-            'discrepant_records': []
+            'record_counts_match': len(rdb_records) == len(rdb_modern_records) and len(rdb_records) > 0,
+            'column_differences': []
         }
         
-        # Create a map of RDB_MODERN records by converting to comparable format
-        # Use a combination of all columns as a unique key for matching
-        rdb_modern_map = {}
-        for record in rdb_modern_records:
-            rdb_modern_map[id(record)] = record
-        
-        # If record counts differ, note it
-        if len(rdb_records) != len(rdb_modern_records):
-            comparison['record_count_mismatch'] = {
-                'rdb_count': len(rdb_records),
-                'rdb_modern_count': len(rdb_modern_records)
-            }
-        
-        # Compare records
-        if len(rdb_records) != len(rdb_modern_records):
-            # Different number of records - compare what we can
-            for i, rdb_record in enumerate(rdb_records):
-                if i < len(rdb_modern_records):
-                    rdb_modern_record = rdb_modern_records[i]
-                    discrepancies = self._compare_record_pair(rdb_record, rdb_modern_record)
-                    
-                    if discrepancies:
-                        comparison['discrepant_records'].append({
-                            'record_index': i,
-                            'rdb_record': rdb_record,
-                            'rdb_modern_record': rdb_modern_record,
-                            'column_differences': discrepancies
-                        })
-                else:
-                    # More records in RDB than RDB_MODERN
-                    comparison['discrepant_records'].append({
-                        'record_index': i,
-                        'type': 'record_in_rdb_only',
-                        'rdb_record': rdb_record
-                    })
-            
-            # Check for extra records in RDB_MODERN
-            for i in range(len(rdb_records), len(rdb_modern_records)):
-                comparison['discrepant_records'].append({
-                    'record_index': i,
-                    'type': 'record_in_rdb_modern_only',
-                    'rdb_modern_record': rdb_modern_records[i]
-                })
-        else:
+        # Compare records only if counts match
+        if len(rdb_records) == len(rdb_modern_records):
             # Same number of records - compare column by column
             for i, (rdb_record, rdb_modern_record) in enumerate(zip(rdb_records, rdb_modern_records)):
                 discrepancies = self._compare_record_pair(rdb_record, rdb_modern_record)
                 
                 if discrepancies:
-                    comparison['discrepant_records'].append({
+                    comparison['column_differences'].append({
                         'record_index': i,
-                        'rdb_record': rdb_record,
-                        'rdb_modern_record': rdb_modern_record,
                         'column_differences': discrepancies
                     })
         
-        comparison['discrepant_count'] = len(comparison['discrepant_records'])
-        comparison['has_differences'] = comparison['discrepant_count'] > 0
+        comparison['has_differences'] = len(comparison['column_differences']) > 0
         return comparison
     
     def _compare_record_pair(self, rdb_record: Dict, rdb_modern_record: Dict) -> List[Dict]:
@@ -209,9 +165,7 @@ class TableRecordValidator:
                 differences.append({
                     'column': column,
                     'rdb_value': self._serialize_for_json(rdb_value),
-                    'rdb_modern_value': self._serialize_for_json(rdb_modern_value),
-                    'rdb_type': type(rdb_value).__name__ if rdb_value is not None else 'NoneType',
-                    'rdb_modern_type': type(rdb_modern_value).__name__ if rdb_modern_value is not None else 'NoneType'
+                    'rdb_modern_value': self._serialize_for_json(rdb_modern_value)
                 })
         
         return differences
@@ -298,7 +252,11 @@ class TableRecordValidator:
         if not self.rdb_engine or not self.rdb_modern_engine:
             raise RuntimeError("Database connections not initialized. Call setup_connections() first.")
         
-        # Create results directory
+        # Clear and recreate results directory
+        if self.results_dir.exists():
+            logger.info(f"Clearing existing results directory: {self.results_dir}")
+            shutil.rmtree(self.results_dir)
+        
         self.results_dir.mkdir(parents=True, exist_ok=True)
         logger.info(f"Results directory: {self.results_dir}")
         

@@ -6,7 +6,563 @@
   "results_by_uid_column": {
     "public_health_case_uid": {
       "uid_column": "public_health_case_uid",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10074300,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "LAST_CHG_TIME",
+                    "rdb_value": "2025-11-12 18:27:31.520000",
+                    "rdb_modern_value": "2025-11-12 18:27:31.517000"
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10795307,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "CTT_INV_COMMENTS",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "CTT_INV_PRIORITY_CD",
+                    "rdb_value": "HIGH",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "CTT_INV_STATUS",
+                    "rdb_value": "C",
+                    "rdb_modern_value": "Closed"
+                  },
+                  {
+                    "column": "DAYCARE_ASSOC_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "DETECT_METHOD_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "DIE_FROM_ILLNESS_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "DISEASE_IMPORTED_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "FOOD_HANDLER_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "HSPTLIZD_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "ILLNESS_DURATION",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "ILLNESS_DURATION_UNIT",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_CITY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_CNTRY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_CNTY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_STATE",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "INV_COMMENTS",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "OUTBREAK_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "OUTBREAK_NAME",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_AGE_RPTD_UNIT",
+                    "rdb_value": "Y",
+                    "rdb_modern_value": "Years"
+                  },
+                  {
+                    "column": "PATIENT_COUNTRY",
+                    "rdb_value": "840",
+                    "rdb_modern_value": "United States"
+                  },
+                  {
+                    "column": "PATIENT_COUNTY",
+                    "rdb_value": "20033",
+                    "rdb_modern_value": "Comanche County"
+                  },
+                  {
+                    "column": "PATIENT_DECEASED_IND",
+                    "rdb_value": "N",
+                    "rdb_modern_value": "No"
+                  },
+                  {
+                    "column": "PATIENT_ONSET_AGE",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_ONSET_AGE_UNIT",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_PREGNANT_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_RACE_CALC",
+                    "rdb_value": " White",
+                    "rdb_modern_value": "White"
+                  },
+                  {
+                    "column": "PATIENT_STATE",
+                    "rdb_value": "20",
+                    "rdb_modern_value": "Kansas"
+                  },
+                  {
+                    "column": "RPT_SOURCE_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "TRANSMISSION_MODE_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308428,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "CONFIRMATION_METHOD",
+                    "rdb_value": " Active Surveillance; Clinical diagnosis (non-laboratory confirmed); Case/Outbreak Investigation; Epidemiologically linked; Laboratory confirmed; Laboratory report; Medical record review; No information given; Occupational disease surveillance; Other; Provider certified; Local/State specified",
+                    "rdb_modern_value": "Clinical diagnosis (non-laboratory confirmed); Active Surveillance; Other; Local/State specified; Provider certified; Epidemiologically linked; Medical record review; Occupational disease surveillance; Case/Outbreak Investigation; Laboratory report; Laboratory confirmed; No information given"
+                  },
+                  {
+                    "column": "CTT_INV_PRIORITY_CD",
+                    "rdb_value": "MEDIUM",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "CTT_INV_STATUS",
+                    "rdb_value": "O",
+                    "rdb_modern_value": "Open"
+                  },
+                  {
+                    "column": "DETECT_METHOD_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_AGE_RPTD_UNIT",
+                    "rdb_value": "Y",
+                    "rdb_modern_value": "Years"
+                  },
+                  {
+                    "column": "PATIENT_COUNTRY",
+                    "rdb_value": "840",
+                    "rdb_modern_value": "United States"
+                  },
+                  {
+                    "column": "PATIENT_COUNTY",
+                    "rdb_value": "47005",
+                    "rdb_modern_value": "Benton County"
+                  },
+                  {
+                    "column": "PATIENT_DECEASED_IND",
+                    "rdb_value": "N",
+                    "rdb_modern_value": "No"
+                  },
+                  {
+                    "column": "PATIENT_ETHNICITY",
+                    "rdb_value": "2186-5",
+                    "rdb_modern_value": "Not Hispanic or Lati"
+                  },
+                  {
+                    "column": "PATIENT_MARITAL_STS",
+                    "rdb_value": "M",
+                    "rdb_modern_value": "Married"
+                  },
+                  {
+                    "column": "PATIENT_PHONE_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_RACE_CALC",
+                    "rdb_value": " White",
+                    "rdb_modern_value": "White"
+                  },
+                  {
+                    "column": "PATIENT_STATE",
+                    "rdb_value": "47",
+                    "rdb_modern_value": "Tennessee"
+                  },
+                  {
+                    "column": "PATIENT_STREET_ADDR_2",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PHYS_TEL_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PHYS_TEL_WORK",
+                    "rdb_value": "404-851-8000",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "RPT_ORG_TEL_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "RPT_PRV_TEL_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "RPT_PRV_TEL_WORK",
+                    "rdb_value": "404-778-3350",
+                    "rdb_modern_value": null
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22308443,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "CONFIRMATION_METHOD",
+                    "rdb_value": " Medical record review",
+                    "rdb_modern_value": "Medical record review"
+                  },
+                  {
+                    "column": "CTT_INV_PRIORITY_CD",
+                    "rdb_value": "NOCNTCT",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "CTT_INV_STATUS",
+                    "rdb_value": "C",
+                    "rdb_modern_value": "Closed"
+                  },
+                  {
+                    "column": "DETECT_METHOD_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "ILLNESS_DURATION",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "ILLNESS_DURATION_UNIT",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_AGE_RPTD_UNIT",
+                    "rdb_value": "Y",
+                    "rdb_modern_value": "Years"
+                  },
+                  {
+                    "column": "PATIENT_COUNTRY",
+                    "rdb_value": "840",
+                    "rdb_modern_value": "United States"
+                  },
+                  {
+                    "column": "PATIENT_COUNTY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_ETHNICITY",
+                    "rdb_value": "2186-5",
+                    "rdb_modern_value": "Not Hispanic or Lati"
+                  },
+                  {
+                    "column": "PATIENT_ONSET_AGE",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_ONSET_AGE_UNIT",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_PHONE_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_RACE_CALC",
+                    "rdb_value": " Asian; White",
+                    "rdb_modern_value": "Multi-Race"
+                  },
+                  {
+                    "column": "PATIENT_STATE",
+                    "rdb_value": "06",
+                    "rdb_modern_value": "California"
+                  },
+                  {
+                    "column": "PATIENT_STREET_ADDR_2",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PHYS_TEL_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PHYS_TEL_WORK",
+                    "rdb_value": "404-778-3350",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "RPT_ORG_TEL_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "RPT_PRV_TEL_EXT_WORK",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "RPT_PRV_TEL_WORK",
+                    "rdb_value": "404-851-8000",
+                    "rdb_modern_value": null
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 22312374,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "CTT_INV_COMMENTS",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "CTT_INV_PRIORITY_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "CTT_INV_STATUS",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "DETECT_METHOD_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "DIE_FROM_ILLNESS_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "DISEASE_IMPORTED_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "FOOD_HANDLER_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "HSPTLIZD_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "ILLNESS_DURATION",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "ILLNESS_DURATION_UNIT",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_CITY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_CNTRY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_CNTY",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "IMPORT_FROM_STATE",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "INV_COMMENTS",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "OUTBREAK_NAME",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_AGE_RPTD_UNIT",
+                    "rdb_value": "Y",
+                    "rdb_modern_value": "Years"
+                  },
+                  {
+                    "column": "PATIENT_COUNTRY",
+                    "rdb_value": "840",
+                    "rdb_modern_value": "United States"
+                  },
+                  {
+                    "column": "PATIENT_DECEASED_IND",
+                    "rdb_value": "N",
+                    "rdb_modern_value": "No"
+                  },
+                  {
+                    "column": "PATIENT_ETHNICITY",
+                    "rdb_value": "2186-5",
+                    "rdb_modern_value": "Not Hispanic or Lati"
+                  },
+                  {
+                    "column": "PATIENT_PREGNANT_IND",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "PATIENT_RACE_CALC",
+                    "rdb_value": " unknown",
+                    "rdb_modern_value": "Unknown"
+                  },
+                  {
+                    "column": "PATIENT_STATE",
+                    "rdb_value": "09",
+                    "rdb_modern_value": "Connecticut"
+                  },
+                  {
+                    "column": "RPT_SOURCE_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "TRANSMISSION_MODE_CD",
+                    "rdb_value": "",
+                    "rdb_modern_value": null
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        }
+      ]
     }
   }
 }

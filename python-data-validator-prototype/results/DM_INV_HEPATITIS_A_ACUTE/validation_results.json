@@ -12,7 +12,18 @@
   "results_by_uid_column": {
     "HSP_UID": {
       "uid_column": "HSP_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003019,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "ORGANIZATION_UID": {
       "uid_column": "ORGANIZATION_UID",
@@ -20,11 +31,33 @@
     },
     "PHC_INV_UID": {
       "uid_column": "PHC_INV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003013,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHYS_UID": {
       "uid_column": "PHYS_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003010,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PROVIDER_UID": {
       "uid_column": "PROVIDER_UID",
@@ -32,11 +65,33 @@
     },
     "REPORTING_FACILITY_UID": {
       "uid_column": "REPORTING_FACILITY_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003019,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "RPT_PRV_UID": {
       "uid_column": "RPT_PRV_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003013,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     }
   }
 }

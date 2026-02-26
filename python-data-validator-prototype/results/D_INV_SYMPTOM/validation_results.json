@@ -1,8 +1,7 @@
 {
   "table_name": "D_INV_SYMPTOM",
   "uid_columns": [
-    "nbs_case_answer_uid",
-    "SYM_EXTRAVASC_FLUID_ACCUM"
+    "nbs_case_answer_uid"
   ],
   "results_by_uid_column": {
     "nbs_case_answer_uid": {
@@ -13,25 +12,69 @@
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
-        }
-      ]
-    },
-    "SYM_EXTRAVASC_FLUID_ACCUM": {
-      "uid_column": "SYM_EXTRAVASC_FLUID_ACCUM",
-      "uid_values": [
+        },
         {
-          "uid_value": null,
+          "uid_value": "3256",
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "record_counts_match": true,
+            "column_differences": [
+              {
+                "record_index": 0,
+                "column_differences": [
+                  {
+                    "column": "D_INV_SYMPTOM_KEY",
+                    "rdb_value": 5.0,
+                    "rdb_modern_value": 4.0
+                  },
+                  {
+                    "column": "SYM_FEVER_HIGHEST_TEMP",
+                    "rdb_value": "102",
+                    "rdb_modern_value": null
+                  },
+                  {
+                    "column": "SYM_FEVER_HIGHEST_TEMP_UNIT",
+                    "rdb_value": "Fahrenheit",
+                    "rdb_modern_value": null
+                  }
+                ]
+              }
+            ],
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": "3597",
           "comparison": {
             "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": "3986",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": "4122",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         }

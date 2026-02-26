@@ -12,9 +12,8 @@
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         }

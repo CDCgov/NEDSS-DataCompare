@@ -14,9 +14,8 @@
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         }
@@ -30,9 +29,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -41,9 +39,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -52,9 +49,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -63,9 +59,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -74,9 +69,8 @@
           "comparison": {
             "rdb_count": 3,
             "rdb_modern_count": 3,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -85,9 +79,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -96,9 +89,8 @@
           "comparison": {
             "rdb_count": 14,
             "rdb_modern_count": 14,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -107,9 +99,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -118,9 +109,8 @@
           "comparison": {
             "rdb_count": 6,
             "rdb_modern_count": 6,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -129,9 +119,8 @@
           "comparison": {
             "rdb_count": 3,
             "rdb_modern_count": 3,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -140,9 +129,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -151,9 +139,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -162,9 +149,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -173,9 +159,8 @@
           "comparison": {
             "rdb_count": 4,
             "rdb_modern_count": 4,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -184,9 +169,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -195,9 +179,8 @@
           "comparison": {
             "rdb_count": 3,
             "rdb_modern_count": 3,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -206,9 +189,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -217,9 +199,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -228,9 +209,8 @@
           "comparison": {
             "rdb_count": 2,
             "rdb_modern_count": 2,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -239,9 +219,8 @@
           "comparison": {
             "rdb_count": 7,
             "rdb_modern_count": 7,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -250,9 +229,8 @@
           "comparison": {
             "rdb_count": 7,
             "rdb_modern_count": 7,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -261,9 +239,8 @@
           "comparison": {
             "rdb_count": 4,
             "rdb_modern_count": 4,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -272,9 +249,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -283,9 +259,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -294,9 +269,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -305,9 +279,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -316,9 +289,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -327,9 +299,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -338,9 +309,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -349,9 +319,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -360,9 +329,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -371,9 +339,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -382,9 +349,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -393,9 +359,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -404,9 +369,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -415,9 +379,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         },
@@ -426,9 +389,8 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
             "has_differences": false
           }
         }
@@ -442,9 +404,8 @@
           "comparison": {
             "rdb_count": 0,
             "rdb_modern_count": 0,
-            "match": false,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         }

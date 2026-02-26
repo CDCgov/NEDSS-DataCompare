@@ -4,21 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Validation Results Reviewer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Validation Results</h1>
+<body class="bg-gray-100">
+    <div class="flex flex-col h-screen max-w-6xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <h1 class="px-6 py-5 text-2xl font-semibold border-b border-gray-200 flex-shrink-0">Validation Results</h1>
         
-        <input 
-            type="text" 
-            id="searchInput" 
-            class="search-bar" 
-            placeholder="Search tables..."
-        >
+        <div class="flex gap-3 items-center px-6 py-4 border-b border-gray-200 flex-shrink-0">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:bg-gray-50" 
+                placeholder="Search tables..."
+            >
+        </div>
         
-        <div class="list-container">
-            <div id="tableList" class="table-list"></div>
+        <div class="flex-1 overflow-y-auto p-2">
+            <div id="tableList" class="flex flex-col gap-1"></div>
         </div>
     </div>
     

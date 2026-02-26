@@ -12,9 +12,48 @@
           "comparison": {
             "rdb_count": 1,
             "rdb_modern_count": 1,
-            "match": true,
-            "discrepant_records": [],
-            "discrepant_count": 0,
+            "record_counts_match": true,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 22308401,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 22309340,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 22309421,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 22309507,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
             "has_differences": false
           }
         }

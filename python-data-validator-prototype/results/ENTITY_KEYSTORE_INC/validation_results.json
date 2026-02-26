@@ -12,31 +12,108 @@
   "results_by_uid_column": {
     "HOSPITAL_UID": {
       "uid_column": "HOSPITAL_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "INVESTIGATOR_UID": {
       "uid_column": "INVESTIGATOR_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "ORG_AS_REPORTER_UID": {
       "uid_column": "ORG_AS_REPORTER_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10003001,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PAGE_CASE_UID": {
       "uid_column": "PAGE_CASE_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10074300,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PATIENT_UID": {
       "uid_column": "PATIENT_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": 10074294,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PERSON_AS_REPORTER_UID": {
       "uid_column": "PERSON_AS_REPORTER_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     },
     "PHYSICIAN_UID": {
       "uid_column": "PHYSICIAN_UID",
-      "uid_values": []
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "record_counts_match": false,
+            "column_differences": [],
+            "has_differences": false
+          }
+        }
+      ]
     }
   }
 }
