@@ -37,6 +37,7 @@ out/
 .vscode/
 
 ### Prototype Generated Files ###
+.DS_Store/
 python-data-validator-prototype/.DS_Store
 python-data-validator-prototype/screenshots/.DS_Store
 python-data-validator-prototype/**venv/
