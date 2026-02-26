@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Prototype Generated Files ###
+python-data-validator-prototype/results/**/*.json
