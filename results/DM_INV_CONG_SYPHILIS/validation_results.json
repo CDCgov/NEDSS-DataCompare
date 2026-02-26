@@ -1,0 +1,107 @@
+{
+  "table_name": "DM_INV_CONG_SYPHILIS",
+  "uid_columns": [
+    "DEL_HSP_UID",
+    "DEL_PRV_UID",
+    "FUP_INV_UID",
+    "FUP_ORG_UID",
+    "FUP_PRV_UID",
+    "FUP_SPVR_UID",
+    "HSP_UID",
+    "IFUP_ASG_UID",
+    "IFUP_INV_UID",
+    "OBGYN_UID",
+    "ORGANIZATION_UID",
+    "PED_PRV_UID",
+    "PHC_CLS_UID",
+    "PHC_DSP_UID",
+    "PHC_INV_UID",
+    "PHYS_UID",
+    "PROVIDER_UID",
+    "REPORTING_FACILITY_UID",
+    "RPT_PRV_UID",
+    "SURV_INV_UID"
+  ],
+  "results_by_uid_column": {
+    "DEL_HSP_UID": {
+      "uid_column": "DEL_HSP_UID",
+      "uid_values": []
+    },
+    "DEL_PRV_UID": {
+      "uid_column": "DEL_PRV_UID",
+      "uid_values": []
+    },
+    "FUP_INV_UID": {
+      "uid_column": "FUP_INV_UID",
+      "uid_values": []
+    },
+    "FUP_ORG_UID": {
+      "uid_column": "FUP_ORG_UID",
+      "uid_values": []
+    },
+    "FUP_PRV_UID": {
+      "uid_column": "FUP_PRV_UID",
+      "uid_values": []
+    },
+    "FUP_SPVR_UID": {
+      "uid_column": "FUP_SPVR_UID",
+      "uid_values": []
+    },
+    "HSP_UID": {
+      "uid_column": "HSP_UID",
+      "uid_values": []
+    },
+    "IFUP_ASG_UID": {
+      "uid_column": "IFUP_ASG_UID",
+      "uid_values": []
+    },
+    "IFUP_INV_UID": {
+      "uid_column": "IFUP_INV_UID",
+      "uid_values": []
+    },
+    "OBGYN_UID": {
+      "uid_column": "OBGYN_UID",
+      "uid_values": []
+    },
+    "ORGANIZATION_UID": {
+      "uid_column": "ORGANIZATION_UID",
+      "uid_values": []
+    },
+    "PED_PRV_UID": {
+      "uid_column": "PED_PRV_UID",
+      "uid_values": []
+    },
+    "PHC_CLS_UID": {
+      "uid_column": "PHC_CLS_UID",
+      "uid_values": []
+    },
+    "PHC_DSP_UID": {
+      "uid_column": "PHC_DSP_UID",
+      "uid_values": []
+    },
+    "PHC_INV_UID": {
+      "uid_column": "PHC_INV_UID",
+      "uid_values": []
+    },
+    "PHYS_UID": {
+      "uid_column": "PHYS_UID",
+      "uid_values": []
+    },
+    "PROVIDER_UID": {
+      "uid_column": "PROVIDER_UID",
+      "uid_values": []
+    },
+    "REPORTING_FACILITY_UID": {
+      "uid_column": "REPORTING_FACILITY_UID",
+      "uid_values": []
+    },
+    "RPT_PRV_UID": {
+      "uid_column": "RPT_PRV_UID",
+      "uid_values": []
+    },
+    "SURV_INV_UID": {
+      "uid_column": "SURV_INV_UID",
+      "uid_values": []
+    }
+  }
+}

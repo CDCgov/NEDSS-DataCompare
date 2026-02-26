@@ -1,0 +1,32 @@
+{
+  "table_name": "ETL_MISSING_RECORD",
+  "uid_columns": [
+    "ACTIVITY_LOG_MASTER_UID",
+    "ETL_MISSING_RECORD_UID",
+    "EVENT_UID",
+    "PATIENT_UID",
+    "PROCESS_UID"
+  ],
+  "results_by_uid_column": {
+    "ACTIVITY_LOG_MASTER_UID": {
+      "uid_column": "ACTIVITY_LOG_MASTER_UID",
+      "uid_values": []
+    },
+    "ETL_MISSING_RECORD_UID": {
+      "uid_column": "ETL_MISSING_RECORD_UID",
+      "uid_values": []
+    },
+    "EVENT_UID": {
+      "uid_column": "EVENT_UID",
+      "uid_values": []
+    },
+    "PATIENT_UID": {
+      "uid_column": "PATIENT_UID",
+      "uid_values": []
+    },
+    "PROCESS_UID": {
+      "uid_column": "PROCESS_UID",
+      "uid_values": []
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "table_name": "L_INV_ADMINISTRATIVE_INC",
+  "uid_columns": [
+    "PAGE_CASE_UID",
+    "PAGE_CASE_UID_N",
+    "PAGE_CASE_UID_NE"
+  ],
+  "results_by_uid_column": {
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": [
+        {
+          "uid_value": 10009475,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "PAGE_CASE_UID_N": "10009475",
+                  "PAGE_CASE_UID_NE": null,
+                  "D_INV_ADMINISTRATIVE_KEY_N": 4,
+                  "D_NE_KEY": null,
+                  "PAGE_CASE_UID": 10009475,
+                  "D_INV_ADMINISTRATIVE_KEY": 4
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    },
+    "PAGE_CASE_UID_N": {
+      "uid_column": "PAGE_CASE_UID_N",
+      "uid_values": [
+        {
+          "uid_value": "10009475",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "PAGE_CASE_UID_N": "10009475",
+                  "PAGE_CASE_UID_NE": null,
+                  "D_INV_ADMINISTRATIVE_KEY_N": 4,
+                  "D_NE_KEY": null,
+                  "PAGE_CASE_UID": 10009475,
+                  "D_INV_ADMINISTRATIVE_KEY": 4
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    },
+    "PAGE_CASE_UID_NE": {
+      "uid_column": "PAGE_CASE_UID_NE",
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "match": false,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        }
+      ]
+    }
+  }
+}

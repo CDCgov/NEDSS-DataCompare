@@ -1,0 +1,22 @@
+{
+  "table_name": "S_VAR_PAM_ACT_ENTITY",
+  "uid_columns": [
+    "ENTITY_UID",
+    "VAR_PAM_ACT_ENTITY_UID",
+    "VAR_PAM_UID"
+  ],
+  "results_by_uid_column": {
+    "ENTITY_UID": {
+      "uid_column": "ENTITY_UID",
+      "uid_values": []
+    },
+    "VAR_PAM_ACT_ENTITY_UID": {
+      "uid_column": "VAR_PAM_ACT_ENTITY_UID",
+      "uid_values": []
+    },
+    "VAR_PAM_UID": {
+      "uid_column": "VAR_PAM_UID",
+      "uid_values": []
+    }
+  }
+}

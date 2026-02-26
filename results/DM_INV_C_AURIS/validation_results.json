@@ -1,0 +1,42 @@
+{
+  "table_name": "DM_INV_C_AURIS",
+  "uid_columns": [
+    "HSP_UID",
+    "ORGANIZATION_UID",
+    "PHC_INV_UID",
+    "PHYS_UID",
+    "PROVIDER_UID",
+    "REPORTING_FACILITY_UID",
+    "RPT_PRV_UID"
+  ],
+  "results_by_uid_column": {
+    "HSP_UID": {
+      "uid_column": "HSP_UID",
+      "uid_values": []
+    },
+    "ORGANIZATION_UID": {
+      "uid_column": "ORGANIZATION_UID",
+      "uid_values": []
+    },
+    "PHC_INV_UID": {
+      "uid_column": "PHC_INV_UID",
+      "uid_values": []
+    },
+    "PHYS_UID": {
+      "uid_column": "PHYS_UID",
+      "uid_values": []
+    },
+    "PROVIDER_UID": {
+      "uid_column": "PROVIDER_UID",
+      "uid_values": []
+    },
+    "REPORTING_FACILITY_UID": {
+      "uid_column": "REPORTING_FACILITY_UID",
+      "uid_values": []
+    },
+    "RPT_PRV_UID": {
+      "uid_column": "RPT_PRV_UID",
+      "uid_values": []
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "table_name": "S_INVESTIGATION_REPEAT_INC",
+  "uid_columns": [
+    "LAB_LINKING_UID",
+    "PAGE_CASE_UID",
+    "PARENT_UID"
+  ],
+  "results_by_uid_column": {
+    "LAB_LINKING_UID": {
+      "uid_column": "LAB_LINKING_UID",
+      "uid_values": []
+    },
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": []
+    },
+    "PARENT_UID": {
+      "uid_column": "PARENT_UID",
+      "uid_values": []
+    }
+  }
+}

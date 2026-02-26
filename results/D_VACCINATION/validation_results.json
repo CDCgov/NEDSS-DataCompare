@@ -1,0 +1,24 @@
+{
+  "table_name": "D_VACCINATION",
+  "uid_columns": [
+    "VACCINATION_UID"
+  ],
+  "results_by_uid_column": {
+    "VACCINATION_UID": {
+      "uid_column": "VACCINATION_UID",
+      "uid_values": [
+        {
+          "uid_value": 1,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        }
+      ]
+    }
+  }
+}

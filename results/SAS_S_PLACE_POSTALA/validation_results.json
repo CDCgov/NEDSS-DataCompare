@@ -1,0 +1,22 @@
+{
+  "table_name": "SAS_S_PLACE_POSTALA",
+  "uid_columns": [
+    "ENTITY_UID",
+    "PLACE_POSTAL_UID",
+    "PLACE_UID"
+  ],
+  "results_by_uid_column": {
+    "ENTITY_UID": {
+      "uid_column": "ENTITY_UID",
+      "uid_values": []
+    },
+    "PLACE_POSTAL_UID": {
+      "uid_column": "PLACE_POSTAL_UID",
+      "uid_values": []
+    },
+    "PLACE_UID": {
+      "uid_column": "PLACE_UID",
+      "uid_values": []
+    }
+  }
+}

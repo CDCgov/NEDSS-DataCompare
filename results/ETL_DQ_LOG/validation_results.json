@@ -1,0 +1,22 @@
+{
+  "table_name": "ETL_DQ_LOG",
+  "uid_columns": [
+    "ETL_DQ_LOG_UID",
+    "EVENT_UID",
+    "job_batch_log_UID"
+  ],
+  "results_by_uid_column": {
+    "ETL_DQ_LOG_UID": {
+      "uid_column": "ETL_DQ_LOG_UID",
+      "uid_values": []
+    },
+    "EVENT_UID": {
+      "uid_column": "EVENT_UID",
+      "uid_values": []
+    },
+    "job_batch_log_UID": {
+      "uid_column": "job_batch_log_UID",
+      "uid_values": []
+    }
+  }
+}

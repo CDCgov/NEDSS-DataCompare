@@ -1,0 +1,774 @@
+{
+  "table_name": "EVENT_METRIC_INC",
+  "uid_columns": [
+    "EVENT_UID"
+  ],
+  "results_by_uid_column": {
+    "EVENT_UID": {
+      "uid_column": "EVENT_UID",
+      "uid_values": [
+        {
+          "uid_value": 10000013,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10009288,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009288,
+                  "LOCAL_ID": "OBS10001000GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067047GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "STD",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300400015,
+                  "JURISDICTION_CD": "130004",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "PROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Processed",
+                  "RECORD_STATUS_TIME": "2026-02-25 19:00:12.063000",
+                  "ELECTRONIC_IND": "N",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": "2026-02-23 19:54:38.107000",
+                  "ADD_TIME": "2026-02-23 19:54:38.533000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 19:00:12.063000",
+                  "LAST_CHG_USER_ID": 10009372,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Snape, Severus"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009307,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009307,
+                  "LOCAL_ID": "OBS10001005GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067001GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "HEP",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100011,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "PROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Processed",
+                  "RECORD_STATUS_TIME": "2026-02-25 14:39:59.383000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-24 16:00:14.440000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 14:39:59.383000",
+                  "LAST_CHG_USER_ID": 10009372,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Snape, Severus"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009322,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009322,
+                  "LOCAL_ID": "OBS10001007GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067004GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "ARBO",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100013,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "PROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Processed",
+                  "RECORD_STATUS_TIME": "2026-02-25 14:31:25.547000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-24 16:00:16.313000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 14:31:25.547000",
+                  "LAST_CHG_USER_ID": 10009282,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Kent, Ariella"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009337,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009337,
+                  "LOCAL_ID": "OBS10001009GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067007GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "STD",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100015,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "PROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Processed",
+                  "RECORD_STATUS_TIME": "2026-02-24 19:14:11.940000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-24 16:00:17.517000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-24 19:14:11.940000",
+                  "LAST_CHG_USER_ID": 10009282,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Kent, Ariella"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009352,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009352,
+                  "LOCAL_ID": "OBS10001011GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067010GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "TB",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100014,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "PROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Processed",
+                  "RECORD_STATUS_TIME": "2026-02-24 20:12:49.260000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-24 16:15:31.797000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-24 20:12:49.260000",
+                  "LAST_CHG_USER_ID": 10009293,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Reyes, Elijah"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009367,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009367,
+                  "LOCAL_ID": "OBS10001013GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067013GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "GCD",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100009,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "PROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Processed",
+                  "RECORD_STATUS_TIME": "2026-02-24 19:43:47.923000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-24 19:33:34.220000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-24 19:43:47.923000",
+                  "LAST_CHG_USER_ID": 10009293,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Reyes, Elijah"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009384,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10009384,
+                  "LOCAL_ID": "OBS10001015GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067017GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "ARBO",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100013,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 20:07:02.583000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 19:58:34.637000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 20:07:02.583000",
+                  "LAST_CHG_USER_ID": 10009293,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Reyes, Elijah"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009470,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "PHCInvForm",
+                  "EVENT_UID": 10009470,
+                  "LOCAL_ID": "CAS10001003GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067044GA01",
+                  "CONDITION_CD": "10560",
+                  "CONDITION_DESC_TXT": "AIDS",
+                  "PROG_AREA_CD": "HIV",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300400016,
+                  "JURISDICTION_CD": "130004",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "OPEN",
+                  "RECORD_STATUS_DESC_TXT": "Open",
+                  "RECORD_STATUS_TIME": "2026-02-19 13:28:35.117000",
+                  "ELECTRONIC_IND": null,
+                  "STATUS_CD": null,
+                  "STATUS_DESC_TXT": null,
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-19 13:25:41.630000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-19 13:28:35.117000",
+                  "LAST_CHG_USER_ID": 10009282,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": "O",
+                  "INVESTIGATION_STATUS_DESC_TXT": "Open",
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Kent, Ariella"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009475,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "PHCInvForm",
+                  "EVENT_UID": 10009475,
+                  "LOCAL_ID": "CAS10001004GA01",
+                  "LOCAL_PATIENT_ID": "PSN10067047GA01",
+                  "CONDITION_CD": "10280",
+                  "CONDITION_DESC_TXT": "Gonorrhea",
+                  "PROG_AREA_CD": "STD",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300400015,
+                  "JURISDICTION_CD": "130004",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "OPEN",
+                  "RECORD_STATUS_DESC_TXT": "Open",
+                  "RECORD_STATUS_TIME": "2026-02-19 13:31:38.387000",
+                  "ELECTRONIC_IND": null,
+                  "STATUS_CD": null,
+                  "STATUS_DESC_TXT": null,
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-19 13:31:38.387000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-19 13:31:38.387000",
+                  "LAST_CHG_USER_ID": 10009282,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": "C",
+                  "INVESTIGATION_STATUS_DESC_TXT": "Closed",
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Kent, Ariella"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010295,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10010295,
+                  "LOCAL_ID": "OBS10002000GA01",
+                  "LOCAL_PATIENT_ID": "PSN10068000GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "HEP",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100011,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 22:02:08.253000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 22:02:08.253000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 22:02:08.253000",
+                  "LAST_CHG_USER_ID": 10009293,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Reyes, Elijah"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010309,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10010309,
+                  "LOCAL_ID": "OBS10002002GA01",
+                  "LOCAL_PATIENT_ID": "PSN10068003GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "GCD",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100009,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 22:02:08.520000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 22:02:08.520000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 22:02:08.520000",
+                  "LAST_CHG_USER_ID": 10009372,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Snape, Severus"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010323,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10010323,
+                  "LOCAL_ID": "OBS10002004GA01",
+                  "LOCAL_PATIENT_ID": "PSN10068006GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "VPD",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100010,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 22:02:08.640000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 22:02:08.640000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 22:02:08.640000",
+                  "LAST_CHG_USER_ID": 10009372,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Snape, Severus"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010338,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10010338,
+                  "LOCAL_ID": "OBS10002006GA01",
+                  "LOCAL_PATIENT_ID": "PSN10068009GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "ARBO",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100013,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 22:27:41.623000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 22:27:41.623000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 22:27:41.623000",
+                  "LAST_CHG_USER_ID": 10009293,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Reyes, Elijah"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010353,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10010353,
+                  "LOCAL_ID": "OBS10002008GA01",
+                  "LOCAL_PATIENT_ID": "PSN10068012GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "TB",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300100014,
+                  "JURISDICTION_CD": "130001",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 22:27:41.817000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 22:27:41.817000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 22:27:41.817000",
+                  "LAST_CHG_USER_ID": 10009372,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Snape, Severus"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010367,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "EVENT_TYPE": "LabReport",
+                  "EVENT_UID": 10010367,
+                  "LOCAL_ID": "OBS10002010GA01",
+                  "LOCAL_PATIENT_ID": "PSN10068015GA01",
+                  "CONDITION_CD": null,
+                  "CONDITION_DESC_TXT": null,
+                  "PROG_AREA_CD": "ARBO",
+                  "PROG_AREA_DESC_TXT": null,
+                  "PROGRAM_JURISDICTION_OID": 1300400013,
+                  "JURISDICTION_CD": "130004",
+                  "JURISDICTION_DESC_TXT": null,
+                  "RECORD_STATUS_CD": "UNPROCESSED",
+                  "RECORD_STATUS_DESC_TXT": "Unprocessed",
+                  "RECORD_STATUS_TIME": "2026-02-25 22:27:41.900000",
+                  "ELECTRONIC_IND": "Y",
+                  "STATUS_CD": "D",
+                  "STATUS_DESC_TXT": "Completed / Final",
+                  "STATUS_TIME": null,
+                  "ADD_TIME": "2026-02-25 22:27:41.900000",
+                  "ADD_USER_ID": 10009282,
+                  "LAST_CHG_TIME": "2026-02-25 22:27:41.900000",
+                  "LAST_CHG_USER_ID": 10009372,
+                  "CASE_CLASS_CD": null,
+                  "CASE_CLASS_DESC_TXT": null,
+                  "INVESTIGATION_STATUS_CD": null,
+                  "INVESTIGATION_STATUS_DESC_TXT": null,
+                  "ADD_USER_NAME": "Kent, Ariella",
+                  "LAST_CHG_USER_NAME": "Snape, Severus"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

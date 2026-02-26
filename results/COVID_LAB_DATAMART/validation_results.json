@@ -1,0 +1,12 @@
+{
+  "table_name": "COVID_LAB_DATAMART",
+  "uid_columns": [
+    "Observation_Uid"
+  ],
+  "results_by_uid_column": {
+    "Observation_Uid": {
+      "uid_column": "Observation_Uid",
+      "uid_values": []
+    }
+  }
+}

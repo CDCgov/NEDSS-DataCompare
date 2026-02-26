@@ -1,0 +1,24 @@
+{
+  "table_name": "D_INV_HIV",
+  "uid_columns": [
+    "nbs_case_answer_uid"
+  ],
+  "results_by_uid_column": {
+    "nbs_case_answer_uid": {
+      "uid_column": "nbs_case_answer_uid",
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "match": false,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        }
+      ]
+    }
+  }
+}
