@@ -1,0 +1,12 @@
+{
+  "table_name": "UPDATED_LAB_TEST_LIST",
+  "uid_columns": [
+    "LAB_TEST_UID"
+  ],
+  "results_by_uid_column": {
+    "LAB_TEST_UID": {
+      "uid_column": "LAB_TEST_UID",
+      "uid_values": []
+    }
+  }
+}

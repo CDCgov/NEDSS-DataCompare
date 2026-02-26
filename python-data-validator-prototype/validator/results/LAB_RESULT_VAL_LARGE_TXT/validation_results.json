@@ -1,0 +1,12 @@
+{
+  "table_name": "LAB_RESULT_VAL_LARGE_TXT",
+  "uid_columns": [
+    "LAB_RPT_UID"
+  ],
+  "results_by_uid_column": {
+    "LAB_RPT_UID": {
+      "uid_column": "LAB_RPT_UID",
+      "uid_values": []
+    }
+  }
+}

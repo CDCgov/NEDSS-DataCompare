@@ -1,0 +1,399 @@
+{
+  "table_name": "TEST_RESULT_GROUPING",
+  "uid_columns": [
+    "LAB_TEST_UID"
+  ],
+  "results_by_uid_column": {
+    "LAB_TEST_UID": {
+      "uid_column": "LAB_TEST_UID",
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "match": false,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10009291,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 2,
+                  "LAB_TEST_UID": 10009291,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009294,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 3,
+                  "LAB_TEST_UID": 10009294,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009308,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 4,
+                  "LAB_TEST_UID": 10009308,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009323,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 5,
+                  "LAB_TEST_UID": 10009323,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009338,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 6,
+                  "LAB_TEST_UID": 10009338,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009353,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 7,
+                  "LAB_TEST_UID": 10009353,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009368,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 8,
+                  "LAB_TEST_UID": 10009368,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009385,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 9,
+                  "LAB_TEST_UID": 10009385,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009387,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 10,
+                  "LAB_TEST_UID": 10009387,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010296,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 11,
+                  "LAB_TEST_UID": 10010296,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010310,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 12,
+                  "LAB_TEST_UID": 10010310,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010324,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 13,
+                  "LAB_TEST_UID": 10010324,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010339,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 14,
+                  "LAB_TEST_UID": 10010339,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010354,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 15,
+                  "LAB_TEST_UID": 10010354,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010368,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "TEST_RESULT_GRP_KEY": 16,
+                  "LAB_TEST_UID": 10010368,
+                  "RDB_LAST_REFRESH_TIME": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

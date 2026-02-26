@@ -1,0 +1,1171 @@
+{
+  "table_name": "D_ORGANIZATION",
+  "uid_columns": [
+    "ORGANIZATION_UID"
+  ],
+  "results_by_uid_column": {
+    "ORGANIZATION_UID": {
+      "uid_column": "ORGANIZATION_UID",
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "match": false,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003001,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003007,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003019,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003025,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10003028,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10009283,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 7,
+                  "ORGANIZATION_UID": 10009283,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002000GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "National STD Lab Center",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": "NSTDLAB",
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "678 Nine Ten",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Seneca",
+                  "ORGANIZATION_STATE": "Florida",
+                  "ORGANIZATION_STATE_CODE": "12",
+                  "ORGANIZATION_ZIP": "22222",
+                  "ORGANIZATION_COUNTY": "Fulton County",
+                  "ORGANIZATION_COUNTY_CODE": "13121",
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "222-222-2222",
+                  "ORGANIZATION_PHONE_EXT_WORK": "",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "N",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-23 19:48:49.977000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-23 19:48:49.977000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009303,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 8,
+                  "ORGANIZATION_UID": 10009303,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002001GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Diagon Alley Diagnostics",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "3456789012",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:00:02.700000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:00:02.700000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009304,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 9,
+                  "ORGANIZATION_UID": 10009304,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002002GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Diagon Alley Diagnostics",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "47497 Alexandria Crossing",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Robinsonfort",
+                  "ORGANIZATION_STATE": "Palau",
+                  "ORGANIZATION_STATE_CODE": "70",
+                  "ORGANIZATION_ZIP": "12378",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "294-267-7274",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:00:02.780000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:00:02.780000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009318,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 10,
+                  "ORGANIZATION_UID": 10009318,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002003GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Hogsmeade Health Lab",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "4567890123",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:00:15.193000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:00:15.193000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009319,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 11,
+                  "ORGANIZATION_UID": 10009319,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002004GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Hogsmeade Health Lab",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "084 Julie Highway Apt. 108",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "East Wandaside",
+                  "ORGANIZATION_STATE": "Minnesota",
+                  "ORGANIZATION_STATE_CODE": "27",
+                  "ORGANIZATION_ZIP": "56477",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "742-365-8484",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:00:15.220000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:00:15.220000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009333,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 12,
+                  "ORGANIZATION_UID": 10009333,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002005GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Dumbledore Memorial Laboratory",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "0123456789",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:00:17.070000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:00:17.070000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009334,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 13,
+                  "ORGANIZATION_UID": 10009334,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002006GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Dumbledore Memorial Laboratory",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "75045 Brittney Street",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "New Tracey",
+                  "ORGANIZATION_STATE": "New Mexico",
+                  "ORGANIZATION_STATE_CODE": "35",
+                  "ORGANIZATION_ZIP": "16330",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "747-611-7883",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:00:17.083000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:00:17.083000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009348,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 14,
+                  "ORGANIZATION_UID": 10009348,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002007GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Knockturn Alley Specimen Services",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "8901234567",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:15:31.630000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:15:31.630000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009349,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 15,
+                  "ORGANIZATION_UID": 10009349,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002008GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Knockturn Alley Specimen Services",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "73328 Diane Lakes Apt. 708",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Port Maryside",
+                  "ORGANIZATION_STATE": "Iowa",
+                  "ORGANIZATION_STATE_CODE": "19",
+                  "ORGANIZATION_ZIP": "76063",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "616-445-0436",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 16:15:31.657000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 16:15:31.657000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009363,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 16,
+                  "ORGANIZATION_UID": 10009363,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002009GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Order of the Phoenix Medical",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "9012345678",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 19:31:32.407000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 19:31:32.407000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009364,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 17,
+                  "ORGANIZATION_UID": 10009364,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002010GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Order of the Phoenix Medical",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "55288 Timothy Point",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Lake Courtney",
+                  "ORGANIZATION_STATE": "Florida",
+                  "ORGANIZATION_STATE_CODE": "12",
+                  "ORGANIZATION_ZIP": "20646",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "841-346-5417",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-24 19:31:32.470000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-24 19:31:32.470000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009381,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 18,
+                  "ORGANIZATION_UID": 10009381,
+                  "ORGANIZATION_LOCAL_ID": "ORG10002011GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Knockturn Alley Specimen Services",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "04402 Jensen Rest Apt. 083",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Jonesberg",
+                  "ORGANIZATION_STATE": "New Jersey",
+                  "ORGANIZATION_STATE_CODE": "34",
+                  "ORGANIZATION_ZIP": "87841",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "726-365-8872",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 19:57:45.693000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 19:57:45.693000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010291,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 20,
+                  "ORGANIZATION_UID": 10010291,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003000GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Madam Pomfrey Clinical Services",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "5678901234",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:02:08.007000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:02:08.007000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010292,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 21,
+                  "ORGANIZATION_UID": 10010292,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003001GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Madam Pomfrey Clinical Services",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "625 Misty Mountains Apt. 389",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Kaneborough",
+                  "ORGANIZATION_STATE": "New York",
+                  "ORGANIZATION_STATE_CODE": "36",
+                  "ORGANIZATION_ZIP": "98484",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "371-158-3839",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:02:08.023000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:02:08.023000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010306,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 22,
+                  "ORGANIZATION_UID": 10010306,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003002GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Dumbledore Memorial Laboratory",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "75137 Sarah Ford Suite 614",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "West Matthewport",
+                  "ORGANIZATION_STATE": "Maine",
+                  "ORGANIZATION_STATE_CODE": "23",
+                  "ORGANIZATION_ZIP": "10101",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "972-927-8934",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:02:08.503000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:02:08.503000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010320,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 23,
+                  "ORGANIZATION_UID": 10010320,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003003GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Dumbledore Memorial Laboratory",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "5667 Brennan Brooks Suite 749",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Timothystad",
+                  "ORGANIZATION_STATE": "Kansas",
+                  "ORGANIZATION_STATE_CODE": "20",
+                  "ORGANIZATION_ZIP": "57744",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "628-696-8737",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:02:08.623000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:02:08.623000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010334,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 24,
+                  "ORGANIZATION_UID": 10010334,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003004GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Slug and Jiggers Apothecary Lab",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "7890123456",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:27:41.510000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:27:41.510000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010335,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 25,
+                  "ORGANIZATION_UID": 10010335,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003005GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Slug and Jiggers Apothecary Lab",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "43057 Barrett Fall",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "West Seanberg",
+                  "ORGANIZATION_STATE": "Hawaii",
+                  "ORGANIZATION_STATE_CODE": "15",
+                  "ORGANIZATION_ZIP": "91934",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "803-331-1064",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:27:41.517000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:27:41.517000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010349,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 26,
+                  "ORGANIZATION_UID": 10010349,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003006GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "St Mungos Hospital",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": null,
+                  "ORGANIZATION_FACILITY_ID": "1234567890",
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": null,
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": null,
+                  "ORGANIZATION_STATE": null,
+                  "ORGANIZATION_STATE_CODE": null,
+                  "ORGANIZATION_ZIP": null,
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": null,
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": null,
+                  "ORGANIZATION_PHONE_EXT_WORK": null,
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:27:41.797000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:27:41.797000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010350,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 27,
+                  "ORGANIZATION_UID": 10010350,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003007GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "St Mungos Hospital",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "96095 Alexander Grove",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "West James",
+                  "ORGANIZATION_STATE": "Tennessee",
+                  "ORGANIZATION_STATE_CODE": "47",
+                  "ORGANIZATION_ZIP": "48810",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "544-585-8366",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:27:41.800000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:27:41.800000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010364,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "ORGANIZATION_KEY": 28,
+                  "ORGANIZATION_UID": 10010364,
+                  "ORGANIZATION_LOCAL_ID": "ORG10003008GA01",
+                  "ORGANIZATION_RECORD_STATUS": "ACTIVE",
+                  "ORGANIZATION_NAME": "Madam Pomfrey Clinical Services",
+                  "ORGANIZATION_GENERAL_COMMENTS": null,
+                  "ORGANIZATION_QUICK_CODE": null,
+                  "ORGANIZATION_STAND_IND_CLASS": "Offices of All Other Miscellaneous Health Practiti",
+                  "ORGANIZATION_FACILITY_ID": null,
+                  "ORGANIZATION_FACILITY_ID_AUTH": null,
+                  "ORGANIZATION_STREET_ADDRESS_1": "9008 Murphy Knoll Apt. 761",
+                  "ORGANIZATION_STREET_ADDRESS_2": null,
+                  "ORGANIZATION_CITY": "Ericborough",
+                  "ORGANIZATION_STATE": "New York",
+                  "ORGANIZATION_STATE_CODE": "36",
+                  "ORGANIZATION_ZIP": "04122",
+                  "ORGANIZATION_COUNTY": null,
+                  "ORGANIZATION_COUNTY_CODE": null,
+                  "ORGANIZATION_COUNTRY": "United States",
+                  "ORGANIZATION_ADDRESS_COMMENTS": null,
+                  "ORGANIZATION_PHONE_WORK": "824-217-0576",
+                  "ORGANIZATION_PHONE_EXT_WORK": "0.0",
+                  "ORGANIZATION_EMAIL": null,
+                  "ORGANIZATION_PHONE_COMMENTS": null,
+                  "ORGANIZATION_ENTRY_METHOD": "Y",
+                  "ORGANIZATION_LAST_CHANGE_TIME": "2026-02-25 22:27:41.887000",
+                  "ORGANIZATION_ADD_TIME": "2026-02-25 22:27:41.887000",
+                  "ORGANIZATION_ADDED_BY": "Kent, Ariella",
+                  "ORGANIZATION_LAST_UPDATED_BY": "Kent, Ariella",
+                  "ORGANIZATION_FAX": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

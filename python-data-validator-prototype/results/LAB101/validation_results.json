@@ -1,0 +1,12 @@
+{
+  "table_name": "LAB101",
+  "uid_columns": [
+    "REPORTING_FACILITY_UID"
+  ],
+  "results_by_uid_column": {
+    "REPORTING_FACILITY_UID": {
+      "uid_column": "REPORTING_FACILITY_UID",
+      "uid_values": []
+    }
+  }
+}

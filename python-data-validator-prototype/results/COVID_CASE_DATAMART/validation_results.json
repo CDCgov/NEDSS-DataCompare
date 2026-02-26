@@ -1,0 +1,12 @@
+{
+  "table_name": "COVID_CASE_DATAMART",
+  "uid_columns": [
+    "public_health_case_uid"
+  ],
+  "results_by_uid_column": {
+    "public_health_case_uid": {
+      "uid_column": "public_health_case_uid",
+      "uid_values": []
+    }
+  }
+}

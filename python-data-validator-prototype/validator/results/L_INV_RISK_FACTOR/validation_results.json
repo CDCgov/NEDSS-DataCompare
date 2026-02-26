@@ -1,0 +1,48 @@
+{
+  "table_name": "L_INV_RISK_FACTOR",
+  "uid_columns": [
+    "PAGE_CASE_UID"
+  ],
+  "results_by_uid_column": {
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": [
+        {
+          "uid_value": 10000013.0,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10009470.0,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "PAGE_CASE_UID": 10009470.0,
+                  "D_INV_RISK_FACTOR_KEY": 3.0
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

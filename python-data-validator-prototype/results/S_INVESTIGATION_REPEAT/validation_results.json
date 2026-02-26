@@ -1,0 +1,52 @@
+{
+  "table_name": "S_INVESTIGATION_REPEAT",
+  "uid_columns": [
+    "LAB_LINKING_UID",
+    "PAGE_CASE_UID",
+    "PARENT_UID"
+  ],
+  "results_by_uid_column": {
+    "LAB_LINKING_UID": {
+      "uid_column": "LAB_LINKING_UID",
+      "uid_values": []
+    },
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": [
+        {
+          "uid_value": 10009475,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "PAGE_CASE_UID": 10009475,
+                  "BLOCK_NM": "BLOCK_1",
+                  "ANSWER_GROUP_SEQ_NBR": 1,
+                  "INVESTIGATION_FORM_CD_date": null,
+                  "SURV_NOTE": "Ariella Kent~02/19/2026 8:31~~bad",
+                  "INVESTIGATION_FORM_CD_coded": null,
+                  "INVESTIGATION_FORM_CD_numeric": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    },
+    "PARENT_UID": {
+      "uid_column": "PARENT_UID",
+      "uid_values": []
+    }
+  }
+}

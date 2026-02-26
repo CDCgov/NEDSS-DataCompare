@@ -1,0 +1,24 @@
+{
+  "table_name": "TREATMENT",
+  "uid_columns": [
+    "TREATMENT_UID"
+  ],
+  "results_by_uid_column": {
+    "TREATMENT_UID": {
+      "uid_column": "TREATMENT_UID",
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "match": false,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        }
+      ]
+    }
+  }
+}

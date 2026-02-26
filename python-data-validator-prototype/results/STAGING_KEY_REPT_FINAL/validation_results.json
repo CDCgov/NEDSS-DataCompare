@@ -1,0 +1,12 @@
+{
+  "table_name": "STAGING_KEY_REPT_FINAL",
+  "uid_columns": [
+    "PAGE_CASE_UID"
+  ],
+  "results_by_uid_column": {
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": []
+    }
+  }
+}

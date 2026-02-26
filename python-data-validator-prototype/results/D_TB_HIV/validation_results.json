@@ -1,0 +1,12 @@
+{
+  "table_name": "D_TB_HIV",
+  "uid_columns": [
+    "TB_PAM_UID"
+  ],
+  "results_by_uid_column": {
+    "TB_PAM_UID": {
+      "uid_column": "TB_PAM_UID",
+      "uid_values": []
+    }
+  }
+}

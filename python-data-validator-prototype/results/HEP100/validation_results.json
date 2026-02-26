@@ -1,0 +1,32 @@
+{
+  "table_name": "HEP100",
+  "uid_columns": [
+    "CASE_UID",
+    "INVESTIGATOR_UID",
+    "PATIENT_UID",
+    "PHYSICIAN_UID",
+    "REPORTING_SOURCE_UID"
+  ],
+  "results_by_uid_column": {
+    "CASE_UID": {
+      "uid_column": "CASE_UID",
+      "uid_values": []
+    },
+    "INVESTIGATOR_UID": {
+      "uid_column": "INVESTIGATOR_UID",
+      "uid_values": []
+    },
+    "PATIENT_UID": {
+      "uid_column": "PATIENT_UID",
+      "uid_values": []
+    },
+    "PHYSICIAN_UID": {
+      "uid_column": "PHYSICIAN_UID",
+      "uid_values": []
+    },
+    "REPORTING_SOURCE_UID": {
+      "uid_column": "REPORTING_SOURCE_UID",
+      "uid_values": []
+    }
+  }
+}

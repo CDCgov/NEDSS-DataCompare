@@ -1,0 +1,12 @@
+{
+  "table_name": "D_RASH_LOC_GEN",
+  "uid_columns": [
+    "VAR_PAM_UID"
+  ],
+  "results_by_uid_column": {
+    "VAR_PAM_UID": {
+      "uid_column": "VAR_PAM_UID",
+      "uid_values": []
+    }
+  }
+}

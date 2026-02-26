@@ -1,0 +1,46 @@
+{
+  "table_name": "rdb_ui_metadata_rept_temp",
+  "uid_columns": [
+    "NBS_QUESTION_UID"
+  ],
+  "results_by_uid_column": {
+    "NBS_QUESTION_UID": {
+      "uid_column": "NBS_QUESTION_UID",
+      "uid_values": [
+        {
+          "uid_value": 10006160,
+          "comparison": {
+            "rdb_count": 5,
+            "rdb_modern_count": 5,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10008164,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": 10009211,
+          "comparison": {
+            "rdb_count": 1,
+            "rdb_modern_count": 1,
+            "match": true,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        }
+      ]
+    }
+  }
+}

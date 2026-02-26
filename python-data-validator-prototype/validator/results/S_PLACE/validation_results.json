@@ -1,0 +1,27 @@
+{
+  "table_name": "S_PLACE",
+  "uid_columns": [
+    "PLACE_LOCATOR_UID",
+    "PLACE_POSTAL_UID",
+    "PLACE_TELE_LOCATOR_UID",
+    "PLACE_UID"
+  ],
+  "results_by_uid_column": {
+    "PLACE_LOCATOR_UID": {
+      "uid_column": "PLACE_LOCATOR_UID",
+      "uid_values": []
+    },
+    "PLACE_POSTAL_UID": {
+      "uid_column": "PLACE_POSTAL_UID",
+      "uid_values": []
+    },
+    "PLACE_TELE_LOCATOR_UID": {
+      "uid_column": "PLACE_TELE_LOCATOR_UID",
+      "uid_values": []
+    },
+    "PLACE_UID": {
+      "uid_column": "PLACE_UID",
+      "uid_values": []
+    }
+  }
+}

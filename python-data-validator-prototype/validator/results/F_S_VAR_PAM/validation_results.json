@@ -1,0 +1,42 @@
+{
+  "table_name": "F_S_VAR_PAM",
+  "uid_columns": [
+    "HOSPITAL_UID",
+    "ORG_AS_REPORTER_UID",
+    "PERSON_AS_REPORTER_UID",
+    "PERSON_UID",
+    "PHYSICIAN_UID",
+    "PROVIDER_UID",
+    "VAR_PAM_UID"
+  ],
+  "results_by_uid_column": {
+    "HOSPITAL_UID": {
+      "uid_column": "HOSPITAL_UID",
+      "uid_values": []
+    },
+    "ORG_AS_REPORTER_UID": {
+      "uid_column": "ORG_AS_REPORTER_UID",
+      "uid_values": []
+    },
+    "PERSON_AS_REPORTER_UID": {
+      "uid_column": "PERSON_AS_REPORTER_UID",
+      "uid_values": []
+    },
+    "PERSON_UID": {
+      "uid_column": "PERSON_UID",
+      "uid_values": []
+    },
+    "PHYSICIAN_UID": {
+      "uid_column": "PHYSICIAN_UID",
+      "uid_values": []
+    },
+    "PROVIDER_UID": {
+      "uid_column": "PROVIDER_UID",
+      "uid_values": []
+    },
+    "VAR_PAM_UID": {
+      "uid_column": "VAR_PAM_UID",
+      "uid_values": []
+    }
+  }
+}

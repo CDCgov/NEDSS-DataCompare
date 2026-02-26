@@ -1,0 +1,184 @@
+{
+  "table_name": "D_INV_ADMINISTRATIVE",
+  "uid_columns": [
+    "nbs_case_answer_uid"
+  ],
+  "results_by_uid_column": {
+    "nbs_case_answer_uid": {
+      "uid_column": "nbs_case_answer_uid",
+      "uid_values": [
+        {
+          "uid_value": null,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 0,
+            "match": false,
+            "discrepant_records": [],
+            "discrepant_count": 0,
+            "has_differences": false
+          }
+        },
+        {
+          "uid_value": "3242",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "D_INV_ADMINISTRATIVE_KEY": 3.0,
+                  "nbs_case_answer_uid": "3242",
+                  "ADM_FIRST_RPT_TO_PHD_DT": null,
+                  "ADM_INNC_NOTIFICATION_DT": null,
+                  "ADM_BINATIONAL_RPTNG_CRIT": null,
+                  "ADM_DISSEMINATED_IND": null,
+                  "ADM_IMM_NTNL_NTFBL_CNDTN": "No",
+                  "ADM_NK1_RELATIONSHIP": null,
+                  "ADM_PUBLISHED_INDICATOR": null,
+                  "ADM_REASON_NO_DISPO": null,
+                  "ADM_REFERRAL_BASIS_OOJ": "A1 - Associate 1",
+                  "ADM_RPTNG_CNTY": null,
+                  "ADM_SAMPLED_FOR_ENHC_INV": null,
+                  "ADM_IMMEDIATE_NND_DESC": null,
+                  "ADM_NOTIF_COMMENT": null,
+                  "ADM_ABSTRACTION_DT": null,
+                  "ADM_CASE_REPORT_TO_CDC_DT": null,
+                  "ADM_FINAL_INTERVIEW_DT": null,
+                  "ADM_LST_DT_AS_FDHDNLR": null,
+                  "ADM_PUI_REPORT_TO_CDC_DT": null,
+                  "ADM_CASE_IDENTIFY_PROCESS": null,
+                  "ADM_CASE_IDENTIFY_PROCESS_OTH": null,
+                  "ADM_CASE_STATUS_REASON": null,
+                  "ADM_FDHNDLR_AFTR_ILLNESS": null,
+                  "ADM_INFO_SOURCE": null,
+                  "ADM_INFO_SOURCE_OTH": null,
+                  "ADM_PAT_PROCESS_STATUS": null,
+                  "ADM_PREV_COUNT_CASE": null,
+                  "ADM_TRANSLATOR_REQ_IND": null,
+                  "ADM_ABSTRACTOR_NM": null,
+                  "ADM_CDC_ASSIGNED_ID": null,
+                  "ADM_DGMQ_ID": null,
+                  "ADM_FDHNDLR_WORKING_LOCTN": null,
+                  "ADM_PREFERRED_LANGUAGE": null,
+                  "ADM_RPTD_STT_CSE_NBR1": null,
+                  "ADM_RPTD_STT_CSE_NBR2": null,
+                  "ADM_RPTD_STT_CSE_NBR3": null,
+                  "ADM_RPTD_STT_CSE_NBR4": null,
+                  "ADM_RPTD_STT_CSE_NBR5": null,
+                  "ADM_US_ARRIVAL_DT": null,
+                  "IX_DATE": null,
+                  "ADM_ADV_EVE_IND": null,
+                  "ADM_CASE_VERIFCTON_CAT": null,
+                  "ADM_CNTRY_VERFD_CASE": null,
+                  "ADM_CRF_COMPLETION_STATUS": null,
+                  "ADM_CSE_BINATINL_REP_CRIT": null,
+                  "ADM_INSIDE_CITY_LIMIT": null,
+                  "ADM_MOVED_DIFF_RPT_AREA": null,
+                  "ADM_MOVED_OUT_OF_CNTRY": null,
+                  "ADM_MOVED_OUT_OF_STATE": null,
+                  "ADM_PAT_TRT_MDR_CASE": null,
+                  "ADM_REMAIN_US_AFTR_RPT": null,
+                  "ADM_TB_DIAG_STATUS": null,
+                  "ADM_TRANSNATIONAL_REF": null,
+                  "ADM_US_BORN": null,
+                  "ADM_CITY_CNTY_CASE_NBR": null,
+                  "ADM_NTSS_STATE_CASE_NBR": null,
+                  "ADM_PREV_REPRT_ST_CSE_NBR": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": "3250",
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "D_INV_ADMINISTRATIVE_KEY": 4.0,
+                  "nbs_case_answer_uid": "3250",
+                  "ADM_FIRST_RPT_TO_PHD_DT": null,
+                  "ADM_INNC_NOTIFICATION_DT": null,
+                  "ADM_BINATIONAL_RPTNG_CRIT": null,
+                  "ADM_DISSEMINATED_IND": null,
+                  "ADM_IMM_NTNL_NTFBL_CNDTN": "No",
+                  "ADM_NK1_RELATIONSHIP": null,
+                  "ADM_PUBLISHED_INDICATOR": null,
+                  "ADM_REASON_NO_DISPO": null,
+                  "ADM_REFERRAL_BASIS_OOJ": "A2 - Associate 2",
+                  "ADM_RPTNG_CNTY": null,
+                  "ADM_SAMPLED_FOR_ENHC_INV": null,
+                  "ADM_IMMEDIATE_NND_DESC": null,
+                  "ADM_NOTIF_COMMENT": null,
+                  "ADM_ABSTRACTION_DT": null,
+                  "ADM_CASE_REPORT_TO_CDC_DT": null,
+                  "ADM_FINAL_INTERVIEW_DT": null,
+                  "ADM_LST_DT_AS_FDHDNLR": null,
+                  "ADM_PUI_REPORT_TO_CDC_DT": null,
+                  "ADM_CASE_IDENTIFY_PROCESS": null,
+                  "ADM_CASE_IDENTIFY_PROCESS_OTH": null,
+                  "ADM_CASE_STATUS_REASON": null,
+                  "ADM_FDHNDLR_AFTR_ILLNESS": null,
+                  "ADM_INFO_SOURCE": null,
+                  "ADM_INFO_SOURCE_OTH": null,
+                  "ADM_PAT_PROCESS_STATUS": null,
+                  "ADM_PREV_COUNT_CASE": null,
+                  "ADM_TRANSLATOR_REQ_IND": null,
+                  "ADM_ABSTRACTOR_NM": null,
+                  "ADM_CDC_ASSIGNED_ID": null,
+                  "ADM_DGMQ_ID": null,
+                  "ADM_FDHNDLR_WORKING_LOCTN": null,
+                  "ADM_PREFERRED_LANGUAGE": null,
+                  "ADM_RPTD_STT_CSE_NBR1": null,
+                  "ADM_RPTD_STT_CSE_NBR2": null,
+                  "ADM_RPTD_STT_CSE_NBR3": null,
+                  "ADM_RPTD_STT_CSE_NBR4": null,
+                  "ADM_RPTD_STT_CSE_NBR5": null,
+                  "ADM_US_ARRIVAL_DT": null,
+                  "IX_DATE": null,
+                  "ADM_ADV_EVE_IND": null,
+                  "ADM_CASE_VERIFCTON_CAT": null,
+                  "ADM_CNTRY_VERFD_CASE": null,
+                  "ADM_CRF_COMPLETION_STATUS": null,
+                  "ADM_CSE_BINATINL_REP_CRIT": null,
+                  "ADM_INSIDE_CITY_LIMIT": null,
+                  "ADM_MOVED_DIFF_RPT_AREA": null,
+                  "ADM_MOVED_OUT_OF_CNTRY": null,
+                  "ADM_MOVED_OUT_OF_STATE": null,
+                  "ADM_PAT_TRT_MDR_CASE": null,
+                  "ADM_REMAIN_US_AFTR_RPT": null,
+                  "ADM_TB_DIAG_STATUS": null,
+                  "ADM_TRANSNATIONAL_REF": null,
+                  "ADM_US_BORN": null,
+                  "ADM_CITY_CNTY_CASE_NBR": null,
+                  "ADM_NTSS_STATE_CASE_NBR": null,
+                  "ADM_PREV_REPRT_ST_CSE_NBR": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "table_name": "S_VACCINATION",
+  "uid_columns": [
+    "VACCINATION_UID"
+  ],
+  "results_by_uid_column": {
+    "VACCINATION_UID": {
+      "uid_column": "VACCINATION_UID",
+      "uid_values": []
+    }
+  }
+}

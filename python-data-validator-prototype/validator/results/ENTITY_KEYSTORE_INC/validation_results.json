@@ -1,0 +1,42 @@
+{
+  "table_name": "ENTITY_KEYSTORE_INC",
+  "uid_columns": [
+    "HOSPITAL_UID",
+    "INVESTIGATOR_UID",
+    "ORG_AS_REPORTER_UID",
+    "PAGE_CASE_UID",
+    "PATIENT_UID",
+    "PERSON_AS_REPORTER_UID",
+    "PHYSICIAN_UID"
+  ],
+  "results_by_uid_column": {
+    "HOSPITAL_UID": {
+      "uid_column": "HOSPITAL_UID",
+      "uid_values": []
+    },
+    "INVESTIGATOR_UID": {
+      "uid_column": "INVESTIGATOR_UID",
+      "uid_values": []
+    },
+    "ORG_AS_REPORTER_UID": {
+      "uid_column": "ORG_AS_REPORTER_UID",
+      "uid_values": []
+    },
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": []
+    },
+    "PATIENT_UID": {
+      "uid_column": "PATIENT_UID",
+      "uid_values": []
+    },
+    "PERSON_AS_REPORTER_UID": {
+      "uid_column": "PERSON_AS_REPORTER_UID",
+      "uid_values": []
+    },
+    "PHYSICIAN_UID": {
+      "uid_column": "PHYSICIAN_UID",
+      "uid_values": []
+    }
+  }
+}

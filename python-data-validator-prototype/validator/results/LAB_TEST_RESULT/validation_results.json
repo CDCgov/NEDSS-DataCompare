@@ -1,0 +1,1189 @@
+{
+  "table_name": "LAB_TEST_RESULT",
+  "uid_columns": [
+    "LAB_TEST_UID"
+  ],
+  "results_by_uid_column": {
+    "LAB_TEST_UID": {
+      "uid_column": "LAB_TEST_UID",
+      "uid_values": [
+        {
+          "uid_value": 10009288,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 2,
+                  "LAB_TEST_UID": 10009288,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 7,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 7,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 19:05:41.803000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009291,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 3,
+                  "LAB_TEST_UID": 10009291,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 2,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 7,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-23 20:05:39.573000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009294,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 4,
+                  "LAB_TEST_UID": 10009294,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 3,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 7,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-23 20:05:39.573000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009307,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 5,
+                  "LAB_TEST_UID": 10009307,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 9,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 9,
+                  "REPORTING_LAB_KEY": 8,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 13,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 14:40:30.110000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009308,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 6,
+                  "LAB_TEST_UID": 10009308,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 4,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 1,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-24 16:01:51.180000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009322,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 7,
+                  "LAB_TEST_UID": 10009322,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 11,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 11,
+                  "REPORTING_LAB_KEY": 10,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 14,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 14:31:45.597000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009323,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 8,
+                  "LAB_TEST_UID": 10009323,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 5,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 11,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-24 16:03:31.163000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009337,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 9,
+                  "LAB_TEST_UID": 10009337,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 13,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 13,
+                  "REPORTING_LAB_KEY": 12,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 15,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 14:24:20.437000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009338,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 10,
+                  "LAB_TEST_UID": 10009338,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 6,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 13,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-24 16:03:31.163000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009352,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 11,
+                  "LAB_TEST_UID": 10009352,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 15,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 15,
+                  "REPORTING_LAB_KEY": 14,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 16,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 14:24:20.437000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009353,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 12,
+                  "LAB_TEST_UID": 10009353,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 7,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 1,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-24 16:16:32.823000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009367,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 13,
+                  "LAB_TEST_UID": 10009367,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 17,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 17,
+                  "REPORTING_LAB_KEY": 16,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 17,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 14:24:20.437000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009368,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 14,
+                  "LAB_TEST_UID": 10009368,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 8,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 17,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 14:24:20.437000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009384,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 15,
+                  "LAB_TEST_UID": 10009384,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 20,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 18,
+                  "REPORTING_LAB_KEY": 14,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 18,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 21:29:14.443000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009385,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 16,
+                  "LAB_TEST_UID": 10009385,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 9,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 1,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 20:08:52.077000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10009387,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 17,
+                  "LAB_TEST_UID": 10009387,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 10,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 20,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 21:29:14.443000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010295,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 18,
+                  "LAB_TEST_UID": 10010295,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 23,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 21,
+                  "REPORTING_LAB_KEY": 20,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 20,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:20:49.323000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010296,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 19,
+                  "LAB_TEST_UID": 10010296,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 11,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 23,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:06:12.693000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010309,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 20,
+                  "LAB_TEST_UID": 10010309,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 25,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 22,
+                  "REPORTING_LAB_KEY": 12,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 21,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:20:49.323000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010310,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 21,
+                  "LAB_TEST_UID": 10010310,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 12,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 25,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:06:12.693000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010323,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 22,
+                  "LAB_TEST_UID": 10010323,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 27,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 23,
+                  "REPORTING_LAB_KEY": 12,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 22,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:20:49.323000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010324,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 23,
+                  "LAB_TEST_UID": 10010324,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 13,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 27,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:06:12.693000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010338,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 24,
+                  "LAB_TEST_UID": 10010338,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 29,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 25,
+                  "REPORTING_LAB_KEY": 24,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 23,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:31:45.310000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010339,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 25,
+                  "LAB_TEST_UID": 10010339,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 14,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 29,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:31:45.310000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010353,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 26,
+                  "LAB_TEST_UID": 10010353,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 31,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 27,
+                  "REPORTING_LAB_KEY": 26,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 24,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:31:45.310000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010354,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 27,
+                  "LAB_TEST_UID": 10010354,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 15,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 31,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:31:45.310000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010367,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 28,
+                  "LAB_TEST_UID": 10010367,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 1,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 33,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 28,
+                  "REPORTING_LAB_KEY": 20,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 25,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:31:45.310000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        },
+        {
+          "uid_value": 10010368,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "LAB_TEST_KEY": 29,
+                  "LAB_TEST_UID": 10010368,
+                  "RESULT_COMMENT_GRP_KEY": 1,
+                  "TEST_RESULT_GRP_KEY": 16,
+                  "PERFORMING_LAB_KEY": 1,
+                  "PATIENT_KEY": 33,
+                  "COPY_TO_PROVIDER_KEY": 1,
+                  "LAB_TEST_TECHNICIAN_KEY": 1,
+                  "SPECIMEN_COLLECTOR_KEY": 1,
+                  "ORDERING_ORG_KEY": 1,
+                  "REPORTING_LAB_KEY": 1,
+                  "CONDITION_KEY": 1,
+                  "LAB_RPT_DT_KEY": 1,
+                  "MORB_RPT_KEY": 1,
+                  "INVESTIGATION_KEY": 1,
+                  "LDF_GROUP_KEY": 1,
+                  "ORDERING_PROVIDER_KEY": 1,
+                  "RECORD_STATUS_CD": "ACTIVE",
+                  "RDB_LAST_REFRESH_TIME": "2026-02-25 22:31:45.310000",
+                  "LAB_RESULT_VAL_LARGE_TXT_KEY": null
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

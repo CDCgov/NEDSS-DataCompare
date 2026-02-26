@@ -1,0 +1,22 @@
+{
+  "table_name": "GEOCODING_LOCATION",
+  "uid_columns": [
+    "entity_uid",
+    "geocoding_result_uid",
+    "postal_locator_uid"
+  ],
+  "results_by_uid_column": {
+    "entity_uid": {
+      "uid_column": "entity_uid",
+      "uid_values": []
+    },
+    "geocoding_result_uid": {
+      "uid_column": "geocoding_result_uid",
+      "uid_values": []
+    },
+    "postal_locator_uid": {
+      "uid_column": "postal_locator_uid",
+      "uid_values": []
+    }
+  }
+}

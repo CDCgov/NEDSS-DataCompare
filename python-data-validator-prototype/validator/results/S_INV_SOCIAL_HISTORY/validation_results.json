@@ -1,0 +1,73 @@
+{
+  "table_name": "S_INV_SOCIAL_HISTORY",
+  "uid_columns": [
+    "NBS_CASE_ANSWER_UID",
+    "PAGE_CASE_UID"
+  ],
+  "results_by_uid_column": {
+    "NBS_CASE_ANSWER_UID": {
+      "uid_column": "NBS_CASE_ANSWER_UID",
+      "uid_values": [
+        {
+          "uid_value": 3245,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "PAGE_CASE_UID": 10009470,
+                  "NBS_CASE_ANSWER_UID": 3245,
+                  "LAST_CHG_TIME": "2026-02-19 13:28:35.117000",
+                  "SOC_FEMALE_PRTNRS_12MO_TTL": "1",
+                  "SOC_FEMALE_PRTNRS_12MO_IND": "Yes"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    },
+    "PAGE_CASE_UID": {
+      "uid_column": "PAGE_CASE_UID",
+      "uid_values": [
+        {
+          "uid_value": 10009470,
+          "comparison": {
+            "rdb_count": 0,
+            "rdb_modern_count": 1,
+            "match": false,
+            "discrepant_records": [
+              {
+                "record_index": 0,
+                "type": "record_in_rdb_modern_only",
+                "rdb_modern_record": {
+                  "PAGE_CASE_UID": 10009470,
+                  "NBS_CASE_ANSWER_UID": 3245,
+                  "LAST_CHG_TIME": "2026-02-19 13:28:35.117000",
+                  "SOC_FEMALE_PRTNRS_12MO_TTL": "1",
+                  "SOC_FEMALE_PRTNRS_12MO_IND": "Yes"
+                }
+              }
+            ],
+            "record_count_mismatch": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1
+            },
+            "discrepant_count": 1,
+            "has_differences": true
+          }
+        }
+      ]
+    }
+  }
+}

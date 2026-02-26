@@ -1,0 +1,52 @@
+{
+  "table_name": "L_OBSERVATION_MAP",
+  "uid_columns": [
+    "OBSERVATION_UID",
+    "SOURCE_ACT_UID1",
+    "SOURCE_ACT_UID2",
+    "SOURCE_ACT_UID3",
+    "SOURCE_ACT_UID4",
+    "TARGET_ACT_UID1",
+    "TARGET_ACT_UID2",
+    "TARGET_ACT_UID3",
+    "TARGET_ACT_UID4"
+  ],
+  "results_by_uid_column": {
+    "OBSERVATION_UID": {
+      "uid_column": "OBSERVATION_UID",
+      "uid_values": []
+    },
+    "SOURCE_ACT_UID1": {
+      "uid_column": "SOURCE_ACT_UID1",
+      "uid_values": []
+    },
+    "SOURCE_ACT_UID2": {
+      "uid_column": "SOURCE_ACT_UID2",
+      "uid_values": []
+    },
+    "SOURCE_ACT_UID3": {
+      "uid_column": "SOURCE_ACT_UID3",
+      "uid_values": []
+    },
+    "SOURCE_ACT_UID4": {
+      "uid_column": "SOURCE_ACT_UID4",
+      "uid_values": []
+    },
+    "TARGET_ACT_UID1": {
+      "uid_column": "TARGET_ACT_UID1",
+      "uid_values": []
+    },
+    "TARGET_ACT_UID2": {
+      "uid_column": "TARGET_ACT_UID2",
+      "uid_values": []
+    },
+    "TARGET_ACT_UID3": {
+      "uid_column": "TARGET_ACT_UID3",
+      "uid_values": []
+    },
+    "TARGET_ACT_UID4": {
+      "uid_column": "TARGET_ACT_UID4",
+      "uid_values": []
+    }
+  }
+}
