@@ -6,12 +6,11 @@ from typing import Dict, List, Any
 from sqlalchemy import text, create_engine, inspect
 from sqlalchemy.exc import SQLAlchemyError
 
-from .dbengine import load_config, create_db_engine
+from .dbengine import load_config, create_db_engine, KEY_COLUMN_MAPPING
 
 logger = logging.getLogger(__name__)
 
-
-class TableRecordValidator:
+class ValidatorRunner:
     """Compare records between RDB and RDB_MODERN databases for matching UID values."""
     
     def __init__(self):
@@ -20,6 +19,7 @@ class TableRecordValidator:
         self.rdb_modern_engine = None
         self.results_dir = Path(__file__).parent.parent / 'results'
         self.uid_columns = {}  # {table_name: [uid_columns]}
+        self.key_columns = {}  # {table_name: [key_columns]}
     
     def setup_connections(self, rdb_config_path: str = 'db-config.json', 
                          rdb_modern_config_path: str = 'db-config.json'):
@@ -54,6 +54,74 @@ class TableRecordValidator:
             uid_columns_map: Dictionary mapping table names to their UID columns
         """
         self.uid_columns = uid_columns_map
+
+    def set_key_columns(self, key_columns_map: Dict[str, List[str]]):
+        """
+        Set the KEY columns for tables.
+        
+        Args:
+            key_columns_map: Dictionary mapping table names to their KEY columns
+        """
+        self.key_columns = key_columns_map
+    
+    def _get_mapping_uid(self, engine, mapping_table: str, uid_column: str, key_value: Any) -> Any:
+        """
+        Query a mapping table to get the UID for a given KEY value.
+        
+        Args:
+            engine: SQLAlchemy engine
+            mapping_table: Name of the mapping table (e.g., 'INVESTIGATION', 'D_PATIENT')
+            uid_column: Name of the UID column in the mapping table
+            key_value: Value of the KEY column to look up
+            
+        Returns:
+            The UID value, or None if not found
+        """
+        try:
+            # Determine the key column name based on mapping table
+            if mapping_table == 'INVESTIGATION':
+                key_column = 'INVESTIGATION_KEY'
+            elif mapping_table == 'D_PATIENT':
+                key_column = 'PATIENT_KEY'
+            else:
+                logger.warning(f"Unknown mapping table: {mapping_table}")
+                return None
+            
+            query = text(f"SELECT [{uid_column}] FROM [{mapping_table}] WHERE [{key_column}] = :key_value")
+            with engine.connect() as conn:
+                result = conn.execute(query, {"key_value": key_value})
+                row = result.fetchone()
+                return row[0] if row else None
+        except SQLAlchemyError as e:
+            logger.error(f"Error querying {mapping_table} for {uid_column} where key={key_value}: {e}")
+            return None
+    
+    def _get_records_by_key(self, engine, table_name: str, key_column: str, key_value: Any) -> List[Dict]:
+        """
+        Get records from a table for a specific KEY value.
+        
+        Args:
+            engine: SQLAlchemy engine
+            table_name: Name of the table
+            key_column: Name of the KEY column
+            key_value: Value to filter by
+            
+        Returns:
+            List of records as dictionaries
+        """
+        try:
+            query = text(f"SELECT * FROM [{table_name}] WHERE [{key_column}] = :key_value")
+            with engine.connect() as conn:
+                result = conn.execute(query, {"key_value": key_value})
+                rows = result.fetchall()
+                
+                records = []
+                for row in rows:
+                    records.append(dict(row._mapping))
+                return records
+        except SQLAlchemyError as e:
+            logger.error(f"Error getting records from {table_name} where {key_column}={key_value}: {e}")
+            return []
     
     def _get_distinct_uid_values(self, engine, table_name: str, uid_column: str) -> List[Any]:
         """
@@ -241,16 +309,22 @@ class TableRecordValidator:
             table_results['results_by_uid_column'][uid_column] = uid_column_results
         
         return table_results
+        
     
-    def run_validation(self, table_names: List[str]):
+    def run_validation(self, table_names: List[str], validation_type: str = 'all'):
         """
         Run validation for multiple tables and save results to JSON files.
         
         Args:
             table_names: List of table names to validate
+            validation_type: Type of validation - 'uid', 'key', or 'all' (default: 'all')
         """
         if not self.rdb_engine or not self.rdb_modern_engine:
             raise RuntimeError("Database connections not initialized. Call setup_connections() first.")
+        
+        # Validate validation_type
+        if validation_type not in ('uid', 'key', 'all'):
+            raise ValueError(f"Invalid validation_type: {validation_type}. Must be 'uid', 'key', or 'all'.")
         
         # Clear and recreate results directory
         if self.results_dir.exists():
@@ -259,13 +333,25 @@ class TableRecordValidator:
         
         self.results_dir.mkdir(parents=True, exist_ok=True)
         logger.info(f"Results directory: {self.results_dir}")
+        logger.info(f"Validation type: {validation_type}")
         
         for table_name in table_names:
             try:
                 logger.info(f"Validating table: {table_name}")
                 
-                # Validate table
-                validation_result = self.validate_table(table_name)
+                validation_results = {}
+                
+                # Run UID validation if requested
+                if validation_type in ('uid', 'all'):
+                    logger.info(f"  Running UID validation for {table_name}")
+                    uid_result = self.validate_table(table_name)
+                    validation_results['uid_validation'] = uid_result
+                
+                # Run KEY validation if requested
+                if validation_type in ('key', 'all'):
+                    logger.info(f"  Running KEY validation for {table_name}")
+                    key_result = self.validate_table_by_key(table_name)
+                    validation_results['key_validation'] = key_result
                 
                 # Create table-specific directory
                 table_dir = self.results_dir / table_name
@@ -274,7 +360,7 @@ class TableRecordValidator:
                 # Save results to JSON
                 result_file = table_dir / 'validation_results.json'
                 with open(result_file, 'w', encoding='utf-8') as f:
-                    json.dump(validation_result, f, indent=2, default=str)
+                    json.dump(validation_results, f, indent=2, default=str)
                 
                 logger.info(f"Results saved to {result_file}")
                 
@@ -288,6 +374,138 @@ class TableRecordValidator:
                 
                 with open(error_file, 'w', encoding='utf-8') as f:
                     json.dump({'table_name': table_name, 'error': str(e)}, f, indent=2)
+    
+    def validate_table_by_key(self, table_name: str) -> Dict[str, Any]:
+        """
+        Validate a table by comparing records across databases using KEY columns and mapping tables.
+        
+        Args:
+            table_name: Name of the table to validate
+            
+        Returns:
+            Dictionary with validation results
+        """
+        if not self.rdb_engine or not self.rdb_modern_engine:
+            raise RuntimeError("Database connections not initialized. Call setup_connections() first.")
+        
+        if table_name not in self.key_columns:
+            logger.warning(f"No KEY columns found for table {table_name}")
+            return {'error': f"No KEY columns defined for table {table_name}"}
+        
+        key_columns = self.key_columns[table_name]
+        if not key_columns:
+            logger.warning(f"Table {table_name} has no KEY columns")
+            return {'error': f"Table {table_name} has no KEY columns"}
+        
+        table_results = {
+            'table_name': table_name,
+            'key_columns': key_columns,
+            'results_by_key_column': {}
+        }
+        
+        # Process each KEY column
+        for key_column in key_columns:
+            # Only process supported KEY columns
+            if key_column not in KEY_COLUMN_MAPPING:
+                logger.warning(f"KEY column {key_column} is not supported. Skipping.")
+                continue
+            
+            mapping_config = KEY_COLUMN_MAPPING[key_column]
+            mapping_table = mapping_config['mapping_table']
+            mapping_uid_column = mapping_config['mapping_uid_column']
+            
+            logger.info(f"Processing table {table_name}, KEY column: {key_column}")
+            
+            key_column_results = {
+                'key_column': key_column,
+                'mapping_table': mapping_table,
+                'mapping_uid_column': mapping_uid_column,
+                'records_by_mapping_uid': {}
+            }
+            
+            # Get distinct KEY values from RDB_MODERN
+            try:
+                query = text(f"SELECT DISTINCT [{key_column}] FROM [{table_name}] ORDER BY [{key_column}]")
+                with self.rdb_modern_engine.connect() as conn:
+                    result = conn.execute(query)
+                    key_values_modern = [row[0] for row in result.fetchall()]
+            except SQLAlchemyError as e:
+                logger.error(f"Error getting distinct KEY values from {table_name}.{key_column}: {e}")
+                key_values_modern = []
+            
+            if not key_values_modern:
+                logger.warning(f"No KEY values found for {table_name}.{key_column}")
+                table_results['results_by_key_column'][key_column] = key_column_results
+                continue
+            
+            # For each KEY value in RDB_MODERN, get the mapping UID and find corresponding records
+            for key_value_modern in key_values_modern:
+                mapping_uid = self._get_mapping_uid(self.rdb_modern_engine, mapping_table, mapping_uid_column, key_value_modern)
+                
+                if mapping_uid is None:
+                    logger.warning(f"Could not find mapping UID for {key_column}={key_value_modern}")
+                    continue
+                
+                mapping_uid_str = self._serialize_for_json(mapping_uid)
+                
+                if mapping_uid_str not in key_column_results['records_by_mapping_uid']:
+                    key_column_results['records_by_mapping_uid'][mapping_uid_str] = {
+                        'mapping_uid': mapping_uid_str,
+                        'rdb_modern_key_value': self._serialize_for_json(key_value_modern),
+                        'rdb_modern_records': [],
+                        'rdb_key_value': None,
+                        'rdb_records': [],
+                        'comparison': None
+                    }
+                
+                # Get records from RDB_MODERN
+                rdb_modern_records = self._get_records_by_key(self.rdb_modern_engine, table_name, key_column, key_value_modern)
+                key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_modern_records'] = self._serialize_for_json(rdb_modern_records)
+                
+                # Find corresponding KEY value in RDB using the same mapping UID
+                key_value_rdb = self._find_key_value_by_mapping_uid(self.rdb_engine, mapping_table, mapping_uid_column, mapping_uid, key_column)
+                
+                if key_value_rdb is None:
+                    logger.warning(f"Could not find corresponding KEY value in RDB for {mapping_uid_column}={mapping_uid}")
+                    continue
+                
+                key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_key_value'] = self._serialize_for_json(key_value_rdb)
+                
+                # Get records from RDB
+                rdb_records = self._get_records_by_key(self.rdb_engine, table_name, key_column, key_value_rdb)
+                key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_records'] = self._serialize_for_json(rdb_records)
+                
+                # Compare records
+                comparison = self._compare_records(rdb_records, rdb_modern_records)
+                key_column_results['records_by_mapping_uid'][mapping_uid_str]['comparison'] = self._serialize_for_json(comparison)
+            
+            table_results['results_by_key_column'][key_column] = key_column_results
+        
+        return table_results
+    
+    def _find_key_value_by_mapping_uid(self, engine, mapping_table: str, uid_column: str, uid_value: Any, key_column: str) -> Any:
+        """
+        Find the KEY value in a database given a mapping UID.
+        
+        Args:
+            engine: SQLAlchemy engine
+            mapping_table: Name of the mapping table
+            uid_column: Name of the UID column
+            uid_value: Value of the UID to look up
+            key_column: Name of the KEY column to retrieve
+            
+        Returns:
+            The KEY value, or None if not found
+        """
+        try:
+            query = text(f"SELECT [{key_column}] FROM [{mapping_table}] WHERE [{uid_column}] = :uid_value")
+            with engine.connect() as conn:
+                result = conn.execute(query, {"uid_value": uid_value})
+                row = result.fetchone()
+                return row[0] if row else None
+        except SQLAlchemyError as e:
+            logger.error(f"Error finding {key_column} in {mapping_table} where {uid_column}={uid_value}: {e}")
+            return None
     
     def close_connections(self):
         """Close database connections."""

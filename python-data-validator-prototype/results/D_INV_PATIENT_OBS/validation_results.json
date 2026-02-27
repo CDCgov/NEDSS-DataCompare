@@ -1,93 +1,98 @@
 {
-  "table_name": "D_INV_PATIENT_OBS",
-  "uid_columns": [
-    "nbs_case_answer_uid"
-  ],
-  "results_by_uid_column": {
-    "nbs_case_answer_uid": {
-      "uid_column": "nbs_case_answer_uid",
-      "uid_values": [
-        {
-          "uid_value": null,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
+  "uid_validation": {
+    "table_name": "D_INV_PATIENT_OBS",
+    "uid_columns": [
+      "nbs_case_answer_uid"
+    ],
+    "results_by_uid_column": {
+      "nbs_case_answer_uid": {
+        "uid_column": "nbs_case_answer_uid",
+        "uid_values": [
+          {
+            "uid_value": null,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 0,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3418",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3504",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3857",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3923",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3952",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4146",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4230",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
           }
-        },
-        {
-          "uid_value": "3418",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3504",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3857",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3923",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3952",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4146",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4230",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        }
-      ]
+        ]
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table D_INV_PATIENT_OBS has no KEY columns"
   }
 }

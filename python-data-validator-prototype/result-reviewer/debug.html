@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug API Calls</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4">Debug API Calls</h1>
+        
+        <div id="output" class="bg-gray-50 p-4 rounded-md font-mono text-sm whitespace-pre-wrap" style="height: 600px; overflow-y: auto;"></div>
+        
+        <div class="mt-4 flex gap-2">
+            <button onclick="testTables()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+                Test Tables List
+            </button>
+            <button onclick="testCovidData()" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
+                Test COVID Data
+            </button>
+            <button onclick="testCovidColumns()" class="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600">
+                Test COVID Columns
+            </button>
+            <button onclick="testCovidColumnValues()" class="px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600">
+                Test COVID Column Values
+            </button>
+            <button onclick="clearOutput()" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                Clear
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        
+        function log(msg) {
+            output.textContent += msg + '\n';
+            output.parentElement.scrollTop = output.parentElement.scrollHeight;
+        }
+        
+        function clearOutput() {
+            output.textContent = '';
+        }
+
+        async function testTables() {
+            log('=== Testing /api/tables ===');
+            try {
+                const response = await fetch('http://localhost:8001/api/tables');
+                log(`Status: ${response.status} ${response.statusText}`);
+                const data = await response.json();
+                log(`Tables: ${data.count} found`);
+                const covidTables = data.tables.filter(t => t.name.includes('COVID'));
+                log(`COVID tables: ${JSON.stringify(covidTables.map(t => t.name), null, 2)}`);
+            } catch (error) {
+                log(`ERROR: ${error.message}`);
+            }
+        }
+
+        async function testCovidData() {
+            log('\n=== Testing /api/table/COVID_CASE_DATAMART ===');
+            try {
+                const response = await fetch('http://localhost:8001/api/table/COVID_CASE_DATAMART?structure_only=true');
+                log(`Status: ${response.status} ${response.statusText}`);
+                const data = await response.json();
+                log(`Table name: ${data.table_name}`);
+                log(`UID validation: ${JSON.stringify(data.uid_validation, null, 2).substring(0, 500)}`);
+                log(`Key validation: ${JSON.stringify(data.key_validation, null, 2)}`);
+            } catch (error) {
+                log(`ERROR: ${error.message}`);
+            }
+        }
+
+        async function testCovidColumns() {
+            log('\n=== Testing /api/table/COVID_CASE_DATAMART/columns ===');
+            try {
+                const response = await fetch('http://localhost:8001/api/table/COVID_CASE_DATAMART/columns');
+                log(`Status: ${response.status} ${response.statusText}`);
+                const data = await response.json();
+                log(`UID columns: ${JSON.stringify(data.uid_columns)}`);
+                log(`Key columns: ${JSON.stringify(data.key_columns)}`);
+            } catch (error) {
+                log(`ERROR: ${error.message}`);
+            }
+        }
+
+        async function testCovidColumnValues() {
+            log('\n=== Testing /api/table/COVID_CASE_DATAMART/column/public_health_case_uid ===');
+            try {
+                const response = await fetch('http://localhost:8001/api/table/COVID_CASE_DATAMART/column/public_health_case_uid');
+                log(`Status: ${response.status} ${response.statusText}`);
+                const data = await response.json();
+                log(`Table: ${data.table_name}`);
+                log(`Column: ${data.column_name}`);
+                log(`Validation type: ${data.validation_type}`);
+                log(`UID values count: ${data.uid_values.length}`);
+                if (data.uid_values.length > 0) {
+                    log(`First value: ${JSON.stringify(data.uid_values[0], null, 2).substring(0, 300)}`);
+                }
+            } catch (error) {
+                log(`ERROR: ${error.message}`);
+            }
+        }
+
+        // Test on load
+        window.addEventListener('load', () => {
+            log('Debug page loaded. Click buttons to test API endpoints.\n');
+        });
+    </script>
+</body>
+</html>

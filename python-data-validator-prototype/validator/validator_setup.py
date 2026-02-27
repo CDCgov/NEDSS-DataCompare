@@ -6,8 +6,9 @@ from typing import Dict, List, Tuple
 
 logger = logging.getLogger(__name__)
 
+# This list may grow depending on future requirements, but currently we are focused on these two key columns
 
-class TableUIDValidator:
+class ValidatorSetup:
     """Validator for table UID columns across RDB and RDB_MODERN databases."""
     
     def __init__(self):
@@ -20,12 +21,18 @@ class TableUIDValidator:
         
         # Raw data from CSV for reference
         self.uid_columns_data = []
+
+        # _KEY column tables
+        self.table_key_map = defaultdict(lambda: defaultdict(list))
+        self.table_key_consolidated = defaultdict(list)
+        self.key_columns_data = []
     
     def load_uid_columns_from_csv(self, csv_file: str = 'matching_rdb_tables-uid-columns.csv') -> bool:
         """
         Load UID column mappings from CSV file.
         
-        Expected CSV columns: TABLE_NAME, COLUMN_NAME
+        Expected CSV columns: TABLE_NAME, UID_COLUMNS
+        UID_COLUMNS contains comma-separated column names (quoted if multiple)
         
         Args:
             csv_file: Path to the CSV file (relative to project root)
@@ -49,27 +56,30 @@ class TableUIDValidator:
                 
                 for row in reader:
                     table_name = row['TABLE_NAME'].strip()
-                    column_name = row['COLUMN_NAME'].strip()
+                    uid_columns_str = row['UID_COLUMNS'].strip()
+                    
+                    # Parse comma-separated list of column names
+                    uid_columns = [col.strip() for col in uid_columns_str.split(',')]
                     
                     # Store raw data
-                    self.uid_columns_data.append({
-                        'table_name': table_name,
-                        'column_name': column_name
-                    })
+                    for column_name in uid_columns:
+                        self.uid_columns_data.append({
+                            'table_name': table_name,
+                            'column_name': column_name
+                        })
                     
                     # Build organized map
-                    self.table_uid_map[table_name]['data'].append(column_name)
+                    self.table_uid_map[table_name]['data'] = uid_columns
                     
                     # Build consolidated map (unique columns per table)
-                    if column_name not in self.table_uid_consolidated[table_name]:
-                        self.table_uid_consolidated[table_name].append(column_name)
+                    self.table_uid_consolidated[table_name] = uid_columns
             
             logger.info(f"Loaded {len(self.uid_columns_data)} UID column records from {csv_path}")
             logger.info(f"Found {len(self.table_uid_consolidated)} tables with UID columns")
             return True
             
         except Exception as e:
-            logger.error(f"Error loading CSV file: {e}")
+            logger.error(f"Error loading UID CSV file: {e}")
             return False
     
     def get_uid_columns_for_table(self, table_name: str) -> List[str]:
@@ -84,21 +94,6 @@ class TableUIDValidator:
         """
         return self.table_uid_consolidated.get(table_name, [])
     
-    def get_table_uid_columns_by_database(self, table_name: str) -> Dict[str, List[str]]:
-        """
-        Get UID columns for a table (deprecated - kept for compatibility).
-        
-        Args:
-            table_name: Name of the table
-            
-        Returns:
-            Dict with column list
-        """
-        if table_name not in self.table_uid_map:
-            return {}
-        
-        return {'columns': self.table_uid_map[table_name]['data']}
-    
     def get_all_tables_with_uid_columns(self) -> List[str]:
         """
         Get list of all tables that have UID columns.
@@ -107,21 +102,6 @@ class TableUIDValidator:
             Sorted list of table names
         """
         return sorted(list(self.table_uid_consolidated.keys()))
-    
-    def get_table_uid_columns_detailed(self, table_name: str) -> Dict[str, any]:
-        """
-        Get detailed information about UID columns in a table.
-        
-        Args:
-            table_name: Name of the table
-            
-        Returns:
-            Dictionary with detailed column information
-        """
-        if table_name not in self.table_uid_map:
-            return {}
-        
-        return dict(self.table_uid_map[table_name])
     
     def compare_tables_uid_columns(self, table_name: str) -> Dict[str, any]:
         """
@@ -145,6 +125,78 @@ class TableUIDValidator:
             'column_count': len(columns)
         }
     
+    def load_key_columns_from_csv(self, csv_file: str = 'matching_rdb_tables-key-columns.csv') -> bool:
+        """
+        Load _KEY column mappings from CSV file.
+        
+        Expected CSV columns: TABLE_NAME, KEY_COLUMNS
+        KEY_COLUMNS contains comma-separated column names (quoted if multiple)
+        
+        Args:
+            csv_file: Path to the CSV file (relative to project root)
+            
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            csv_path = Path(__file__).parent.parent / csv_file
+            
+            if not csv_path.exists():
+                logger.error(f"CSV file not found: {csv_path}")
+                return False
+            
+            self.key_columns_data = []
+            self.table_key_map.clear()
+            self.table_key_consolidated.clear()
+            
+            with open(csv_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                
+                for row in reader:
+                    table_name = row['TABLE_NAME'].strip()
+                    key_columns_str = row['KEY_COLUMNS'].strip()
+                    
+                    # Parse comma-separated list of column names
+                    # Handle (null) sentinel value for tables without KEY columns
+                    if key_columns_str == '(null)':
+                        key_columns = []
+                    else:
+                        key_columns = [col.strip() for col in key_columns_str.split(',')]
+                    
+                    # Store raw data
+                    for column_name in key_columns:
+                        self.key_columns_data.append({
+                            'table_name': table_name,
+                            'column_name': column_name
+                        })
+                    
+                    # Build organized map
+                    self.table_key_map[table_name]['data'] = key_columns
+                    
+                    # Build consolidated map (unique columns per table)
+                    self.table_key_consolidated[table_name] = key_columns
+            
+            logger.info(f"Loaded {len(self.key_columns_data)} _KEY column records from {csv_path}")
+            logger.info(f"Found {len(self.table_key_consolidated)} tables with _KEY columns")
+            logger.info(f"Total unique _KEY columns: {sum(len(cols) for cols in self.table_key_consolidated.values())}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error loading KEY CSV file: {e}")
+            return False
+    
+    def get_key_columns_for_table(self, table_name: str) -> List[str]:
+        """
+        Get the list of KEY column names for a specific table.
+        
+        Args:
+            table_name: Name of the table
+            
+        Returns:
+            List of KEY column names, empty list if table not found
+        """
+        return self.table_key_consolidated.get(table_name, [])
+    
     def validate_input_table_list(self, table_list: List[str]) -> Dict[str, any]:
         """
         Validate a list of table names against loaded UID column data.
@@ -159,7 +211,8 @@ class TableUIDValidator:
             ValueError: If any tables in the list are not found in loaded data
         """
         # Create a case-insensitive lookup map
-        case_insensitive_map = {name.upper(): name for name in self.table_uid_consolidated.keys()}
+        all_loaded_tables = list(self.table_uid_consolidated.keys()) + list(self.table_key_consolidated.keys())
+        case_insensitive_map = {name.upper(): name for name in all_loaded_tables}
         print(f"Case-insensitive map keys: {list(case_insensitive_map.keys())}")
         
         found_tables = []
@@ -172,14 +225,15 @@ class TableUIDValidator:
                 found_tables.append({
                     'table_name': actual_name,
                     'uid_columns': self.get_uid_columns_for_table(actual_name),
-                    'column_count': len(self.get_uid_columns_for_table(actual_name))
+                    'key_columns': self.get_key_columns_for_table(actual_name),
+                    'column_count': len(self.get_uid_columns_for_table(actual_name)) + len(self.get_key_columns_for_table(actual_name))
                 })
             else:
                 missing_tables.append(table_name)
         
         # Raise error if any tables are missing
         if missing_tables:
-            error_msg = f"The following {len(missing_tables)} table(s) were not found in loaded UID column data: {', '.join(missing_tables)}"
+            error_msg = f"The following {len(missing_tables)} table(s) were not found in loaded UID or KEY column data: {', '.join(missing_tables)}"
             logger.error(error_msg)
             raise ValueError(error_msg)
         
@@ -203,7 +257,10 @@ class TableUIDValidator:
         return {
             'total_uid_column_records': len(self.uid_columns_data),
             'total_tables_with_uid_columns': len(self.table_uid_consolidated),
-            'total_unique_uid_columns': total_columns
+            'total_unique_uid_columns': total_columns,
+            'total_key_column_records': len(self.key_columns_data),
+            'total_tables_with_key_columns': len(self.table_key_consolidated),
+            'total_unique_key_columns': sum(len(cols) for cols in self.table_key_consolidated.values())
         }
 
 
@@ -215,7 +272,7 @@ def main():
     )
     
     # Initialize validator
-    validator = TableUIDValidator()
+    validator = ValidatorSetup()
     
     # Load CSV
     if validator.load_uid_columns_from_csv():

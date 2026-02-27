@@ -1,43 +1,48 @@
 {
-  "table_name": "DIMENSION_KEYS_PAGECASEID",
-  "uid_columns": [
-    "PAGE_CASE_UID"
-  ],
-  "results_by_uid_column": {
-    "PAGE_CASE_UID": {
-      "uid_column": "PAGE_CASE_UID",
-      "uid_values": [
-        {
-          "uid_value": null,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
+  "uid_validation": {
+    "table_name": "DIMENSION_KEYS_PAGECASEID",
+    "uid_columns": [
+      "PAGE_CASE_UID"
+    ],
+    "results_by_uid_column": {
+      "PAGE_CASE_UID": {
+        "uid_column": "PAGE_CASE_UID",
+        "uid_values": [
+          {
+            "uid_value": null,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 0,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": 10000013.0,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": 10074300.0,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
           }
-        },
-        {
-          "uid_value": 10000013.0,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": 10074300.0,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        }
-      ]
+        ]
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table DIMENSION_KEYS_PAGECASEID has no KEY columns"
   }
 }

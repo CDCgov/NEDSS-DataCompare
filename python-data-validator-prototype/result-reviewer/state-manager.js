@@ -7,6 +7,8 @@ class StateManager {
         this.expandedTables = new Set();
         this.expandedUidColumns = new Set();
         this.expandedUidValues = new Set();
+        this.expandedKeyColumns = new Set();
+        this.expandedKeyValues = new Set();
         this.columnDiffContainers = {};
         this.uidContainers = {};
         this.uidValueContainers = {};
@@ -71,6 +73,45 @@ class StateManager {
     }
 
     /**
+     * KEY column expansion state management
+     */
+    expandKeyColumn(tableName, keyColumn) {
+        const key = Utilities.createContainerKey(tableName, keyColumn);
+        this.expandedKeyColumns.add(key);
+    }
+
+    collapseKeyColumn(tableName, keyColumn) {
+        const key = Utilities.createContainerKey(tableName, keyColumn);
+        this.expandedKeyColumns.delete(key);
+        // Clean up related expansions
+        const toDelete = Array.from(this.expandedKeyValues).filter(k => k.startsWith(key + ':'));
+        toDelete.forEach(k => this.expandedKeyValues.delete(k));
+    }
+
+    isKeyColumnExpanded(tableName, keyColumn) {
+        const key = Utilities.createContainerKey(tableName, keyColumn);
+        return this.expandedKeyColumns.has(key);
+    }
+
+    /**
+     * KEY value expansion state management
+     */
+    expandKeyValue(tableName, keyColumn, mappingUid) {
+        const key = Utilities.createContainerKey(tableName, keyColumn, String(mappingUid));
+        this.expandedKeyValues.add(key);
+    }
+
+    collapseKeyValue(tableName, keyColumn, mappingUid) {
+        const key = Utilities.createContainerKey(tableName, keyColumn, String(mappingUid));
+        this.expandedKeyValues.delete(key);
+    }
+
+    isKeyValueExpanded(tableName, keyColumn, mappingUid) {
+        const key = Utilities.createContainerKey(tableName, keyColumn, String(mappingUid));
+        return this.expandedKeyValues.has(key);
+    }
+
+    /**
      * Container reference management
      */
     setUidContainer(tableName, container) {
@@ -114,6 +155,33 @@ class StateManager {
     isColumnDiffExpanded(tableName, uidColumn, uidValue) {
         const container = this.getColumnDiffContainer(tableName, uidColumn, uidValue);
         return container && !container.classList.contains('hidden');
+    }
+
+    /**
+     * KEY column container management
+     */
+    setKeyValueContainer(tableName, keyColumn, container) {
+        const key = Utilities.createContainerKey(tableName, keyColumn);
+        this.keyValueContainers = this.keyValueContainers || {};
+        this.keyValueContainers[key] = container;
+    }
+
+    getKeyValueContainer(tableName, keyColumn) {
+        if (!this.keyValueContainers) this.keyValueContainers = {};
+        const key = Utilities.createContainerKey(tableName, keyColumn);
+        return this.keyValueContainers[key];
+    }
+
+    setKeyComparisonContainer(tableName, keyColumn, mappingUid, container) {
+        if (!this.keyComparisonContainers) this.keyComparisonContainers = {};
+        const key = Utilities.createContainerKey(tableName, keyColumn, String(mappingUid));
+        this.keyComparisonContainers[key] = container;
+    }
+
+    getKeyComparisonContainer(tableName, keyColumn, mappingUid) {
+        if (!this.keyComparisonContainers) this.keyComparisonContainers = {};
+        const key = Utilities.createContainerKey(tableName, keyColumn, String(mappingUid));
+        return this.keyComparisonContainers[key];
     }
 
     /**

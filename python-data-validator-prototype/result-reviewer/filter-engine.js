@@ -34,15 +34,25 @@ class FilterEngine {
 
     /**
      * Check if a table has any column differences
+     * Handles both UID and KEY validation types
      */
-    hasTableColumnDifferences(tableName) {
-        const uidColumns = this.dataManager.getUidColumnsForTable(tableName);
+    async hasTableColumnDifferences(tableName) {
+        const columns = await this.dataManager.getUidColumnsForTable(tableName);
+        
+        if (!columns || !Array.isArray(columns) || columns.length === 0) {
+            return false;
+        }
 
-        for (const uidColumn of uidColumns) {
-            const uidValues = this.dataManager.getUidValuesForColumn(tableName, uidColumn);
+        for (const column of columns) {
+            const values = await this.dataManager.getUidValuesForColumn(tableName, column);
+            
+            // Skip if no values returned
+            if (!Array.isArray(values) || values.length === 0) {
+                continue;
+            }
 
-            for (const item of uidValues) {
-                if (this.hasColumnDifferences(item.comparison)) {
+            for (const item of values) {
+                if (item && item.comparison && this.hasColumnDifferences(item.comparison)) {
                     return true;
                 }
             }
@@ -52,15 +62,25 @@ class FilterEngine {
 
     /**
      * Check if a table has record count mismatches
+     * Handles both UID and KEY validation types
      */
-    hasTableRecordMismatch(tableName) {
-        const uidColumns = this.dataManager.getUidColumnsForTable(tableName);
+    async hasTableRecordMismatch(tableName) {
+        const columns = await this.dataManager.getUidColumnsForTable(tableName);
+        
+        if (!columns || !Array.isArray(columns) || columns.length === 0) {
+            return false;
+        }
 
-        for (const uidColumn of uidColumns) {
-            const uidValues = this.dataManager.getUidValuesForColumn(tableName, uidColumn);
+        for (const column of columns) {
+            const values = await this.dataManager.getUidValuesForColumn(tableName, column);
+            
+            // Skip if no values returned
+            if (!Array.isArray(values) || values.length === 0) {
+                continue;
+            }
 
-            for (const item of uidValues) {
-                if (!item.comparison.record_counts_match) {
+            for (const item of values) {
+                if (item && item.comparison && !item.comparison.record_counts_match) {
                     return true;
                 }
             }
@@ -109,15 +129,27 @@ class FilterEngine {
     /**
      * Filter tables by type
      */
-    filterByType(tables, filterType) {
+    async filterByType(tables, filterType) {
         if (filterType === 'all') return tables;
 
         if (filterType === 'column-diff') {
-            return tables.filter(tableName => this.hasTableColumnDifferences(tableName));
+            const filtered = [];
+            for (const tableName of tables) {
+                if (await this.hasTableColumnDifferences(tableName)) {
+                    filtered.push(tableName);
+                }
+            }
+            return filtered;
         }
 
         if (filterType === 'record-mismatch') {
-            return tables.filter(tableName => this.hasTableRecordMismatch(tableName));
+            const filtered = [];
+            for (const tableName of tables) {
+                if (await this.hasTableRecordMismatch(tableName)) {
+                    filtered.push(tableName);
+                }
+            }
+            return filtered;
         }
 
         return tables;
@@ -126,9 +158,9 @@ class FilterEngine {
     /**
      * Apply combined search and filter
      */
-    applyFilters(tables, searchTerm, filterType) {
+    async applyFilters(tables, searchTerm, filterType) {
         let filtered = this.filterBySearchTerm(tables, searchTerm);
-        filtered = this.filterByType(filtered, filterType);
+        filtered = await this.filterByType(filtered, filterType);
         return filtered;
     }
 

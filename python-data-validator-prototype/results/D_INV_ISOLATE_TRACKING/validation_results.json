@@ -1,23 +1,28 @@
 {
-  "table_name": "D_INV_ISOLATE_TRACKING",
-  "uid_columns": [
-    "nbs_case_answer_uid"
-  ],
-  "results_by_uid_column": {
-    "nbs_case_answer_uid": {
-      "uid_column": "nbs_case_answer_uid",
-      "uid_values": [
-        {
-          "uid_value": null,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
+  "uid_validation": {
+    "table_name": "D_INV_ISOLATE_TRACKING",
+    "uid_columns": [
+      "nbs_case_answer_uid"
+    ],
+    "results_by_uid_column": {
+      "nbs_case_answer_uid": {
+        "uid_column": "nbs_case_answer_uid",
+        "uid_values": [
+          {
+            "uid_value": null,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 0,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
           }
-        }
-      ]
+        ]
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table D_INV_ISOLATE_TRACKING has no KEY columns"
   }
 }

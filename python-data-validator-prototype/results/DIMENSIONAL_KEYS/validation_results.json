@@ -1,12 +1,17 @@
 {
-  "table_name": "DIMENSIONAL_KEYS",
-  "uid_columns": [
-    "page_case_uid"
-  ],
-  "results_by_uid_column": {
-    "page_case_uid": {
-      "uid_column": "page_case_uid",
-      "uid_values": []
+  "uid_validation": {
+    "table_name": "DIMENSIONAL_KEYS",
+    "uid_columns": [
+      "page_case_uid"
+    ],
+    "results_by_uid_column": {
+      "page_case_uid": {
+        "uid_column": "page_case_uid",
+        "uid_values": []
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table DIMENSIONAL_KEYS has no KEY columns"
   }
 }

@@ -1,164 +1,169 @@
 {
-  "table_name": "D_INV_RISK_FACTOR",
-  "uid_columns": [
-    "nbs_case_answer_uid"
-  ],
-  "results_by_uid_column": {
-    "nbs_case_answer_uid": {
-      "uid_column": "nbs_case_answer_uid",
-      "uid_values": [
-        {
-          "uid_value": null,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
+  "uid_validation": {
+    "table_name": "D_INV_RISK_FACTOR",
+    "uid_columns": [
+      "nbs_case_answer_uid"
+    ],
+    "results_by_uid_column": {
+      "nbs_case_answer_uid": {
+        "uid_column": "nbs_case_answer_uid",
+        "uid_values": [
+          {
+            "uid_value": null,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 0,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3283",
+            "comparison": {
+              "rdb_count": 1,
+              "rdb_modern_count": 1,
+              "record_counts_match": true,
+              "column_differences": [
+                {
+                  "record_index": 0,
+                  "column_differences": [
+                    {
+                      "column": "D_INV_RISK_FACTOR_KEY",
+                      "rdb_value": 6.0,
+                      "rdb_modern_value": 4.0
+                    }
+                  ]
+                }
+              ],
+              "has_differences": true
+            }
+          },
+          {
+            "uid_value": "3322",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3382",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3417",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3463",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3475",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3595",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3840",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3911",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3957",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4041",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4104",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4223",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
           }
-        },
-        {
-          "uid_value": "3283",
-          "comparison": {
-            "rdb_count": 1,
-            "rdb_modern_count": 1,
-            "record_counts_match": true,
-            "column_differences": [
-              {
-                "record_index": 0,
-                "column_differences": [
-                  {
-                    "column": "D_INV_RISK_FACTOR_KEY",
-                    "rdb_value": 6.0,
-                    "rdb_modern_value": 4.0
-                  }
-                ]
-              }
-            ],
-            "has_differences": true
-          }
-        },
-        {
-          "uid_value": "3322",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3382",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3417",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3463",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3475",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3595",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3840",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3911",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3957",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4041",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4104",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4223",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        }
-      ]
+        ]
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table D_INV_RISK_FACTOR has no KEY columns"
   }
 }

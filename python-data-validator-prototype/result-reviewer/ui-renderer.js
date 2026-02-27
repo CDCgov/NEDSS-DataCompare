@@ -4,22 +4,45 @@
 
 class UIRenderer {
     /**
-     * Render the entire table list
+     * Extract column differences from comparison object
      */
-    renderTableList(tables, dataManager, filterEngine, stateManager) {
-        const listContainer = document.getElementById('tableList');
+    getColumnDifferences(comparison) {
+        if (!comparison) return [];
+        
+        // Use column_differences if present (new structure)
+        if (comparison.column_differences && Array.isArray(comparison.column_differences)) {
+            return comparison.column_differences;
+        }
+        
+        // Old structure compatibility
+        if (comparison.discrepant_records && Array.isArray(comparison.discrepant_records)) {
+            return comparison.discrepant_records;
+        }
+        
+        return [];
+    }
+
+    /**
+     * Render the entire table list (async)
+     */
+    async renderTableList(tables, dataManager, filterEngine, stateManager) {
+        const listContainer = document.getElementById('table-list');
         listContainer.innerHTML = '';
-        stateManager.clearTableContainers();
+        // Clear all containers from state manager
+        stateManager.uidContainers = {};
+        stateManager.uidValueContainers = {};
+        stateManager.comparisonContainers = {};
+        stateManager.columnDiffContainers = {};
 
         for (const tableName of tables) {
-            this.renderTableRow(tableName, listContainer, dataManager, filterEngine, stateManager);
+            await this.renderTableRow(tableName, listContainer, dataManager, filterEngine, stateManager);
         }
     }
 
     /**
      * Render a single table row with button and container
      */
-    renderTableRow(tableName, parentContainer, dataManager, filterEngine, stateManager) {
+    async renderTableRow(tableName, parentContainer, dataManager, filterEngine, stateManager) {
         // Create table row container
         const tableRow = document.createElement('div');
         tableRow.className = 'flex flex-col';
@@ -37,11 +60,11 @@ class UIRenderer {
         tableBtn.appendChild(tableNameSpan);
 
         // Add badges
-        if (filterEngine.hasTableColumnDifferences(tableName)) {
+        if (await filterEngine.hasTableColumnDifferences(tableName)) {
             tableBtn.appendChild(Utilities.createBadge('Col Diff', 'col-diff'));
         }
 
-        if (filterEngine.hasTableRecordMismatch(tableName)) {
+        if (await filterEngine.hasTableRecordMismatch(tableName)) {
             tableBtn.appendChild(Utilities.createBadge('Rec Mismatch', 'record-mismatch'));
         }
 
@@ -59,20 +82,53 @@ class UIRenderer {
     }
 
     /**
-     * Render UID columns for a table
+     * Render UID columns for a table (async)
      */
-    renderUidColumns(tableName, dataManager, stateManager) {
+    async renderUidColumns(tableName, dataManager, stateManager) {
+        console.log(`[Renderer] renderUidColumns called for: ${tableName}`);
         const container = stateManager.getUidContainer(tableName);
-        if (!container) return;
-
-        const uidColumns = dataManager.getUidColumnsForTable(tableName);
-        container.innerHTML = '';
-
-        for (const uidCol of uidColumns) {
-            this.renderUidColumnRow(tableName, uidCol, container, stateManager);
+        console.log(`[Renderer] Container found: ${container ? 'YES' : 'NO'}`);
+        if (!container) {
+            console.error(`[Renderer] ERROR: Container not found for ${tableName}`);
+            return;
         }
 
-        container.classList.remove('hidden');
+        try {
+            console.log(`[Renderer] Calling dataManager.getUidColumnsForTable...`);
+            const uidColumns = await dataManager.getUidColumnsForTable(tableName);
+            console.log(`[Renderer] UID columns for ${tableName}:`, uidColumns);
+            
+            // Also get KEY columns
+            const keyColumns = await dataManager.getKeyColumnsForTable(tableName);
+            console.log(`[Renderer] KEY columns for ${tableName}:`, keyColumns);
+            
+            container.innerHTML = '';
+
+            if ((!uidColumns || uidColumns.length === 0) && (!keyColumns || keyColumns.length === 0)) {
+                console.log(`[Renderer] No UID or KEY columns found, skipping render`);
+                container.classList.remove('hidden');
+                return;
+            }
+
+            // Render UID columns
+            for (const uidCol of uidColumns) {
+                console.log(`[Renderer] Rendering UID column: ${uidCol}`);
+                this.renderUidColumnRow(tableName, uidCol, container, stateManager);
+            }
+
+            // Render KEY columns
+            for (const keyCol of keyColumns) {
+                console.log(`[Renderer] Rendering KEY column: ${keyCol}`);
+                await this.renderKeyColumnRow(tableName, keyCol, container, dataManager, stateManager);
+            }
+
+            console.log(`[Renderer] Removing hidden class from container`);
+            container.classList.remove('hidden');
+            console.log(`[Renderer] Container class after: ${container.className}`);
+        } catch (error) {
+            console.error(`[Renderer] EXCEPTION in renderUidColumns for ${tableName}:`, error);
+            console.error(error.stack);
+        }
     }
 
     /**
@@ -106,23 +162,172 @@ class UIRenderer {
     }
 
     /**
-     * Render UID values for a column
+     * Render a single KEY column row
      */
-    renderUidValues(tableName, uidColumn, dataManager, filterEngine, stateManager) {
+    async renderKeyColumnRow(tableName, keyCol, parentContainer, dataManager, stateManager) {
+        try {
+            // Fetch mapping information for this key column
+            const keyData = await dataManager.getKeyColumnMappingInfo(tableName, keyCol);
+            
+            // Create KEY column row
+            const keyRow = document.createElement('div');
+            keyRow.className = 'flex flex-col';
+            keyRow.dataset.table = tableName;
+            keyRow.dataset.column = keyCol;
+            keyRow.dataset.validationType = 'key';
+
+            // Create KEY column button - styled differently from UID
+            const keyBtn = document.createElement('button');
+            keyBtn.className = 'px-3 py-2 bg-blue-50 border border-blue-300 rounded-md text-xs text-blue-700 text-left hover:bg-blue-100 active:bg-blue-200 transition-colors font-semibold';
+            keyBtn.textContent = `◆ ${keyCol}`;
+            keyBtn.setAttribute('data-key-col-btn', `${tableName}:${keyCol}`);
+
+            keyRow.appendChild(keyBtn);
+
+            // Create container for KEY mapping UIDs
+            const keyMappingContainer = document.createElement('div');
+            keyMappingContainer.className = 'hidden flex flex-col gap-0.5 mt-1 ml-5 bg-blue-50 border border-blue-100 rounded-md p-2';
+            keyMappingContainer.dataset.table = tableName;
+            keyMappingContainer.dataset.column = keyCol;
+
+            // Add mapping info display
+            if (keyData && keyData.mapping_table) {
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'text-xs text-blue-700 italic mb-2 pb-2 border-b border-blue-200';
+                infoDiv.innerHTML = `
+                    <div><strong>Mapping Table:</strong> ${keyData.mapping_table}</div>
+                    <div><strong>Mapping UID Column:</strong> ${keyData.mapping_uid_column}</div>
+                `;
+                keyMappingContainer.appendChild(infoDiv);
+            }
+
+            keyRow.appendChild(keyMappingContainer);
+            stateManager.setKeyValueContainer(tableName, keyCol, keyMappingContainer);
+
+            parentContainer.appendChild(keyRow);
+        } catch (error) {
+            console.error(`[Renderer] Error rendering key column ${tableName}:${keyCol}:`, error);
+        }
+    }
+
+    /**
+     * Render KEY mapping UIDs for a column (async)
+     */
+    async renderKeyValues(tableName, keyColumn, dataManager, stateManager) {
+        const container = stateManager.getKeyValueContainer(tableName, keyColumn);
+        if (!container) return;
+
+        try {
+            const keyValues = await dataManager.getKeyValuesForColumn(tableName, keyColumn);
+            const keyData = await dataManager.getKeyColumnMappingInfo(tableName, keyColumn);
+            
+            // Find the info div (it's already in the container)
+            const existingInfo = container.querySelector('[class*="border-b-blue"]');
+            if (existingInfo) {
+                // Clear everything after the info div
+                const children = Array.from(container.children);
+                const infoIndex = children.indexOf(existingInfo);
+                for (let i = children.length - 1; i > infoIndex; i--) {
+                    children[i].remove();
+                }
+            }
+
+            for (const item of keyValues) {
+                this.renderKeyValueRow(tableName, keyColumn, item, container, stateManager, keyData);
+            }
+
+            container.classList.remove('hidden');
+        } catch (error) {
+            console.error(`Failed to render KEY values for ${tableName}:${keyColumn}:`, error);
+        }
+    }
+
+    /**
+     * Render a single KEY mapping UID row
+     */
+    renderKeyValueRow(tableName, keyColumn, item, parentContainer, stateManager, keyData) {
+        const mappingUid = item.mapping_uid;
+        const mappingUidKey = String(mappingUid);
+        const displayValue = Utilities.formatDisplayValue(mappingUid);
+        const comparison = item.comparison;
+
+        // Create KEY value row
+        const valueRow = document.createElement('div');
+        valueRow.className = 'flex flex-col';
+
+        // Create container for value and copy button
+        const valueContainer = document.createElement('div');
+        valueContainer.className = 'flex items-center gap-1';
+
+        // Create KEY value button  
+        const valueBtn = document.createElement('button');
+        valueBtn.className = 'flex-1 px-3 py-2 rounded-sm text-xs text-left hover:bg-blue-100 active:bg-blue-200 transition-colors font-mono bg-white border border-blue-100';
+        valueBtn.setAttribute('data-key-val-btn', `${tableName}:${keyColumn}:${mappingUidKey}`);
+        valueBtn.textContent = `    ◆ ${displayValue}`;
+
+        // Highlight if has differences
+        if (comparison && comparison.has_differences) {
+            valueBtn.className = 'flex-1 px-3 py-2 rounded-sm text-xs text-left font-mono bg-red-100 border border-red-400 text-red-800 hover:bg-red-200 active:bg-red-300 transition-colors font-bold';
+        }
+
+        valueContainer.appendChild(valueBtn);
+
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'px-2 py-2 bg-blue-100 border border-blue-300 rounded-sm text-xs hover:bg-blue-200 active:bg-blue-300 transition-colors';
+        copyBtn.textContent = '📋';
+        copyBtn.title = 'Copy mapping UID';
+        copyBtn.setAttribute('data-copy-key-uid', `${tableName}:${keyColumn}:${mappingUidKey}`);
+
+        valueContainer.appendChild(copyBtn);
+        valueRow.appendChild(valueContainer);
+
+        // Create container for KEY value comparison details (includes mapping info and comparison)
+        const comparisonContainer = document.createElement('div');
+        comparisonContainer.className = 'hidden mt-2 ml-10';
+        const containerKey = Utilities.createContainerKey(tableName, keyColumn, mappingUidKey);
+        comparisonContainer.setAttribute('data-key-comparison-container', containerKey);
+
+        // Add mapping info to comparison container
+        if (keyData && keyData.mapping_table) {
+            const mappingInfo = document.createElement('div');
+            mappingInfo.className = 'bg-blue-50 border border-blue-200 rounded-sm p-2 mb-2 text-xs text-blue-700';
+            mappingInfo.innerHTML = `
+                <div class="font-semibold mb-1">Mapping Information:</div>
+                <div class="flex justify-between pb-1"><span>Mapping Table:</span> <span class="font-mono">${keyData.mapping_table}</span></div>
+                <div class="flex justify-between"><span>Mapping UID Column:</span> <span class="font-mono">${keyData.mapping_uid_column}</span></div>
+            `;
+            comparisonContainer.appendChild(mappingInfo);
+        }
+
+        valueRow.appendChild(comparisonContainer);
+        stateManager.setKeyComparisonContainer(tableName, keyColumn, mappingUidKey, comparisonContainer);
+
+        parentContainer.appendChild(valueRow);
+    }
+
+    /**
+     * Render UID values for a column (async)
+     */
+    async renderUidValues(tableName, uidColumn, dataManager, filterEngine, stateManager) {
         const container = stateManager.getUidValueContainer(tableName, uidColumn);
         if (!container) return;
 
-        // Clear old orphaned container references from state before clearing DOM
-        stateManager.clearUidColumnComparisonContainers(tableName, uidColumn);
+        try {
+            // Clear old orphaned container references from state before clearing DOM
+            stateManager.clearUidColumnComparisonContainers(tableName, uidColumn);
 
-        const uidValues = dataManager.getUidValuesForColumn(tableName, uidColumn);
-        container.innerHTML = '';
+            const uidValues = await dataManager.getUidValuesForColumn(tableName, uidColumn);
+            container.innerHTML = '';
 
-        for (const item of uidValues) {
-            this.renderUidValueRow(tableName, uidColumn, item, container, dataManager, filterEngine, stateManager);
+            for (const item of uidValues) {
+                this.renderUidValueRow(tableName, uidColumn, item, container, dataManager, filterEngine, stateManager);
+            }
+
+            container.classList.remove('hidden');
+        } catch (error) {
+            console.error(`Failed to render UID values for ${tableName}:${uidColumn}:`, error);
         }
-
-        container.classList.remove('hidden');
     }
 
     /**

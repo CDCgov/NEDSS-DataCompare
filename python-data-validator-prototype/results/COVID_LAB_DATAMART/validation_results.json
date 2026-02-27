@@ -1,12 +1,17 @@
 {
-  "table_name": "COVID_LAB_DATAMART",
-  "uid_columns": [
-    "Observation_Uid"
-  ],
-  "results_by_uid_column": {
-    "Observation_Uid": {
-      "uid_column": "Observation_Uid",
-      "uid_values": []
+  "uid_validation": {
+    "table_name": "COVID_LAB_DATAMART",
+    "uid_columns": [
+      "Observation_Uid"
+    ],
+    "results_by_uid_column": {
+      "Observation_Uid": {
+        "uid_column": "Observation_Uid",
+        "uid_values": []
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table COVID_LAB_DATAMART has no KEY columns"
   }
 }

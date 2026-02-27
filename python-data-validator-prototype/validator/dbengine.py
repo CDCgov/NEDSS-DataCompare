@@ -77,3 +77,16 @@ def test_connection(engine):
     except SQLAlchemyError as e:
         logger.error(f"Connection failed: {e}")
         return False
+
+
+# Mapping configuration for KEY columns to their respective mapping tables
+KEY_COLUMN_MAPPING = {
+    'INVESTIGATION_KEY': {
+        'mapping_table': 'INVESTIGATION',
+        'mapping_uid_column': 'CASE_UID'
+    },
+    'PATIENT_KEY': {
+        'mapping_table': 'D_PATIENT',
+        'mapping_uid_column': 'PATIENT_UID'
+    }
+}

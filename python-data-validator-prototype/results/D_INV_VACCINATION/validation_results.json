@@ -1,84 +1,89 @@
 {
-  "table_name": "D_INV_VACCINATION",
-  "uid_columns": [
-    "nbs_case_answer_uid"
-  ],
-  "results_by_uid_column": {
-    "nbs_case_answer_uid": {
-      "uid_column": "nbs_case_answer_uid",
-      "uid_values": [
-        {
-          "uid_value": null,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
+  "uid_validation": {
+    "table_name": "D_INV_VACCINATION",
+    "uid_columns": [
+      "nbs_case_answer_uid"
+    ],
+    "results_by_uid_column": {
+      "nbs_case_answer_uid": {
+        "uid_column": "nbs_case_answer_uid",
+        "uid_values": [
+          {
+            "uid_value": null,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 0,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3255",
+            "comparison": {
+              "rdb_count": 1,
+              "rdb_modern_count": 1,
+              "record_counts_match": true,
+              "column_differences": [
+                {
+                  "record_index": 0,
+                  "column_differences": [
+                    {
+                      "column": "D_INV_VACCINATION_KEY",
+                      "rdb_value": 5.0,
+                      "rdb_modern_value": 4.0
+                    }
+                  ]
+                }
+              ],
+              "has_differences": true
+            }
+          },
+          {
+            "uid_value": "3592",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3889",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4138",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4219",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
           }
-        },
-        {
-          "uid_value": "3255",
-          "comparison": {
-            "rdb_count": 1,
-            "rdb_modern_count": 1,
-            "record_counts_match": true,
-            "column_differences": [
-              {
-                "record_index": 0,
-                "column_differences": [
-                  {
-                    "column": "D_INV_VACCINATION_KEY",
-                    "rdb_value": 5.0,
-                    "rdb_modern_value": 4.0
-                  }
-                ]
-              }
-            ],
-            "has_differences": true
-          }
-        },
-        {
-          "uid_value": "3592",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3889",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4138",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4219",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        }
-      ]
+        ]
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table D_INV_VACCINATION has no KEY columns"
   }
 }

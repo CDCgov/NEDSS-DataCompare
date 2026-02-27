@@ -1,195 +1,200 @@
 {
-  "table_name": "D_INV_LAB_FINDING",
-  "uid_columns": [
-    "nbs_case_answer_uid"
-  ],
-  "results_by_uid_column": {
-    "nbs_case_answer_uid": {
-      "uid_column": "nbs_case_answer_uid",
-      "uid_values": [
-        {
-          "uid_value": null,
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 0,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
+  "uid_validation": {
+    "table_name": "D_INV_LAB_FINDING",
+    "uid_columns": [
+      "nbs_case_answer_uid"
+    ],
+    "results_by_uid_column": {
+      "nbs_case_answer_uid": {
+        "uid_column": "nbs_case_answer_uid",
+        "uid_values": [
+          {
+            "uid_value": null,
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 0,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3244",
+            "comparison": {
+              "rdb_count": 1,
+              "rdb_modern_count": 1,
+              "record_counts_match": true,
+              "column_differences": [
+                {
+                  "record_index": 0,
+                  "column_differences": [
+                    {
+                      "column": "D_INV_LAB_FINDING_KEY",
+                      "rdb_value": 5.0,
+                      "rdb_modern_value": 4.0
+                    }
+                  ]
+                }
+              ],
+              "has_differences": true
+            }
+          },
+          {
+            "uid_value": "3286",
+            "comparison": {
+              "rdb_count": 1,
+              "rdb_modern_count": 1,
+              "record_counts_match": true,
+              "column_differences": [
+                {
+                  "record_index": 0,
+                  "column_differences": [
+                    {
+                      "column": "D_INV_LAB_FINDING_KEY",
+                      "rdb_value": 6.0,
+                      "rdb_modern_value": 5.0
+                    }
+                  ]
+                }
+              ],
+              "has_differences": true
+            }
+          },
+          {
+            "uid_value": "3353",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3393",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3447",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3482",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3507",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3870",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3885",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "3959",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4074",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4103",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4134",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4233",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
+          },
+          {
+            "uid_value": "4253",
+            "comparison": {
+              "rdb_count": 0,
+              "rdb_modern_count": 1,
+              "record_counts_match": false,
+              "column_differences": [],
+              "has_differences": false
+            }
           }
-        },
-        {
-          "uid_value": "3244",
-          "comparison": {
-            "rdb_count": 1,
-            "rdb_modern_count": 1,
-            "record_counts_match": true,
-            "column_differences": [
-              {
-                "record_index": 0,
-                "column_differences": [
-                  {
-                    "column": "D_INV_LAB_FINDING_KEY",
-                    "rdb_value": 5.0,
-                    "rdb_modern_value": 4.0
-                  }
-                ]
-              }
-            ],
-            "has_differences": true
-          }
-        },
-        {
-          "uid_value": "3286",
-          "comparison": {
-            "rdb_count": 1,
-            "rdb_modern_count": 1,
-            "record_counts_match": true,
-            "column_differences": [
-              {
-                "record_index": 0,
-                "column_differences": [
-                  {
-                    "column": "D_INV_LAB_FINDING_KEY",
-                    "rdb_value": 6.0,
-                    "rdb_modern_value": 5.0
-                  }
-                ]
-              }
-            ],
-            "has_differences": true
-          }
-        },
-        {
-          "uid_value": "3353",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3393",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3447",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3482",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3507",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3870",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3885",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "3959",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4074",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4103",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4134",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4233",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        },
-        {
-          "uid_value": "4253",
-          "comparison": {
-            "rdb_count": 0,
-            "rdb_modern_count": 1,
-            "record_counts_match": false,
-            "column_differences": [],
-            "has_differences": false
-          }
-        }
-      ]
+        ]
+      }
     }
+  },
+  "key_validation": {
+    "error": "Table D_INV_LAB_FINDING has no KEY columns"
   }
 }
