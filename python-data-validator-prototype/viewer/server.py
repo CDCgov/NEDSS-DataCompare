@@ -20,18 +20,6 @@ RESULTS_DIR = Path(__file__).parent.parent / 'results'
 STATIC_DIR = Path(__file__).parent  # Current directory for static files
 
 
-@app.route('/', methods=['GET'])
-def index():
-    """Serve the index.html file."""
-    return send_from_directory(STATIC_DIR, 'index.html')
-
-
-@app.route('/<path:filename>')
-def serve_static(filename):
-    """Serve static files (CSS, JS, etc)."""
-    return send_from_directory(STATIC_DIR, filename)
-
-
 def get_results_directory():
     """Get and validate results directory."""
     if not RESULTS_DIR.exists():
@@ -356,6 +344,19 @@ def get_column_values_paginated(table_name, column_name):
         'values': [],
         'records': []
     }), 404
+
+
+# Static file routes - MUST be after all API routes
+@app.route('/', methods=['GET'])
+def index():
+    """Serve the index.html file."""
+    return send_from_directory(STATIC_DIR, 'index.html')
+
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    """Serve static files (CSS, JS, etc)."""
+    return send_from_directory(STATIC_DIR, filename)
 
 
 if __name__ == '__main__':
