@@ -1,42 +1,166 @@
 /**
- * Main App - Fetch and display tables
+ * Results Viewer Frontend
+ *
+ * - Loads tables from /api/tables
+ * - Applies search and filter controls
+ * - Lets user drill into UID- and KEY-based comparisons
  */
+
+function computeTableFlags(data) {
+    const result = {
+        hasColumnDifferences: false,
+        hasRecordCountDifferences: false,
+        isKeyOnly: false,
+        isUidOnly: false,
+    };
+
+    if (!data) {
+        return result;
+    }
+
+    const uidVal = data.uid_validation;
+    const keyVal = data.key_validation;
+
+    let hasUid = false;
+    let hasKey = false;
+
+    if (uidVal && !uidVal.error) {
+        hasUid = true;
+        const byCol = uidVal.results_by_uid_column || {};
+        Object.values(byCol).forEach(colData => {
+            const uidValues = (colData && colData.uid_values) || [];
+            uidValues.forEach(item => {
+                const cmp = item && item.comparison;
+                if (!cmp) return;
+                if (cmp.has_differences) {
+                    result.hasColumnDifferences = true;
+                }
+                if (Array.isArray(cmp.column_differences) && cmp.column_differences.length > 0) {
+                    result.hasColumnDifferences = true;
+                }
+                if (cmp.record_counts_match === false) {
+                    result.hasRecordCountDifferences = true;
+                }
+            });
+        });
+    }
+
+    if (keyVal && !keyVal.error) {
+        hasKey = true;
+        const byCol = keyVal.results_by_key_column || {};
+        Object.values(byCol).forEach(colData => {
+            const records = (colData && colData.records_by_mapping_uid) || {};
+            Object.values(records).forEach(entry => {
+                const cmp = entry && entry.comparison;
+                if (!cmp) return;
+                if (cmp.has_differences) {
+                    result.hasColumnDifferences = true;
+                }
+                if (Array.isArray(cmp.column_differences) && cmp.column_differences.length > 0) {
+                    result.hasColumnDifferences = true;
+                }
+                if (cmp.record_counts_match === false) {
+                    result.hasRecordCountDifferences = true;
+                }
+            });
+        });
+    }
+
+    result.isUidOnly = hasUid && !hasKey;
+    result.isKeyOnly = hasKey && !hasUid;
+
+    return result;
+}
 
 async function loadTables() {
     const loadingEl = document.getElementById('loading');
     const errorEl = document.getElementById('error');
     const listEl = document.getElementById('tableList');
     const searchInput = document.getElementById('tableSearch');
-    
+    const filterSelect = document.getElementById('tableFilter');
+
     try {
         const response = await fetch('/api/tables');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
+
         const data = await response.json();
-        const tables = (data.tables || []).map(t => t.name);
-        
-        if (tables.length === 0) {
+        const tableNames = (data.tables || []).map(t => t.name);
+
+        if (tableNames.length === 0) {
             loadingEl.textContent = 'No tables found';
             return;
         }
-        
-        // Store tables globally for filtering
-        window._allTables = tables.slice().sort();
 
-        function renderTableList(filterText) {
-            const term = (filterText || '').toLowerCase();
+        loadingEl.textContent = 'Loading table details...';
+
+        const metaPromises = tableNames.map(async (name) => {
+            try {
+                const respTable = await fetch(`/api/table/${encodeURIComponent(name)}`);
+                if (!respTable.ok) {
+                    throw new Error(`HTTP ${respTable.status}`);
+                }
+                const tableData = await respTable.json();
+                const flags = computeTableFlags(tableData);
+                return { name, ...flags };
+            } catch (e) {
+                console.error('Failed to load table details for', name, e);
+                return {
+                    name,
+                    hasColumnDifferences: false,
+                    hasRecordCountDifferences: false,
+                    isKeyOnly: false,
+                    isUidOnly: false,
+                };
+            }
+        });
+
+        const tableMeta = await Promise.all(metaPromises);
+        tableMeta.sort((a, b) => a.name.localeCompare(b.name));
+        window._allTables = tableMeta;
+
+        function renderTableList(searchText, filterValue) {
+            const term = (searchText || '').toLowerCase();
+            const filter = filterValue || '';
             listEl.innerHTML = '';
 
-            const namesToShow = window._allTables.filter(name =>
-                !term || name.toLowerCase().includes(term)
-            );
+            const itemsToShow = window._allTables.filter(meta => {
+                if (term && !meta.name.toLowerCase().includes(term)) {
+                    return false;
+                }
 
-            namesToShow.forEach(tableName => {
+                if (!filter) return true;
+
+                switch (filter) {
+                    case 'hasColumnDifferences':
+                        return !!meta.hasColumnDifferences;
+                    case 'hasRecordCountDifferences':
+                        return !!meta.hasRecordCountDifferences;
+                    case 'isKeyBased':
+                        return !!meta.isKeyOnly;
+                    case 'isUidBased':
+                        return !!meta.isUidOnly;
+                    default:
+                        return true;
+                }
+            });
+
+            itemsToShow.forEach(meta => {
+                const tableName = meta.name;
                 const li = document.createElement('li');
 
                 const button = document.createElement('button');
                 button.type = 'button';
-                button.className = 'table-button btn btn-outline-primary btn-sm w-100 text-start d-flex justify-content-between align-items-center';
+
+                const baseClasses = 'table-button btn btn-sm w-100 text-start d-flex justify-content-between align-items-center';
+                let stateClasses = 'btn-outline-primary';
+
+                if (meta.hasColumnDifferences) {
+                    stateClasses = 'btn-outline-danger table-button-col-diff';
+                } else if (meta.hasRecordCountDifferences && !meta.hasColumnDifferences) {
+                    stateClasses = 'btn-outline-warning table-button-rec-mismatch';
+                }
+
+                button.className = `${baseClasses} ${stateClasses}`;
                 button.textContent = tableName;
 
                 const details = document.createElement('div');
@@ -53,17 +177,24 @@ async function loadTables() {
             });
         }
 
-        renderTableList('');
+        const initialSearch = searchInput ? searchInput.value : '';
+        const initialFilter = filterSelect ? filterSelect.value : '';
+        renderTableList(initialSearch, initialFilter);
 
         if (searchInput) {
             searchInput.addEventListener('input', () => {
-                renderTableList(searchInput.value);
+                renderTableList(searchInput.value, filterSelect ? filterSelect.value : '');
             });
         }
-        
+
+        if (filterSelect) {
+            filterSelect.addEventListener('change', () => {
+                renderTableList(searchInput ? searchInput.value : '', filterSelect.value);
+            });
+        }
+
         loadingEl.style.display = 'none';
         listEl.style.display = 'block';
-        
     } catch (error) {
         loadingEl.style.display = 'none';
         errorEl.textContent = `Error loading tables: ${error.message}`;
@@ -73,7 +204,6 @@ async function loadTables() {
 }
 
 async function onTableClicked(tableName, detailsEl) {
-    // Toggle visibility: if already visible, hide and stop
     if (detailsEl.style.display === 'block') {
         detailsEl.style.display = 'none';
         detailsEl.innerHTML = '';
@@ -157,7 +287,6 @@ async function onTableClicked(tableName, detailsEl) {
 }
 
 async function onUidColumnClicked(tableName, columnName, valuesEl) {
-    // Toggle off if already visible
     if (valuesEl.style.display === 'block') {
         valuesEl.style.display = 'none';
         valuesEl.innerHTML = '';
@@ -194,17 +323,38 @@ async function onUidColumnClicked(tableName, columnName, valuesEl) {
 
             const btn = document.createElement('button');
             btn.type = 'button';
-            const hasDiff = item.comparison && item.comparison.has_differences;
-            btn.className = 'tree-column-button btn btn-sm ' + (hasDiff ? 'btn-outline-danger uid-value-diff' : 'btn-outline-success uid-value-ok');
+            const cmp = item.comparison;
+
+            if (!cmp) {
+                btn.className = 'tree-column-button btn btn-sm btn-secondary disabled uid-value-no-data';
+                btn.disabled = true;
+            } else {
+                const hasColumnDiffs = Array.isArray(cmp.column_differences) && cmp.column_differences.length > 0;
+                const hasRecordCountMismatch = cmp.record_counts_match === false;
+
+                let colorClasses;
+                if (hasColumnDiffs) {
+                    colorClasses = 'btn-outline-danger uid-value-diff';
+                } else if (hasRecordCountMismatch) {
+                    colorClasses = 'btn-outline-warning uid-value-rec-mismatch';
+                } else {
+                    colorClasses = 'btn-outline-success uid-value-ok';
+                }
+
+                btn.className = 'tree-column-button btn btn-sm ' + colorClasses;
+            }
+
             btn.textContent = String(item.uid_value);
 
             const detailsEl = document.createElement('div');
             detailsEl.className = 'uid-comparison-details';
             detailsEl.style.display = 'none';
 
-            btn.addEventListener('click', () => {
-                onUidValueClicked(tableName, columnName, item, detailsEl);
-            });
+            if (cmp) {
+                btn.addEventListener('click', () => {
+                    onUidValueClicked(tableName, columnName, item, detailsEl);
+                });
+            }
 
             li.appendChild(btn);
             li.appendChild(detailsEl);
@@ -221,7 +371,6 @@ async function onUidColumnClicked(tableName, columnName, valuesEl) {
 }
 
 async function onKeyColumnClicked(tableName, columnName, valuesEl) {
-    // Toggle off if already visible
     if (valuesEl.style.display === 'block') {
         valuesEl.style.display = 'none';
         valuesEl.innerHTML = '';
@@ -265,7 +414,6 @@ async function onKeyColumnClicked(tableName, columnName, valuesEl) {
             return;
         }
 
-        // Sort by mapping_uid numeric if possible
         entries.sort((a, b) => {
             const av = Number(a.mapping_uid);
             const bv = Number(b.mapping_uid);
@@ -279,17 +427,38 @@ async function onKeyColumnClicked(tableName, columnName, valuesEl) {
 
             const btn = document.createElement('button');
             btn.type = 'button';
-            const hasDiff = entry.comparison && entry.comparison.has_differences;
-            btn.className = 'tree-column-button btn btn-sm ' + (hasDiff ? 'btn-outline-danger uid-value-diff' : 'btn-outline-success uid-value-ok');
+            const cmp = entry.comparison;
+
+            if (!cmp) {
+                btn.className = 'tree-column-button btn btn-sm btn-secondary disabled uid-value-no-data';
+                btn.disabled = true;
+            } else {
+                const hasColumnDiffs = Array.isArray(cmp.column_differences) && cmp.column_differences.length > 0;
+                const hasRecordCountMismatch = cmp.record_counts_match === false;
+
+                let colorClasses;
+                if (hasColumnDiffs) {
+                    colorClasses = 'btn-outline-danger uid-value-diff';
+                } else if (hasRecordCountMismatch) {
+                    colorClasses = 'btn-outline-warning uid-value-rec-mismatch';
+                } else {
+                    colorClasses = 'btn-outline-success uid-value-ok';
+                }
+
+                btn.className = 'tree-column-button btn btn-sm ' + colorClasses;
+            }
+
             btn.textContent = `${mappingColName}: ${entry.mapping_uid}`;
 
             const detailsEl = document.createElement('div');
             detailsEl.className = 'uid-comparison-details';
             detailsEl.style.display = 'none';
 
-            btn.addEventListener('click', () => {
-                onKeyMappingUidClicked(tableName, columnName, mappingTableName, mappingColName, entry, detailsEl);
-            });
+            if (cmp) {
+                btn.addEventListener('click', () => {
+                    onKeyMappingUidClicked(tableName, columnName, mappingTableName, mappingColName, entry, detailsEl);
+                });
+            }
 
             li.appendChild(btn);
             li.appendChild(detailsEl);
@@ -306,7 +475,6 @@ async function onKeyColumnClicked(tableName, columnName, valuesEl) {
 }
 
 function onUidValueClicked(tableName, columnName, uidItem, detailsEl) {
-    // Toggle off
     if (detailsEl.style.display === 'block') {
         detailsEl.style.display = 'none';
         detailsEl.innerHTML = '';
@@ -319,12 +487,11 @@ function onUidValueClicked(tableName, columnName, uidItem, detailsEl) {
         idColumnName: columnName,
         idValueRdb: uidItem.uid_value,
         idValueModern: uidItem.uid_value,
-        idType: 'UID'
+        idType: 'UID',
     });
 }
 
 function onKeyMappingUidClicked(tableName, columnName, mappingTableName, mappingColName, entry, detailsEl) {
-    // Toggle off
     if (detailsEl.style.display === 'block') {
         detailsEl.style.display = 'none';
         detailsEl.innerHTML = '';
@@ -340,7 +507,7 @@ function onKeyMappingUidClicked(tableName, columnName, mappingTableName, mapping
         idType: 'KEY',
         mappingUid: entry.mapping_uid,
         mappingColumn: mappingColName,
-        mappingTableName
+        mappingTableName,
     });
 }
 
@@ -352,26 +519,78 @@ function renderComparisonDetails(comparison, detailsEl, context) {
     }
 
     detailsEl.innerHTML = '';
-
-    const table = document.createElement('table');
-    table.className = 'uid-comparison-table';
-
-    const thead = document.createElement('thead');
-    thead.innerHTML = '<tr><th>Record Index</th><th>Column</th><th>RDB Value</th><th>RDB_MODERN</th></tr>';
-    table.appendChild(thead);
-
-    const tbody = document.createElement('tbody');
-
     const diffs = Array.isArray(comparison.column_differences) ? comparison.column_differences : [];
+    const hasColumnDiffs = diffs.length > 0;
+    const hasRecordCountMismatch = comparison.record_counts_match === false;
 
-    if (!diffs.length) {
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 4;
-        td.textContent = 'No column differences.';
-        tr.appendChild(td);
-        tbody.appendChild(tr);
+    const summary = document.createElement('div');
+    summary.className = 'tree-value-text small mb-2';
+
+    const rdbCount = typeof comparison.rdb_count === 'number' ? comparison.rdb_count : 0;
+    const modernCount = typeof comparison.rdb_modern_count === 'number' ? comparison.rdb_modern_count : 0;
+    const countsMatch = !!comparison.record_counts_match;
+    const hasDiffs = !!comparison.has_differences;
+
+    const lines = [];
+
+    if (context && context.idType === 'KEY' && context.mappingTableName && context.mappingColumn && context.mappingUid !== undefined) {
+        lines.push(`<div><strong>Mapping table:</strong> ${context.mappingTableName}</div>`);
+        lines.push(`<div><strong>Mapping UID column:</strong> ${context.mappingColumn}</div>`);
+        lines.push(`<div><strong>Mapping UID value:</strong> ${context.mappingUid}</div>`);
+    }
+
+    lines.push(`<div><strong>RDB records:</strong> ${rdbCount}</div>`);
+    lines.push(`<div><strong>RDB_MODERN records:</strong> ${modernCount}</div>`);
+
+    const countsBadgeClass = countsMatch
+        ? 'badge bg-success-subtle text-success-emphasis border border-success-subtle'
+        : 'badge bg-danger-subtle text-danger-emphasis border border-danger-subtle';
+    const diffsBadgeClass = hasDiffs
+        ? 'badge bg-danger-subtle text-danger-emphasis border border-danger-subtle'
+        : 'badge bg-success-subtle text-success-emphasis border border-success-subtle';
+
+    lines.push(
+        `<div class="mt-1">` +
+            `<span class="me-2"><strong>Record counts match:</strong> <span class="${countsBadgeClass}">${countsMatch ? 'Yes' : 'No'}</span></span>` +
+            `<span><strong>Column differences:</strong> <span class="${diffsBadgeClass}">${hasDiffs ? 'Yes' : 'No'}</span></span>` +
+        `</div>`
+    );
+
+    summary.innerHTML = lines.join('');
+    detailsEl.appendChild(summary);
+
+    if (!hasColumnDiffs) {
+        const msg = document.createElement('div');
+        msg.className = 'tree-value-text small mt-1';
+
+        const idLabel = context && context.idType === 'KEY' ? 'mapping UID' : 'UID';
+
+        if (hasRecordCountMismatch) {
+            if (rdbCount === 0 && modernCount > 0) {
+                msg.textContent = `Record count mismatch only: RDB has 0 records, RDB_MODERN has ${modernCount}. Only RDB_MODERN has records for this ${idLabel}.`;
+            } else if (modernCount === 0 && rdbCount > 0) {
+                msg.textContent = `Record count mismatch only: RDB has ${rdbCount} record(s), RDB_MODERN has 0. Only RDB has records for this ${idLabel}.`;
+            } else {
+                msg.textContent = `Record count mismatch only: RDB has ${rdbCount} record(s), RDB_MODERN has ${modernCount}.`;
+            }
+        } else {
+            msg.textContent = `No column differences; record counts match for this ${idLabel}.`;
+        }
+
+        detailsEl.appendChild(msg);
     } else {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'uid-comparison-wrapper table-responsive mt-1';
+
+        const table = document.createElement('table');
+        table.className = 'uid-comparison-table table table-sm table-bordered table-striped align-middle mb-2';
+
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>Record Index</th><th>Column</th><th>RDB Value</th><th>RDB_MODERN</th></tr>';
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+
         diffs.forEach(recDiff => {
             const recordIndex = recDiff.record_index;
             const cols = Array.isArray(recDiff.column_differences) ? recDiff.column_differences : [];
@@ -397,21 +616,11 @@ function renderComparisonDetails(comparison, detailsEl, context) {
                 tbody.appendChild(tr);
             });
         });
+
+        table.appendChild(tbody);
+        wrapper.appendChild(table);
+        detailsEl.appendChild(wrapper);
     }
-
-    table.appendChild(tbody);
-
-    const summary = document.createElement('div');
-    summary.className = 'tree-value-text small mb-2';
-
-    if (context && context.idType === 'KEY' && context.mappingTableName && context.mappingColumn && context.mappingUid !== undefined) {
-        summary.textContent = `mapping_table=${context.mappingTableName}, mapping_uid_column=${context.mappingColumn}, mapping_uid=${context.mappingUid} | rdb_count=${comparison.rdb_count}, modern_count=${comparison.rdb_modern_count}, counts_match=${comparison.record_counts_match ? 'yes' : 'no'}, has_differences=${comparison.has_differences ? 'yes' : 'no'}`;
-    } else {
-        summary.textContent = `rdb_count=${comparison.rdb_count}, modern_count=${comparison.rdb_modern_count}, counts_match=${comparison.record_counts_match ? 'yes' : 'no'}, has_differences=${comparison.has_differences ? 'yes' : 'no'}`;
-    }
-
-    detailsEl.appendChild(summary);
-    detailsEl.appendChild(table);
 
     const sql = buildSqlForComparison(comparison, context);
     if (sql) {
@@ -425,7 +634,7 @@ function renderComparisonDetails(comparison, detailsEl, context) {
         textarea.style.width = '100%';
         textarea.rows = Math.min(10, sql.split('\n').length + 1);
         textarea.value = sql;
-        
+
         const copyBtn = document.createElement('button');
         copyBtn.type = 'button';
         copyBtn.className = 'sql-copy-button btn btn-outline-secondary btn-sm mt-1';
@@ -439,8 +648,29 @@ function renderComparisonDetails(comparison, detailsEl, context) {
                     document.execCommand('copy');
                     textarea.blur();
                 }
+
+                const originalText = copyBtn.textContent;
+                const originalClass = copyBtn.className;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.className = 'sql-copy-button btn btn-success btn-sm mt-1';
+                copyBtn.disabled = true;
+
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.className = originalClass;
+                    copyBtn.disabled = false;
+                }, 1200);
             } catch (e) {
                 console.error('Failed to copy SQL', e);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copy failed';
+                copyBtn.classList.remove('btn-outline-secondary', 'btn-success');
+                copyBtn.classList.add('btn-danger');
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('btn-danger');
+                    copyBtn.classList.add('btn-outline-secondary');
+                }, 1500);
             }
         });
 
@@ -464,6 +694,8 @@ function buildSqlForComparison(comparison, context) {
 
     const colSet = new Set();
     const diffs = Array.isArray(comparison.column_differences) ? comparison.column_differences : [];
+    const hasColumnDiffs = diffs.length > 0;
+    const hasRecordCountMismatch = comparison.record_counts_match === false;
     diffs.forEach(recDiff => {
         const cols = Array.isArray(recDiff.column_differences) ? recDiff.column_differences : [];
         cols.forEach(colDiff => {
@@ -478,32 +710,70 @@ function buildSqlForComparison(comparison, context) {
     }
 
     const cols = Array.from(colSet);
-    if (!cols.length) {
+    if (hasColumnDiffs && !cols.length) {
         return '';
     }
 
-    const selectList = cols.map(c => `[${c}]`).join(', ');
+    const selectList = hasColumnDiffs ? cols.map(c => `[${c}]`).join(', ') : '*';
 
     const whereRdb = idCol ? `[${idCol}] = ${formatSqlValue(idValueRdb)}` : null;
     const whereModern = idCol ? `[${idCol}] = ${formatSqlValue(idValueModern)}` : null;
 
     const lines = [];
-    lines.push('-- RDB');
-    lines.push(`SELECT ${selectList}`);
-    lines.push(`FROM [RDB].[dbo].[${tableName}]`);
-    if (whereRdb) {
-        lines.push(`WHERE ${whereRdb};`);
-    }
-    lines.push('');
-    lines.push('-- RDB_MODERN');
-    lines.push(`SELECT ${selectList}`);
-    lines.push(`FROM [RDB_MODERN].[dbo].[${tableName}]`);
-    if (whereModern) {
-        lines.push(`WHERE ${whereModern};`);
-    }
-    lines.push('');
 
-    // For KEY-based tables, also include queries against the mapping table
+    if (hasRecordCountMismatch && !hasColumnDiffs) {
+        const rdbCount = typeof comparison.rdb_count === 'number' ? comparison.rdb_count : 0;
+        const modernCount = typeof comparison.rdb_modern_count === 'number' ? comparison.rdb_modern_count : 0;
+
+        if (rdbCount > 0 && modernCount === 0) {
+            lines.push('-- RDB (records present; RDB_MODERN has none)');
+            lines.push(`SELECT ${selectList}`);
+            lines.push(`FROM [RDB].[dbo].[${tableName}]`);
+            if (whereRdb) {
+                lines.push(`WHERE ${whereRdb};`);
+            }
+            lines.push('');
+        } else if (modernCount > 0 && rdbCount === 0) {
+            lines.push('-- RDB_MODERN (records present; RDB has none)');
+            lines.push(`SELECT ${selectList}`);
+            lines.push(`FROM [RDB_MODERN].[dbo].[${tableName}]`);
+            if (whereModern) {
+                lines.push(`WHERE ${whereModern};`);
+            }
+            lines.push('');
+        } else {
+            lines.push('-- RDB');
+            lines.push(`SELECT ${selectList}`);
+            lines.push(`FROM [RDB].[dbo].[${tableName}]`);
+            if (whereRdb) {
+                lines.push(`WHERE ${whereRdb};`);
+            }
+            lines.push('');
+            lines.push('-- RDB_MODERN');
+            lines.push(`SELECT ${selectList}`);
+            lines.push(`FROM [RDB_MODERN].[dbo].[${tableName}]`);
+            if (whereModern) {
+                lines.push(`WHERE ${whereModern};`);
+            }
+            lines.push('');
+        }
+    } else {
+        lines.push('-- RDB');
+        lines.push(`SELECT ${selectList}`);
+        lines.push(`FROM [RDB].[dbo].[${tableName}]`);
+        if (whereRdb) {
+            lines.push(`WHERE ${whereRdb};`);
+        }
+        lines.push('');
+        lines.push('-- RDB_MODERN');
+        lines.push(`SELECT ${selectList}`);
+        lines.push(`FROM [RDB_MODERN].[dbo].[${tableName}]`);
+        if (whereModern) {
+            lines.push(`WHERE ${whereModern};`);
+        }
+        lines.push('');
+    }
+
     if (context.idType === 'KEY' && context.mappingTableName && context.mappingColumn && context.mappingUid !== undefined) {
         const mapTable = context.mappingTableName;
         const mapCol = context.mappingColumn;
@@ -543,5 +813,9 @@ function formatSqlValue(value) {
     return `'${s}'`;
 }
 
-// Load tables when page loads
-document.addEventListener('DOMContentLoaded', loadTables);
+// Initialize
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTables);
+} else {
+    loadTables();
+}

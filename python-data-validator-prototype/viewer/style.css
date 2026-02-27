@@ -52,6 +52,31 @@ h2 {
     text-decoration: none;
 }
 
+/* Table button state colors based on differences */
+.table-button-col-diff {
+    background-color: #f8d7da;  /* light red */
+    border-color: #f5c2c7;
+    color: #842029;
+}
+
+.table-button-col-diff:hover {
+    background-color: #f1b0b7;
+    border-color: #f1949b;
+    color: #6a1a1f;
+}
+
+.table-button-rec-mismatch {
+    background-color: #fff3cd;  /* light yellow */
+    border-color: #ffecb5;
+    color: #664d03;
+}
+
+.table-button-rec-mismatch:hover {
+    background-color: #ffe69c;
+    border-color: #ffd66b;
+    color: #533f03;
+}
+
 .table-button:active {
     background-color: #e6e6e6;
 }
@@ -91,21 +116,17 @@ h2 {
 }
 
 .uid-comparison-table {
-    border-collapse: collapse;
     width: 100%;
     max-width: 100%;
-    background-color: #fff;
     font-size: 0.8rem;
 }
 
 .uid-comparison-table th,
 .uid-comparison-table td {
-    border: 1px solid #ddd;
     padding: 4px 8px;
 }
 
 .uid-comparison-table th {
-    background-color: #f8f9fa;
     text-align: left;
 }
 
@@ -118,6 +139,15 @@ h2 {
 .uid-value-diff {
     color: #dc3545;
     font-weight: 500;
+}
+
+.uid-value-rec-mismatch {
+    color: #856404;
+    font-weight: 500;
+}
+
+.uid-value-no-data {
+    opacity: 0.7;
 }
 
 .sql-copy-button {

@@ -18,10 +18,24 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <div class="d-flex flex-column flex-md-row align-items-md-center mb-3 gap-2">
-                    <h2 class="h5 mb-0 flex-grow-1">Tables</h2>
-                    <div class="table-search-wrapper flex-grow-1 flex-md-grow-0">
-                        <input id="tableSearch" type="text" class="form-control" placeholder="Search tables..." aria-label="Search tables" />
+                <div class="row g-2 mb-3 align-items-end">
+                    <div class="col-md-4 mb-2 mb-md-0">
+                        <h2 class="h5 mb-1">Tables</h2>
+                        <p class="text-muted small mb-0">Filter and search comparison results.</p>
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <label for="tableSearch" class="form-label form-label-sm mb-1 small text-muted">Search</label>
+                        <input id="tableSearch" type="text" class="form-control form-control-sm" placeholder="Search tables..." aria-label="Search tables" />
+                    </div>
+                    <div class="col-md-4 col-lg-3">
+                        <label for="tableFilter" class="form-label form-label-sm mb-1 small text-muted">Filter</label>
+                        <select id="tableFilter" class="form-select form-select-sm" aria-label="Filter tables">
+                            <option value="">All tables</option>
+                            <option value="hasColumnDifferences">Has Column Differences</option>
+                            <option value="hasRecordCountDifferences">Has Record Count Differences</option>
+                            <option value="isKeyBased">Is KEY Based</option>
+                            <option value="isUidBased">Is UID Based</option>
+                        </select>
                     </div>
                 </div>
                 

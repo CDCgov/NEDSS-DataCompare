@@ -74,94 +74,79 @@ python main.py --target-tables <my_tables_list.txt>
 
 ## Running The Results Viewer
 
-### 1. Generate Results Viewer Data JS
+### 1. Start The Flask Server
 
 Navigate to the result-reviewer directory and generate the data.js file from validation results:
 
 ```bash
-cd result-reviewer
-python generate_viewer_data.py
+cd viewer && python server.py
 ```
 
-This will load all 297 tables from the `results/` directory and generate a `data.js` file containing all validation data.
 
-### 2. Open viewer.js
 
-Open `index.html` in your web browser to view the validation results.
+### 2. Open the Web Page
 
-## How to Use
+In your browser, visit `http:localhost:8001`
 
-The Results Viewer provides an interactive interface to explore database validation results. Below are the key features and how to use them.
 
-### Full Table List View
-![Full Table List View](screenshots/full_lists.png)
+### 3. Using the Results Viewer UI
 
-When you first open the viewer, you'll see the complete list of all validated tables. Each table row shows:
-- **Table name** (left)
-- **Status badges**: 
-  - "Col Diff" (red) — indicates tables with column differences
-  - "Rec Mismatch" (yellow) — indicates tables with record count mismatches
+The viewer web page provides an interactive way to explore UID- and KEY-based comparison results.
 
-Tables with no issues are shown without badges.
+The following screenshots live in `python-data-validator-prototype/screenshots` and illustrate the main features:
 
-### Search Functionality
-![Search Functionality](screenshots/search_list.png)
+- **All tables view**  
+	![All tables view](screenshots/all_tables.png)  
+	Shows the initial landing page with the full list of tables. Each table is rendered as a color-coded button:
+	- Light red: table has at least one column difference.
+	- Light yellow: table has only record-count mismatches.
+	- Default outline blue: table has no known differences.
 
-Use the search bar at the top to filter tables by name. The search is case-insensitive and matches any part of the table name. As you type, the table list updates in real-time to show only matching results.
+- **Search tables**  
+	![Search tables](screenshots/search_tables.png)  
+	Demonstrates the search box in the header. As you type, the table list is filtered in real time (case-insensitive) so you can quickly locate a specific table.
 
-### Filter by Status
-![Filter by Status](screenshots/filter_list.png)
+- **Filter tables**  
+	![Filter tables](screenshots/filter_tables.png)  
+	Shows the filter drop-down next to the search box. This lets you restrict the list to:
+	- *Has Column Differences* – only tables with at least one differing column.
+	- *Has Record Count Differences* – only tables with at least one record-count mismatch.
+	- *Is KEY Based* – tables that only have `key_validation`.
+	- *Is UID Based* – tables that only have `uid_validation`.
 
-The dropdown filter allows you to view tables by specific issue types:
-- **All Tables** — shows all validated tables
-- **Has Column Differences** — shows only tables where columns differ between RDB and RDB_MODERN
-- **Record Count Mismatch** — shows only tables where record counts don't match
+- **UID-based table navigation**  
+	![UID-based table navigation](screenshots/uid_based_table_navigation.png)  
+	Example of expanding a UID-based table. Clicking a table button reveals its UID columns; clicking a UID column shows the list of UID values. Each UID value appears as a small status-colored button.
 
-### Expand UID Column
-![Expand UID Column](screenshots/click_uid_column.png)
+- **KEY-based table navigation**  
+	![KEY-based table navigation](screenshots/key_based_table_navigation.png)  
+	Example of expanding a KEY-based table. Clicking a table button reveals KEY columns; clicking a KEY column shows mapping UIDs (from the mapping table) as buttons, which you can drill into to see details.
 
-Click on a table name to expand it and view its UID (unique identifier) columns. Each UID column is listed with an arrow (→) indicator. The viewer will show all distinct UID columns found in that table.
+- **UID / mapping UID button color coding**  
+	![UID and mapping UID button color coding](screenshots/uid_column_value_buttons_color_coding.png)  
+	Illustrates the per-UID (and per-mapping-UID) button colors:
+	- Green: no column differences and record counts match.
+	- Yellow: record-count mismatch only (no column differences).
+	- Red: one or more column differences.
+	- Disabled grey: no comparison data available for that UID/mapping UID.
 
-### Expand UID Values
-![Expand UID Values](screenshots/click_uid_value.png)
+- **Column differences for UID-based tables**  
+	![Column differences for UID-based tables](screenshots/clicked_uid_column_for_uid_based_table-column-differences.png)  
+	Shows the details panel that appears when you click a red UID button for a UID-based table. It includes:
+	- A human-readable summary of RDB vs RDB_MODERN record counts and whether counts and columns differ.
+	- A modern Bootstrap-styled table listing per-record, per-column differences.
+	- A SQL section with copyable queries for reproducing the discrepancy in both `RDB` and `RDB_MODERN`.
 
-Click on a UID column to expand and see all the individual UID values. Each UID value row shows:
-- **UID value** (or "(null)" for null values)
-- **Status color**:
-  - Green — records match perfectly between databases
-  - Red — records have column differences
-  - Yellow — record counts don't match
-- **Copy button** (📋) — click to copy the UID value to your clipboard
+- **Column differences for KEY-based tables**  
+	![Column differences for KEY-based tables](screenshots/clicked_key_collumn_for_key_based_table-column-differences.png)  
+	Shows the details panel for a red mapping UID button on a KEY-based table. In addition to the record-count and column-differences summary, it displays:
+	- The mapping table name and mapping UID column/value.
+	- Column differences between `RDB` and `RDB_MODERN`.
+	- SQL to query the affected KEY table in both databases and additional `SELECT *` statements against the mapping table for that mapping UID.
 
-### View Comparison Details
-Click on a UID value to expand and see detailed comparison information:
-- **RDB Count** — number of matching records in the RDB database
-- **RDB Modern Count** — number of matching records in the RDB_MODERN database
-- **Record Counts Match** — boolean showing if counts are identical
-- **Has Differences** — boolean indicating if any column values differ
-- **Records with Column Differences** — a button showing the count of records with differing columns
 
-### Inspect Column Differences
-![Inspect Column Differences](screenshots/click_column_diff_num.png)
 
-Click on the "Records with Column Differences" count button to expand and see:
-- **Record Index** — which record in the result set has differences
-- **Column Details** — for each differing column:
-  - Column name
-  - Value from RDB database
-  - Value from RDB_MODERN database
-
-### Query Differing Columns
-Below the column differences list, a SQL query snippet is provided:
-- Shows both RDB and RDB_MODERN queries
-- Includes the UID column and all columns with differences
-- Uses fully qualified table names with database and schema
-- **Copy button** (📋) — click to copy the complete SQL snippet to your clipboard for manual investigation in SQL Server Management Studio
-
-### Copy to Clipboard
-Any text element with a 📋 button can be copied. After clicking, the button temporarily changes to ✓ and turns green to confirm the copy was successful.
 ## Troubleshooting
-
 ### ODBC Driver Not Found
 
 If you get "ODBC Driver 18 for SQL Server not found", verify installation:
