@@ -20,6 +20,9 @@ class ValidatorRunner:
         self.results_dir = Path(__file__).parent.parent / 'results'
         self.uid_columns = {}  # {table_name: [uid_columns]}
         self.key_columns = {}  # {table_name: [key_columns]}
+        # Columns whose value differences should be ignored because
+        # there is a known offset between RDB and RDB_MODERN
+        self.known_key_column_offsets = set()
     
     def setup_connections(self, rdb_config_path: str = 'db-config.json', 
                          rdb_modern_config_path: str = 'db-config.json'):
@@ -35,6 +38,12 @@ class ValidatorRunner:
             config_modern = load_config(rdb_modern_config_path)
             self.rdb_modern_engine = create_db_engine(config_modern)
             logger.info("Connected to RDB_MODERN database")
+
+            # Load any configured key columns that have known offsets
+            # between RDB and RDB_MODERN so we can ignore their
+            # differences in comparison results.
+            offsets = config_modern.get('known_key_column_offsets') or []
+            self.known_key_column_offsets = {str(col).upper() for col in offsets}
             
             # Load RDB config and switch database name
             config_rdb = load_config(rdb_config_path)
@@ -222,6 +231,13 @@ class ValidatorRunner:
         all_columns = set(rdb_record.keys()) | set(rdb_modern_record.keys())
         
         for column in sorted(all_columns):
+            # Skip columns that are known to have offsets between
+            # RDB and RDB_MODERN. We still compare them at the
+            # database level, but do not report their discrepancies
+            # in the results.
+            if str(column).upper() in self.known_key_column_offsets:
+                continue
+
             rdb_value = rdb_record.get(column)
             rdb_modern_value = rdb_modern_record.get(column)
             

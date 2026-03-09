@@ -345,7 +345,6 @@ def get_column_values_paginated(table_name, column_name):
         'records': []
     }), 404
 
-
 # Static file routes - MUST be after all API routes
 @app.route('/', methods=['GET'])
 def index():
