@@ -131,6 +131,54 @@ class ValidatorRunner:
         except SQLAlchemyError as e:
             logger.error(f"Error getting records from {table_name} where {key_column}={key_value}: {e}")
             return []
+
+    def _get_investigation_keys_for_interview(self, engine, d_interview_key: Any) -> List[Any]:
+        """Get INVESTIGATION_KEY values from F_INTERVIEW_CASE for a D_INTERVIEW_KEY.
+
+        This is used to bridge from D_INTERVIEW_KEY to INVESTIGATION_KEY
+        so that the existing INVESTIGATION_KEY -> CASE_UID mapping logic
+        can be reused without changing the report JSON structure.
+        """
+        try:
+            query = text(
+                "SELECT DISTINCT [INVESTIGATION_KEY] "
+                "FROM [F_INTERVIEW_CASE] "
+                "WHERE [D_INTERVIEW_KEY] = :interview_key"
+            )
+            with engine.connect() as conn:
+                result = conn.execute(query, {"interview_key": d_interview_key})
+                return [row[0] for row in result.fetchall()]
+        except SQLAlchemyError as e:
+            logger.error(
+                "Error getting INVESTIGATION_KEY from F_INTERVIEW_CASE for D_INTERVIEW_KEY=%s: %s",
+                d_interview_key,
+                e,
+            )
+            return []
+
+    def _get_interview_keys_for_case_uid(self, engine, case_uid: Any) -> List[Any]:
+        """Get D_INTERVIEW_KEY values for a given CASE_UID via INVESTIGATION.
+
+        This runs the reverse bridge on the RDB side:
+        CASE_UID -> INVESTIGATION.INVESTIGATION_KEY -> F_INTERVIEW_CASE.D_INTERVIEW_KEY.
+        """
+        try:
+            query = text(
+                "SELECT DISTINCT fic.[D_INTERVIEW_KEY] "
+                "FROM [F_INTERVIEW_CASE] fic "
+                "JOIN [INVESTIGATION] i ON fic.[INVESTIGATION_KEY] = i.[INVESTIGATION_KEY] "
+                "WHERE i.[CASE_UID] = :case_uid"
+            )
+            with engine.connect() as conn:
+                result = conn.execute(query, {"case_uid": case_uid})
+                return [row[0] for row in result.fetchall()]
+        except SQLAlchemyError as e:
+            logger.error(
+                "Error getting D_INTERVIEW_KEY from F_INTERVIEW_CASE/INVESTIGATION for CASE_UID=%s: %s",
+                case_uid,
+                e,
+            )
+            return []
     
     def _get_distinct_uid_values(self, engine, table_name: str, uid_column: str) -> List[Any]:
         """
@@ -418,27 +466,27 @@ class ValidatorRunner:
             'key_columns': key_columns,
             'results_by_key_column': {}
         }
-        
+
         # Process each KEY column
         for key_column in key_columns:
-            # Only process supported KEY columns
+            # Only process supported KEY columns for core KEY-based comparison
             if key_column not in KEY_COLUMN_MAPPING:
                 logger.warning(f"KEY column {key_column} is not supported. Skipping.")
                 continue
-            
+
             mapping_config = KEY_COLUMN_MAPPING[key_column]
             mapping_table = mapping_config['mapping_table']
             mapping_uid_column = mapping_config['mapping_uid_column']
-            
+
             logger.info(f"Processing table {table_name}, KEY column: {key_column}")
-            
+
             key_column_results = {
                 'key_column': key_column,
                 'mapping_table': mapping_table,
                 'mapping_uid_column': mapping_uid_column,
                 'records_by_mapping_uid': {}
             }
-            
+
             # Get distinct KEY values from RDB_MODERN
             try:
                 query = text(f"SELECT DISTINCT [{key_column}] FROM [{table_name}] ORDER BY [{key_column}]")
@@ -448,22 +496,124 @@ class ValidatorRunner:
             except SQLAlchemyError as e:
                 logger.error(f"Error getting distinct KEY values from {table_name}.{key_column}: {e}")
                 key_values_modern = []
-            
+
             if not key_values_modern:
                 logger.warning(f"No KEY values found for {table_name}.{key_column}")
                 table_results['results_by_key_column'][key_column] = key_column_results
                 continue
-            
+
             # For each KEY value in RDB_MODERN, get the mapping UID and find corresponding records
             for key_value_modern in key_values_modern:
-                mapping_uid = self._get_mapping_uid(self.rdb_modern_engine, mapping_table, mapping_uid_column, key_value_modern)
-                
+                # Special handling for D_INTERVIEW_KEY: bridge via
+                # F_INTERVIEW_CASE to get INVESTIGATION_KEY and then
+                # derive CASE_UID (mapping UID) from INVESTIGATION.
+                if key_column == 'D_INTERVIEW_KEY':
+                    investigation_keys = self._get_investigation_keys_for_interview(
+                        self.rdb_modern_engine,
+                        key_value_modern,
+                    )
+
+                    if not investigation_keys:
+                        logger.warning(
+                            "No INVESTIGATION_KEY found in F_INTERVIEW_CASE for D_INTERVIEW_KEY=%s",
+                            key_value_modern,
+                        )
+                        continue
+
+                    # Use each INVESTIGATION_KEY to derive a
+                    # CASE_UID mapping UID and then map back to the
+                    # corresponding D_INTERVIEW_KEY on the RDB side.
+                    for inv_key_modern in investigation_keys:
+                        mapping_uid = self._get_mapping_uid(
+                            self.rdb_modern_engine,
+                            mapping_table,
+                            mapping_uid_column,
+                            inv_key_modern,
+                        )
+
+                        if mapping_uid is None:
+                            logger.warning(
+                                "Could not find mapping UID (CASE_UID) for INVESTIGATION_KEY=%s (D_INTERVIEW_KEY=%s)",
+                                inv_key_modern,
+                                key_value_modern,
+                            )
+                            continue
+
+                        mapping_uid_str = self._serialize_for_json(mapping_uid)
+
+                        if mapping_uid_str not in key_column_results['records_by_mapping_uid']:
+                            key_column_results['records_by_mapping_uid'][mapping_uid_str] = {
+                                'mapping_uid': mapping_uid_str,
+                                'rdb_modern_key_value': self._serialize_for_json(key_value_modern),
+                                'rdb_modern_records': [],
+                                'rdb_key_value': None,
+                                'rdb_records': [],
+                                'comparison': None,
+                            }
+
+                        # Records from the base table in RDB_MODERN
+                        # for this D_INTERVIEW_KEY
+                        rdb_modern_records = self._get_records_by_key(
+                            self.rdb_modern_engine,
+                            table_name,
+                            key_column,
+                            key_value_modern,
+                        )
+                        key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_modern_records'] = self._serialize_for_json(rdb_modern_records)
+
+                        # Find D_INTERVIEW_KEY value(s) in RDB that
+                        # correspond to this CASE_UID via
+                        # INVESTIGATION and F_INTERVIEW_CASE.
+                        interview_keys_rdb = self._get_interview_keys_for_case_uid(
+                            self.rdb_engine,
+                            mapping_uid,
+                        )
+
+                        if not interview_keys_rdb:
+                            logger.warning(
+                                "Could not find D_INTERVIEW_KEY in RDB for CASE_UID=%s",
+                                mapping_uid,
+                            )
+                            continue
+
+                        # Use the first matching D_INTERVIEW_KEY on the RDB side
+                        key_value_rdb = interview_keys_rdb[0]
+                        key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_key_value'] = self._serialize_for_json(key_value_rdb)
+
+                        # Records from the base table in RDB for the
+                        # resolved D_INTERVIEW_KEY
+                        rdb_records = self._get_records_by_key(
+                            self.rdb_engine,
+                            table_name,
+                            key_column,
+                            key_value_rdb,
+                        )
+                        key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_records'] = self._serialize_for_json(rdb_records)
+
+                        # Compare records
+                        comparison = self._compare_records(rdb_records, rdb_modern_records)
+                        key_column_results['records_by_mapping_uid'][mapping_uid_str]['comparison'] = self._serialize_for_json(comparison)
+
+                    # Done handling this D_INTERVIEW_KEY value; move
+                    # to the next one.
+                    continue
+
+                # Default handling for KEY columns with direct
+                # mapping-table support (e.g., PATIENT_KEY,
+                # INVESTIGATION_KEY).
+                mapping_uid = self._get_mapping_uid(
+                    self.rdb_modern_engine,
+                    mapping_table,
+                    mapping_uid_column,
+                    key_value_modern,
+                )
+
                 if mapping_uid is None:
                     logger.warning(f"Could not find mapping UID for {key_column}={key_value_modern}")
                     continue
-                
+
                 mapping_uid_str = self._serialize_for_json(mapping_uid)
-                
+
                 if mapping_uid_str not in key_column_results['records_by_mapping_uid']:
                     key_column_results['records_by_mapping_uid'][mapping_uid_str] = {
                         'mapping_uid': mapping_uid_str,
@@ -473,32 +623,32 @@ class ValidatorRunner:
                         'rdb_records': [],
                         'comparison': None
                     }
-                
+
                 # Get records from RDB_MODERN
                 rdb_modern_records = self._get_records_by_key(self.rdb_modern_engine, table_name, key_column, key_value_modern)
                 key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_modern_records'] = self._serialize_for_json(rdb_modern_records)
-                
+
                 # Find corresponding KEY value in RDB using the same mapping UID
                 key_value_rdb = self._find_key_value_by_mapping_uid(self.rdb_engine, mapping_table, mapping_uid_column, mapping_uid, key_column)
-                
+
                 if key_value_rdb is None:
                     logger.warning(f"Could not find corresponding KEY value in RDB for {mapping_uid_column}={mapping_uid}")
                     continue
-                
+
                 key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_key_value'] = self._serialize_for_json(key_value_rdb)
-                
+
                 # Get records from RDB
                 rdb_records = self._get_records_by_key(self.rdb_engine, table_name, key_column, key_value_rdb)
                 key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_records'] = self._serialize_for_json(rdb_records)
-                
+
                 # Compare records
                 comparison = self._compare_records(rdb_records, rdb_modern_records)
                 key_column_results['records_by_mapping_uid'][mapping_uid_str]['comparison'] = self._serialize_for_json(comparison)
-            
+
             table_results['results_by_key_column'][key_column] = key_column_results
         
         return table_results
-    
+
     def _find_key_value_by_mapping_uid(self, engine, mapping_table: str, uid_column: str, uid_value: Any, key_column: str) -> Any:
         """
         Find the KEY value in a database given a mapping UID.

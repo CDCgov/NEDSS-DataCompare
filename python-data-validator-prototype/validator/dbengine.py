@@ -88,5 +88,15 @@ KEY_COLUMN_MAPPING = {
     'PATIENT_KEY': {
         'mapping_table': 'D_PATIENT',
         'mapping_uid_column': 'PATIENT_UID'
+    },
+    # D_INTERVIEW_KEY itself does not have a direct UID mapping
+    # table. Instead, we treat INVESTIGATION.CASE_UID as the
+    # stable mapping UID for interview-based comparisons. The
+    # ValidatorRunner contains the additional logic needed to
+    # bridge from D_INTERVIEW_KEY -> F_INTERVIEW_CASE ->
+    # INVESTIGATION_KEY -> CASE_UID.
+    'D_INTERVIEW_KEY': {
+        'mapping_table': 'INVESTIGATION',
+        'mapping_uid_column': 'CASE_UID'
     }
 }
