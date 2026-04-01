@@ -544,7 +544,7 @@ class ValidatorRunner:
                         if mapping_uid_str not in key_column_results['records_by_mapping_uid']:
                             key_column_results['records_by_mapping_uid'][mapping_uid_str] = {
                                 'mapping_uid': mapping_uid_str,
-                                'rdb_modern_key_value': self._serialize_for_json(key_value_modern),
+                                'rdb_modern_key_value': None,
                                 'rdb_modern_records': [],
                                 'rdb_key_value': None,
                                 'rdb_records': [],
@@ -552,14 +552,21 @@ class ValidatorRunner:
                             }
 
                         # Records from the base table in RDB_MODERN
-                        # for this D_INTERVIEW_KEY
+                        # for this D_INTERVIEW_KEY. Always update both
+                        # the stored key value and records so that
+                        # rdb_modern_key_value stays in sync with the
+                        # D_INTERVIEW_KEY shown in rdb_modern_records,
+                        # even when multiple interviews share the same
+                        # CASE_UID mapping UID.
                         rdb_modern_records = self._get_records_by_key(
                             self.rdb_modern_engine,
                             table_name,
                             key_column,
                             key_value_modern,
                         )
-                        key_column_results['records_by_mapping_uid'][mapping_uid_str]['rdb_modern_records'] = self._serialize_for_json(rdb_modern_records)
+                        entry = key_column_results['records_by_mapping_uid'][mapping_uid_str]
+                        entry['rdb_modern_key_value'] = self._serialize_for_json(key_value_modern)
+                        entry['rdb_modern_records'] = self._serialize_for_json(rdb_modern_records)
 
                         # Find D_INTERVIEW_KEY value(s) in RDB that
                         # correspond to this CASE_UID via
