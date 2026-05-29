@@ -31,8 +31,7 @@ public class SecurityConfig {
             "/actuator/prometheus",
             "/actuator/prometheus/**",
             "/swagger-ui/**",
-            "/api/auth/token",
-            "/api/data-compare"
+            "/api/auth/token"
     };
     @Autowired
     private CustomAuthenticationManagerResolver customauthenticationmanagerresolver;
@@ -43,7 +42,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AUTH_WHITELIST).permitAll()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2
