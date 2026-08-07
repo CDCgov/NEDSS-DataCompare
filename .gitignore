@@ -1,4 +1,4 @@
-HELP.md
+uHELP.md
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Prototype Generated Files ###
+.DS_Store/
+python-data-validator-prototype/.DS_Store
+python-data-validator-prototype/screenshots/.DS_Store
+python-data-validator-prototype/**venv/
+venv/
+python-data-validator-prototype/results/**/*.json
+python-data-validator-prototype/table-lists
