@@ -290,8 +290,9 @@ class ValidatorRunner:
             rdb_modern_value = rdb_modern_record.get(column)
             
             # Convert to string for comparison (handles various types including datetime)
-            rdb_value_str = str(rdb_value) if rdb_value is not None else None
-            rdb_modern_value_str = str(rdb_modern_value) if rdb_modern_value is not None else None
+            # and strip whitespace so leading/trailing spaces don't register as a mismatch
+            rdb_value_str = str(rdb_value).strip() if rdb_value is not None else None
+            rdb_modern_value_str = str(rdb_modern_value).strip() if rdb_modern_value is not None else None
             
             if rdb_value_str != rdb_modern_value_str:
                 differences.append({
